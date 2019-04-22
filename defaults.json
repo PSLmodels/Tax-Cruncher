@@ -1,16 +1,16 @@
 {
-	"taxsimid": {
-		"title": "Case ID",
-        "description": "Arbitrary, but must be a non-negative numeric",
+        "RECID": {
+                "title": "Taxpayer ID",
+        "description": "",
         "notes": "",
         "type": "int",
         "number_dims": 0,
         "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
+        "validators": {"range": {"min":0, "max":9e+99}},
         "out_of_range_minmsg":"",
         "out_of_range_maxmsg":"",
         "out_of_range_action":"stop" 
-	},
+        },
 	"year": {
 		"title": "Tax year",
         "description": "",
@@ -21,18 +21,6 @@
         "validators": {"range": {"min":2013, "max":2028}},
         "out_of_range_minmsg":"Year must be between 2013 and 2028",
         "out_of_range_maxmsg":"Year must be between 2013 and 2028",
-        "out_of_range_action":"stop" 
-	},
-	"SOI": {
-		"title": "SOI code (or zero)",
-        "description": "",
-        "notes": "",
-        "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":0, "max":51}},
-        "out_of_range_minmsg":"SOI code must be between 0 and 51",
-        "out_of_range_maxmsg":"SOI code must be between 0 and 51",
         "out_of_range_action":"stop" 
 	},
 	"mstat": {
@@ -252,30 +240,6 @@
         "out_of_range_maxmsg":"ui must be at least than 0",
         "out_of_range_action":"stop" 
 	},
-	"transfers": {
-		"title": "Other non-taxable transfer income",
-        "description": "",
-        "notes": "",
-        "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"transfers must be at least than 0",
-        "out_of_range_maxmsg":"transfers must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"rentpaid": {
-		"title": "Rent paid",
-        "description": "",
-        "notes": "",
-        "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"rentpaid must be at least than 0",
-        "out_of_range_maxmsg":"rentpaid must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
 	"proptax": {
 		"title": "Real estate taxes paid",
         "description": "",
@@ -344,7 +308,7 @@
         "number_dims": 0,
         "value": [{"value":"None"}],
         "validators": {"choice": {"choices": ["2017_law.json", "BrownKhanna.json", "Clinton2016.json",
-        			"Larson2019.json", "Renacci.json", "TCJA.json", "Trump2016.json", "Trump2017.json",
+        			"Larson2019.json", "Renacci.json", "SandersDeFazio.json", "TCJA.json", "Trump2016.json", "Trump2017.json",
         			"ptaxes0.json", "ptaxes1.json", "ptaxes2.json", "ptaxes3.json", "None"]}},
         "out_of_range_action":"stop" 
 	}
