@@ -24,7 +24,7 @@
         {"value": 0}
     ],
     "pwages": [
-        {"value": 0}
+        {"value": 100000}
     ],
     "swages": [
         {"value": 0}
@@ -72,7 +72,7 @@
         {"value": "Taxpayer Earnings"}
     ],
     "reform_options": [
-        {"value": "None"}
+        {"value": "2017_law.json"}
     ]
 }
 
