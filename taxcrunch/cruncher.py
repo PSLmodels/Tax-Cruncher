@@ -6,18 +6,19 @@ import taxcalc as tc
 
 from paramtools import Parameters
 
+CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-class TaxsimParams(Parameters):
+class CruncherParams(Parameters):
 
-    CURRENT_PATH = os.path.abspath(os.path.dirname("__file__"))
 
     schema = os.path.join(CURRENT_PATH, "schema.json")
     defaults = os.path.join(CURRENT_PATH, "defaults.json")
 
 
-class Cruncher:
-    def __init__(self):
-        self.params = TaxsimParams()
+class Cruncher():
+    def __init__(self, file='adjustment_template.json'):
+        self.file = file
+        self.params = CruncherParams()
         self.adjustment = self.adjust_file()
         self.params.adjust(self.adjustment)
         self.ivar, self.mtr_options, self.reform_options = self.taxsim_inputs()
@@ -31,12 +32,12 @@ class Cruncher:
         self.zero_brk = self.zero_bracket()
         self.df_calc = self.calc_table()
 
-    def adjust_file(self, file="adjustment_template.json"):
+    def adjust_file(self):
         """
         Alter inputs in adjustment_template.json or create your own adjustment file
         """
-        CURRENT_PATH = os.path.abspath(os.path.dirname("__file__"))
-        self.adjustment = os.path.join(CURRENT_PATH, file)
+        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+        self.adjustment = os.path.join(CURRENT_PATH, self.file)
         return self.adjustment
 
     def taxsim_inputs(self):
