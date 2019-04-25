@@ -15,6 +15,37 @@ class CruncherParams(Parameters):
 
 
 class Cruncher:
+    """
+    Constructor for the Cruncher class
+
+    Parameters
+    ----------
+    file: file path to input adjustment file
+        The default is cruncher/adjustment_template.json.
+
+    custom_reform: file path to optional json policy reform file
+        If you choose to specify a custom reform (as opposed to the
+        preset reforms in the Tax-Calculator repo), change the adjustment
+        file 'reform_options' field to 'Custom' and specify the file path
+        in this argument
+
+    Returns
+    -------
+    class instance: Cruncher
+
+    Notes
+    -----
+    The most efficient way to use the Cruncher class is to select a preset policy reform
+    from the 'reform_options' field in 'defaults.json', then fill out 'adjustment_template.json'
+    with your individual data and chosen reform. Create a class instance with c = Cruncher() and
+    test out the following methods:
+
+        c.basic_table()
+        c.mtr_table()
+        c.calc_table()
+        c.calc_diff_table()
+
+    """
     def __init__(self, file="adjustment_template.json", custom_reform=None):
         self.file = file
         self.custom_reform = custom_reform
@@ -34,7 +65,7 @@ class Cruncher:
 
     def adjust_file(self):
         """
-        Alter inputs in adjustment_template.json or create your own adjustment file
+        Adjust inputs based on 'adjustment_template.json' or a different specified json file
         """
         CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
         self.adjustment = os.path.join(CURRENT_PATH, self.file)
@@ -45,9 +76,9 @@ class Cruncher:
         Iterates through params object to extract parameter values
 
         Returns:
-        ivar: a Pandas dataframe with Taxsim-style variables
-        mtr_options: a string with the user's choice of how to calculate marginal tax rates
-        reform_options: a string with the user's choice of reform
+            self.ivar: a Pandas dataframe with Taxsim-style variables
+            self.mtr_options: a string with the user's choice of how to calculate marginal tax rates
+            self.reform_options: a string with the user's choice of reform
 
         """
         for param in self.params.RECID:
@@ -142,7 +173,9 @@ class Cruncher:
     def translate(self, ivar):
         """
         Translate TAXSIM-27 input variables into Tax-Calculator input variables.
-        Both ivar and returned invar are pandas DataFrame objects.
+
+        Returns:
+            self.invar: a Pandas dataframe with Tax-Calculator variables
         """
         self.invar = pd.DataFrame()
         self.invar["RECID"] = ivar.loc[:, 0]
@@ -184,11 +217,12 @@ class Cruncher:
 
     def choose_mtr(self):
         """
-        Creates data to analyze MTR
+        Creates data to analyze marginal tax rates by adding $1 to the type
+            of income specified in 'mtr_options'
 
         Returns:
-        ivar2: a Pandas dataframe with Taxsim-style variables
-        mtr_wrt: User's choice for MTR analysis as a Tax-Calculator variable
+            self.ivar2: a Pandas dataframe with Taxsim-style variables
+            self.mtr_wrt: User's choice for MTR analysis as a Tax-Calculator variable
         """
         self.ivar2 = self.ivar.copy()
         if self.mtr_options == "Taxpayer Earnings":
@@ -228,10 +262,9 @@ class Cruncher:
     def choose_reform(self):
         """
         Creates Tax-Calculator Policy object for reform analysis
-        User can choose any reform in taxcalc/reforms folder
 
         Returns:
-        pol2: Tax-Calculator Policy object for reform analysis 
+            self.pol2: Tax-Calculator Policy object for reform analysis 
         """
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
@@ -258,9 +291,9 @@ class Cruncher:
         Creates baseline, reform, and + $1 Tax-Calculator objects
 
         Returns:
-        calc1: Calculator object for current law
-        calc_reform: Calculator object for reform
-        calc_mtr: Calculator object for + $1
+            self.calc1: Calculator object for current law
+            self.calc_reform: Calculator object for reform
+            self.calc_mtr: Calculator object for + $1
         """
 
         year = self.data.iloc[0][1]
@@ -285,7 +318,7 @@ class Cruncher:
         Creates basic output table
 
         Returns:
-        basic_vals: a Pandas dataframe with basic results
+            self.basic_vals: a Pandas dataframe with basic results
         """
 
         basic = ["iitax", "payrolltax"]
@@ -310,7 +343,7 @@ class Cruncher:
         Creates MTR table
 
         Returns:
-        df_mtr: a Pandas dataframe MTR results with respect to mtr_options
+            self.df_mtr: a Pandas dataframe MTR results with respect to 'mtr_options'
         """
         if self.mtr_options != "Don't Bother":
 
@@ -341,6 +374,12 @@ class Cruncher:
             pass
 
     def basic_table(self):
+        """
+        Combines output from basic_vals() and mtr_table() to create table with basic output
+
+        Returns:
+            self.df_mtr: a Pandas dataframe with basic output
+        """
         self.df_basic = pd.concat(
             [
                 self.df_basic_vals.iloc[:1],
@@ -357,9 +396,9 @@ class Cruncher:
         Calculates the variable 'Zero Bracket Amount' by subtracting taxable income from income
 
         Returns:
-        zero_brk: a Pandas dataframe with 'Zero Bracket Amount'
-        zero_brk_mtr: a Pandas dataframe with 'Zero Bracket Amount'. 
-            Includes column for + $1 analysis
+            self.zero_brk: a Pandas dataframe with 'Zero Bracket Amount'
+            self.zero_brk_mtr: a Pandas dataframe with 'Zero Bracket Amount'. 
+                Includes column for + $1 analysis
         """
         ii1 = self.calc1.array("e00200")
         taxable1 = self.calc1.array("c04800")
@@ -388,10 +427,10 @@ class Cruncher:
 
     def calc_table(self):
         """
-        Creates federal tax calculation table
+        Creates detailed output table
 
         Returns:
-        df_calc: a Pandas dataframe with federal tax calculations for base, reform, and + $1
+            self.df_calc: a Pandas dataframe with federal tax calculations for base, reform, and + $1
 
         """
         calculation = [
@@ -453,6 +492,14 @@ class Cruncher:
         return self.df_calc
 
     def calc_diff_table(self):
+         """
+        Creates detailed output table. Instead of column for MTR analysis, column displays difference
+            between baseline and reform amounts
+
+        Returns:
+            self.calc_diff_table: a Pandas dataframe with federal tax calculations for base, reform, and change
+
+        """
         self.calc_diff_table = self.df_calc.copy()
         if len(self.calc_diff_table.columns) == 3:
             del self.calc_diff_table["+ $1"]
