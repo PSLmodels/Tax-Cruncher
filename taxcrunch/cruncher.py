@@ -15,8 +15,9 @@ class CruncherParams(Parameters):
 
 
 class Cruncher:
-    def __init__(self, file="adjustment_template.json"):
+    def __init__(self, file="adjustment_template.json", custom_reform=None):
         self.file = file
+        self.custom_reform = custom_reform
         self.params = CruncherParams()
         self.adjustment = self.adjust_file()
         self.params.adjust(self.adjustment)
@@ -237,14 +238,19 @@ class Cruncher:
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
 
-        if self.reform_options != "None":
+        if self.reform_options == "None":
+            self.pol2 = tc.Policy()
+        elif self.reform_options == "Custom":
+            reform_filename = self.custom_reform
+            reform = tc.Calculator.read_json_param_objects(reform_filename, None)
+            self.pol2 = tc.Policy()
+            self.pol2.implement_reform(reform["policy"])
+        else:
             reform_name = self.reform_options
             reform_url = REFORMS_URL + reform_name
             reform = tc.Calculator.read_json_param_objects(reform_url, None)
             self.pol2 = tc.Policy()
             self.pol2.implement_reform(reform["policy"])
-        else:
-            self.pol2 = tc.Policy()
         return self.pol2
 
     def run_calc(self):
