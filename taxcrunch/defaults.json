@@ -1,315 +1,477 @@
 {
-        "RECID": {
-                "title": "Taxpayer ID",
+    "schema": {
+        "labels": {},
+        "additional_members": {}
+    },
+    "RECID": {
+        "title": "Taxpayer ID",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":0, "max":9e+99}},
-        "out_of_range_minmsg":"",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop" 
-        },
-	"year": {
-		"title": "Tax year",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "year": {
+        "title": "Tax year",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":2019}],
-        "validators": {"range": {"min":2013, "max":2028}},
-        "out_of_range_minmsg":"Year must be between 2013 and 2028",
-        "out_of_range_maxmsg":"Year must be between 2013 and 2028",
-        "out_of_range_action":"stop" 
-	},
-	"mstat": {
-		"title": "Marital Status",
+        "value": [
+            {
+                "value": 2019
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 2013,
+                "max": 2028
+            }
+        }
+    },
+    "mstat": {
+        "title": "Marital Status",
         "description": "1. single or HOH (unmarried); 2. joint (married); 6. separate (married); 8. dependent taxpayer",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":1}],
-        "validators": {"choice": {"choices": [1, 2, 6, 8]}},
-        "out_of_range_minmsg": "mstat must be 1, 2, 6, or 8",
-        "out_of_range_maxmsg": "mstat must be 1, 2, 6, or 8",
-        "out_of_range_action":"stop" 
-	},
-	"page": {
-		"title": "Age of primary taxpayer December 31st of tax year (or 0)",
+        "value": [
+            {
+                "value": 1
+            }
+        ],
+        "validators": {
+            "choice": {
+                "choices": [
+                    1,
+                    2,
+                    6,
+                    8
+                ]
+            }
+        }
+    },
+    "page": {
+        "title": "Age of primary taxpayer December 31st of tax year (or 0)",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":0, "max":114}},
-        "out_of_range_minmsg":"page must be between 0 and 114",
-        "out_of_range_maxmsg":"page must be between 0 and 114",
-        "out_of_range_action":"stop" 
-	},
-	"sage": {
-		"title": "Age of spouse (or 0)",
-        "description": "",
-        "description": "",
-        "notes": "",
-        "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":0, "max":114}},
-        "out_of_range_minmsg":"sage must be between 0 and 114",
-        "out_of_range_maxmsg":"sage must be between 0 and 114",
-        "out_of_range_action":"stop" 
-	},
-	"depx": {
-		"title": "Number of dependents",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 114
+            }
+        }
+    },
+    "sage": {
+        "title": "Age of spouse (or 0)",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":0, "max":15}},
-        "out_of_range_minmsg":"depx must be between 0 and 15",
-        "out_of_range_maxmsg":"depx must be between 0 and 15",
-        "out_of_range_action":"stop" 
-	},
-	"dep13": {
-		"title": "Number of children under 13 with eligible child care expenses",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 114
+            }
+        }
+    },
+    "depx": {
+        "title": "Number of dependents",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":0, "max":"dep17"}},
-        "out_of_range_minmsg":"dep13 must be between 0 and dep17",
-        "out_of_range_maxmsg":"dep13 must be between 0 and dep17",
-        "out_of_range_action":"stop" 
-	},
-	"dep17": {
-		"title": "Number of children under 17 for the entire tax year",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 15
+            }
+        }
+    },
+    "dep13": {
+        "title": "Number of children under 13 with eligible child care expenses",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":"dep13", "max":"dep18"}},
-        "out_of_range_minmsg":"dep17 must be between dep13 and dep18",
-        "out_of_range_maxmsg":"dep17 must be between dep13 and dep18",
-        "out_of_range_action":"stop"
-	},
-	"dep18": {
-		"title": "Number of qualifying children for EITC",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": "dep17"
+            }
+        }
+    },
+    "dep17": {
+        "title": "Number of children under 17 for the entire tax year",
         "description": "",
         "notes": "",
         "type": "int",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min":"dep17", "max":"depx"}},
-        "out_of_range_minmsg":"dep17 must be between dep17 and depx",
-        "out_of_range_maxmsg":"dep17 must be between dep17 and depx",
-        "out_of_range_action":"stop"
-	},
-	"pwages": {
-		"title": "Wage and salary income of primary taxpayer",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": "dep13",
+                "max": "dep18"
+            }
+        }
+    },
+    "dep18": {
+        "title": "Number of qualifying children for EITC",
+        "description": "",
+        "notes": "",
+        "type": "int",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": "dep17",
+                "max": "depx"
+            }
+        }
+    },
+    "pwages": {
+        "title": "Wage and salary income of primary taxpayer",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"pwages must be at least 0",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop" 
-	},
-	"swages": {
-		"title": "Wage and salary income of spouse",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "swages": {
+        "title": "Wage and salary income of spouse",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"swages must be at least 0",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop"
-	},
-	"dividends": {
-		"title": "Dividend income",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "dividends": {
+        "title": "Dividend income",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"dividends must be at least 0",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop"
-	},
-	"intrec": {
-		"title": "Interest received (+/-)",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "intrec": {
+        "title": "Interest received (+/-)",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": -9e+99, "max": 9e+99}},
-        "out_of_range_minmsg":"",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop"
-	},
-	"stcg": {
-		"title": "Short term capital gains or losses (+/-)",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
+    },
+    "stcg": {
+        "title": "Short term capital gains or losses (+/-)",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": -9e+99, "max": 9e+99}},
-        "out_of_range_minmsg":"",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop"
-	},
-	"ltcg": {
-		"title": "Long term capital gains or losses (+/-)",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
+    },
+    "ltcg": {
+        "title": "Long term capital gains or losses (+/-)",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": -9e+99, "max": 9e+99}},
-        "out_of_range_minmsg":"",
-        "out_of_range_maxmsg":"",
-        "out_of_range_action":"stop"
-	},
-	"otherprop": {
-		"title": "Other property income subject to NIIT",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
+    },
+    "otherprop": {
+        "title": "Other property income subject to NIIT",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"otherprop must be at least than 0",
-        "out_of_range_maxmsg":"otherprop must be at least than 0",
-        "out_of_range_action":"stop"
-	},
-	"nonprop": {
-		"title": "Other non-property income not subject to Medicare NIIT",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "nonprop": {
+        "title": "Other non-property income not subject to Medicare NIIT",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"nonprop must be at least than 0",
-        "out_of_range_maxmsg":"nonprop must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"pensions": {
-		"title": "Taxable pensions and IRA distributions",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "pensions": {
+        "title": "Taxable pensions and IRA distributions",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"pensions must be at least than 0",
-        "out_of_range_maxmsg":"pensions must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"gssi": {
-		"title": "Gross social security benefits",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "gssi": {
+        "title": "Gross social security benefits",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"gssi must be at least than 0",
-        "out_of_range_maxmsg":"gssi must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"ui": {
-		"title": "Unemployment compensation received",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "ui": {
+        "title": "Unemployment compensation received",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"ui must be at least than 0",
-        "out_of_range_maxmsg":"ui must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"proptax": {
-		"title": "Real estate taxes paid",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "proptax": {
+        "title": "Real estate taxes paid",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"proptax must be at least than 0",
-        "out_of_range_maxmsg":"proptax must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"otheritem": {
-		"title": "Other itemized deductions that are a preference for the AMT",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "otheritem": {
+        "title": "Other itemized deductions that are a preference for the AMT",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"otheritem must be at least than 0",
-        "out_of_range_maxmsg":"otheritem must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"childcare": {
-		"title": "Child care expenses",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "childcare": {
+        "title": "Child care expenses",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"childcare must be at least than 0",
-        "out_of_range_maxmsg":"childcare must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"mortgage": {
-		"title": "Deductions not included in 'otheritem' and not a preference for the AMT",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "mortgage": {
+        "title": "Deductions not included in 'otheritem' and not a preference for the AMT",
         "description": "",
         "notes": "",
         "type": "float",
-        "number_dims": 0,
-        "value": [{"value":0}],
-        "validators": {"range": {"min": 0, "max": 9e+99}},
-        "out_of_range_minmsg":"mortgage must be at least than 0",
-        "out_of_range_maxmsg":"mortgage must be at least than 0",
-        "out_of_range_action":"stop" 
-	},
-	"mtr_options": {
-		"title": "Options for MTR calculation",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "mtr_options": {
+        "title": "Options for MTR calculation",
         "description": "",
         "notes": "",
         "type": "str",
-        "number_dims": 0,
-        "value": [{"value":"Taxpayer Earnings"}],
-        "validators": {"choice": {"choices": ["Taxpayer Earnings", "Spouse Earnings", "Short Term Gains",
-        			"Long Term Gains", "Qualified Dividends", "Interest Received", "Pensions", 
-        			"Gross Social Security Beneifts", "Real Estate Taxes Paid", "Mortgage", "Don't Bother"]}},
-        "out_of_range_action":"stop" 
-	},
-	"reform_options": {
-		"title": "Options for policy reform",
+        "value": [
+            {
+                "value": "Taxpayer Earnings"
+            }
+        ],
+        "validators": {
+            "choice": {
+                "choices": [
+                    "Taxpayer Earnings",
+                    "Spouse Earnings",
+                    "Short Term Gains",
+                    "Long Term Gains",
+                    "Qualified Dividends",
+                    "Interest Received",
+                    "Pensions",
+                    "Gross Social Security Beneifts",
+                    "Real Estate Taxes Paid",
+                    "Mortgage",
+                    "Don't Bother"
+                ]
+            }
+        }
+    },
+    "reform_options": {
+        "title": "Options for policy reform",
         "description": "",
         "notes": "",
         "type": "str",
-        "number_dims": 0,
-        "value": [{"value":"None"}],
-        "validators": {"choice": {"choices": ["2017_law.json", "BrownKhanna.json", "Clinton2016.json",
-        			"Larson2019.json", "Renacci.json", "SandersDeFazio.json", "TCJA.json", "Trump2016.json", "Trump2017.json",
-        			"ptaxes0.json", "ptaxes1.json", "ptaxes2.json", "ptaxes3.json", "None"]}},
-        "out_of_range_action":"stop" 
-	}
+        "value": [
+            {
+                "value": "None"
+            }
+        ],
+        "validators": {
+            "choice": {
+                "choices": [
+                    "2017_law.json",
+                    "BrownKhanna.json",
+                    "Clinton2016.json",
+                    "Larson2019.json",
+                    "Renacci.json",
+                    "SandersDeFazio.json",
+                    "TCJA.json",
+                    "Trump2016.json",
+                    "Trump2017.json",
+                    "ptaxes0.json",
+                    "ptaxes1.json",
+                    "ptaxes2.json",
+                    "ptaxes3.json",
+                    "None"
+                ]
+            }
+        }
+    }
 }
