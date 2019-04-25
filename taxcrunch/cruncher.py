@@ -8,15 +8,14 @@ from paramtools import Parameters
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
+
 class CruncherParams(Parameters):
 
-
-    schema = os.path.join(CURRENT_PATH, "schema.json")
     defaults = os.path.join(CURRENT_PATH, "defaults.json")
 
 
-class Cruncher():
-    def __init__(self, file='adjustment_template.json'):
+class Cruncher:
+    def __init__(self, file="adjustment_template.json"):
         self.file = file
         self.params = CruncherParams()
         self.adjustment = self.adjust_file()
