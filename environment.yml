@@ -1,0 +1,7 @@
+name: taxcrunch-env
+channels:
+- PSLmodels
+- conda-forge
+dependencies:
+- taxcalc
+- paramtools
