@@ -492,7 +492,7 @@ class Cruncher:
         return self.df_calc
 
     def calc_diff_table(self):
-         """
+        """
         Creates detailed output table. Instead of column for MTR analysis, column displays difference
             between baseline and reform amounts
 
