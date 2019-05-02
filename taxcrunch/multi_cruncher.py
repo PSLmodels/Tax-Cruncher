@@ -22,42 +22,42 @@ class Batch:
     def __init__(self, path):
         self.path = path
 
-    tc_vars = [
-        "iitax",
-        "payrolltax",
-        "c00100",
-        "e02300",
-        "c02500",
-        "c04470",
-        "c04800",
-        "c05200",
-        "c07220",
-        "c11070",
-        "c07180",
-        "eitc",
-        "c09600",
-        "niit",
-        "taxbc",
-        "ptax_was",
-    ]
-    labels = [
-        "Individual Income Tax",
-        "Payroll Tax",
-        "AGI",
-        "UI in AGI",
-        "OASDI in AGI",
-        "Itemized Deductions",
-        "Taxable Inc",
-        "Regular Tax",
-        "CTC",
-        "CTC Refundable",
-        "Child care credit",
-        "EITC",
-        "AMT",
-        "Net Investment Income Tax",
-        "Income Tax Before Credits",
-        "FICA",
-    ]
+        self.tc_vars = [
+            "iitax",
+            "payrolltax",
+            "c00100",
+            "e02300",
+            "c02500",
+            "c04470",
+            "c04800",
+            "c05200",
+            "c07220",
+            "c11070",
+            "c07180",
+            "eitc",
+            "c09600",
+            "niit",
+            "taxbc",
+            "ptax_was",
+        ]
+        self.labels = [
+            "Individual Income Tax",
+            "Payroll Tax",
+            "AGI",
+            "UI in AGI",
+            "OASDI in AGI",
+            "Itemized Deductions",
+            "Taxable Inc",
+            "Regular Tax",
+            "CTC",
+            "CTC Refundable",
+            "Child care credit",
+            "EITC",
+            "AMT",
+            "Net Investment Income Tax",
+            "Income Tax Before Credits",
+            "FICA",
+        ]
 
     def baseline_table(self):
         """
@@ -84,10 +84,10 @@ class Batch:
             calc = tc.Calculator(policy=pol, records=recs)
             calc.calc_all()
 
-            table = calc.dataframe(tc_vars)
+            table = calc.dataframe(self.tc_vars)
             df_base.append(table)
         df_base = pd.concat(df_base)
-        df_base.columns = labels
+        df_base.columns = self.labels
         df_base.index = range(rows)
         return df_base
 
@@ -126,9 +126,9 @@ class Batch:
             calc = tc.Calculator(policy=pol, records=recs)
             calc.calc_all()
 
-            table = calc.dataframe(tc_vars)
+            table = calc.dataframe(self.tc_vars)
             df_reform.append(table)
         df_reform = pd.concat(df_reform)
-        df_reform.columns = labels
+        df_reform.columns = self.labels
         df_reform.index = range(rows)
         return df_reform
