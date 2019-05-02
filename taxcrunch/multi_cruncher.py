@@ -1,4 +1,3 @@
-import os
 import sys
 import numpy as np
 import pandas as pd
@@ -7,6 +6,19 @@ from taxcrunch import cruncher as cr
 
 
 class Batch:
+    """
+    Constructor for the Batch class
+
+    Parameters
+    ----------
+    path: file path to csv file with input data
+        Make sure that the file is formatted according to the instructions in the README
+
+    Returns
+    -------
+    class instance: Batch
+
+    """
     def __init__(self, path):
         self.path = path
 
@@ -48,12 +60,19 @@ class Batch:
     ]
 
     def baseline_table(self):
+        """
+        Creates table of liabilities under current law. 
+
+        Returns:
+            df_base: a Pandas dataframe. Each observation is a separate tax filer
+        """
         ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         invar = c.translate(ivar)
         rows = len(invar.index)
         df_base = []
+        # create Tax-Calculator records object from each row of csv file and run calculator
         for r in range(rows):
             unit = invar.iloc[r]
             unit = pd.DataFrame(unit).transpose()
@@ -73,11 +92,18 @@ class Batch:
         return df_base
 
     def reform_table(self, reform):
+        """
+        Creates table of liabilities under specified reform. 
+
+        Returns:
+            df_base: a Pandas dataframe. Each observation is a separate tax filer
+        """
         ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         invar = c.translate(ivar)
         rows = len(invar.index)
+        # choose and implement reform from Tax-Calculator reforms folder
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
@@ -87,7 +113,9 @@ class Batch:
         reform = tc.Calculator.read_json_param_objects(reform_url, None)
         pol = tc.Policy()
         pol.implement_reform(reform["policy"])
+
         df_reform = []
+        # create Tax-Calculator records object from each row of csv file and run calculator
         for r in range(rows):
             unit = invar.iloc[r]
             unit = pd.DataFrame(unit).transpose()
