@@ -31,7 +31,7 @@ c.calc_diff_table()
 
 **To analyze individual data from multiple filers:**
 
-- First, define your inputs in a csv file. Instructions on how to make this CSV file can be found here.
+- First, define your inputs in a csv file. Instructions on how to make this CSV file can be found [here](docs/INPUT_INSTRUCTIONS.md).
 
 - Second, initiate the `Batch` class. The Batch class can be found in the `multi_cruncher` module. Initiate the Batch class with `b = Batch('INPUT_DATA_FILE')`
 
