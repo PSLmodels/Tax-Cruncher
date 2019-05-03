@@ -1,1 +1,2 @@
-from taxcrunch.cruncher import Cruncher
+from taxcrunch.cruncher import *
+from taxcrunch.multi_cruncher import *
