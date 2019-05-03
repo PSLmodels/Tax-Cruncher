@@ -1,0 +1,38 @@
+{
+    "mstat": [
+        {"value": 2}
+    ],
+    "page": [
+        {"value": 60}
+    ],
+    "sage": [
+        {"value": 55}
+    ],
+    "depx": [
+        {"value": 2}
+    ],
+    "dep13": [
+        {"value": 0}
+    ],
+    "dep17": [
+        {"value": 2}
+    ],
+    "dep18": [
+        {"value": 2}
+    ],
+    "pwages": [
+        {"value": 40000}
+    ],
+    "swages": [
+        {"value": 30000}
+    ],
+    "stcg": [
+        {"value": 1000}
+    ],
+    "pensions": [
+        {"value": 10000}
+    ],
+    "reform_options": [
+        {"value": "2017_law.json"}
+    ]
+}
