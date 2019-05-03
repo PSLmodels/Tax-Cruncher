@@ -15,11 +15,9 @@ Tax-Cruncher can analyze individual data from one filer or multiple filers under
 - Second, pick the policy proposal you would like to analyze. Browse the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) for a preset reform, or specify your own reform in a json file in accordance with the [instructions](https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/reforms/REFORMS.md#how-to-specify-a-tax-reform-in-a-json-policy-reform-file) in the Tax-Calculator repository. Fill out the `reform_options` field in your adjustment file with the appropriate reform name or set the field to `Custom` if you specified your own reform.
 
 - Third, initiate the Cruncher class. If you modified `taxcrunch/adjustment_template.json` directly and chose a preset policy reform file, you can initiate the class with `c = Cruncher()`. Otherwise, initiate the Cruncher class with: 
-
 `c = Cruncher(file='ADJUSTMENT_FILE_NAME', custom_reform='REFORM_FILE_NAME')`.
 
 - Fourth, analyze your reform. Try out the following methods:
-
 ```python
 #basic outputs
 c.basic_table()
