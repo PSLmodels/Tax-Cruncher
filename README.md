@@ -6,9 +6,9 @@ Tax-Cruncher accepts  inputs similar to NBER's [TAXSIM Version 27](https://users
 
 How to use Tax-Cruncher
 ------------
-Tax-Cruncher can analyze individual data from one filer or multiple filers under different policy propsals. The procedures for the two uses are different.
+Tax-Cruncher can analyze individual data from one filer or multiple filers under different policy proposals. The procedures for the two uses are different.
 
-**To analyze indidvidual data from one filer:** 
+**To analyze individual data from one filer:** 
 
 - First, define your inputs. You may either edit `taxcrunch/adjustment_template.json` directly in your local repository or create a separate json file that includes just the parameters you would like to adjust.
 
