@@ -15,7 +15,7 @@ To analyze multiple tax filers, the user must specify a csv file with the filers
 10. pwages (wage of primary taxpayer)
 11. swages (wage of spouse)
 12. dividends (dividend income)
-13. intrec (intrest received)
+13. intrec (interest received)
 14. stcg (short term capital gains)
 15. ltcg (long term capital gains)
 16. otherprop (other property income subject to NIIT)
