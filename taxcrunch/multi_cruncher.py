@@ -23,6 +23,7 @@ class Batch:
         self.path = path
 
         self.tc_vars = [
+            "RECID",
             "iitax",
             "payrolltax",
             "c00100",
@@ -38,9 +39,10 @@ class Batch:
             "c09600",
             "niit",
             "taxbc",
-            "ptax_was",
+            "ptax_was"
         ]
         self.labels = [
+            "ID",
             "Individual Income Tax",
             "Payroll Tax",
             "AGI",
@@ -57,6 +59,8 @@ class Batch:
             "Net Investment Income Tax",
             "Income Tax Before Credits",
             "FICA",
+            "Income Tax MTR",
+            "Payroll Tax MTR"
         ]
 
     def baseline_table(self):
@@ -84,7 +88,12 @@ class Batch:
             calc = tc.Calculator(policy=pol, records=recs)
             calc.calc_all()
 
-            table = calc.dataframe(self.tc_vars)
+            calcs = calc.dataframe(self.tc_vars)
+            #calculate marginal tax rate for each unit
+            mtr = calc.mtr(wrt_full_compensation=False)
+            #income tax MTR, payroll tax MTR
+            mtr_df = pd.DataFrame(data=[mtr[1], mtr[0]]).transpose()
+            table = pd.concat([calcs, mtr_df], axis=1)
             df_base.append(table)
         df_base = pd.concat(df_base)
         df_base.columns = self.labels
@@ -126,7 +135,12 @@ class Batch:
             calc = tc.Calculator(policy=pol, records=recs)
             calc.calc_all()
 
-            table = calc.dataframe(self.tc_vars)
+            calcs = calc.dataframe(self.tc_vars)
+            #calculate marginal tax rate for each unit
+            mtr = calc.mtr(wrt_full_compensation=False)
+            #income tax MTR, payroll tax MTR
+            mtr_df = pd.DataFrame(data=[mtr[1], mtr[0]]).transpose()
+            table = pd.concat([calcs, mtr_df], axis=1)
             df_reform.append(table)
         df_reform = pd.concat(df_reform)
         df_reform.columns = self.labels
