@@ -102,7 +102,11 @@ class Batch:
 
     def reform_table(self, reform):
         """
-        Creates table of liabilities under specified reform. 
+        Creates table of liabilities under specified reform.
+
+        The reform argument can be either the name of a reform file in the
+            Tax-Calculator reforms folder or the file path to a custom JSON
+            reform file
 
         Returns:
             df_base: a Pandas dataframe. Each observation is a separate tax filer
@@ -117,9 +121,21 @@ class Batch:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        reform_name = reform
-        reform_url = REFORMS_URL + reform_name
-        reform = tc.Calculator.read_json_param_objects(reform_url, None)
+
+        #try Tax-Calculator reforms folder to see if reform exists
+        try:
+            reform_name = reform
+            reform_url = REFORMS_URL + reform_name
+            reform = tc.Calculator.read_json_param_objects(reform_url, None)
+        except:
+            pass
+        #if reform is not found in Tax-Calculator folder, try as file path
+        try:
+            reform_filename = reform
+            reform = tc.Calculator.read_json_param_objects(reform_filename, None)
+        except:
+            print('Reform file was not found')
+
         pol = tc.Policy()
         pol.implement_reform(reform["policy"])
 
