@@ -253,7 +253,7 @@ class Cruncher:
         elif self.mtr_options == "Real Estate Taxes Paid":
             self.ivar2.loc[:, 20] = self.ivar2.loc[:, 20] + 1
             return self.ivar2, "e18500"
-        elif mtr_options == "Mortgage":
+        elif self.mtr_options == "Mortgage":
             self.ivar2.loc[:, 23] = self.ivar2.loc[:, 23] + 1
             return self.ivar2, "e19200"
         elif self.mtr_options == "Don't Bother":
@@ -497,12 +497,12 @@ class Cruncher:
             between baseline and reform amounts
 
         Returns:
-            self.calc_diff_table: a Pandas dataframe with federal tax calculations for base, reform, and change
+            self.df_calc_diff: a Pandas dataframe with federal tax calculations for base, reform, and change
 
         """
-        self.calc_diff_table = self.df_calc.copy()
-        if len(self.calc_diff_table.columns) == 3:
-            del self.calc_diff_table["+ $1"]
-        calc_diff_vals = self.calc_diff_table["Reform"] - self.calc_diff_table["Base"]
-        self.calc_diff_table["Change"] = calc_diff_vals
-        return self.calc_diff_table
+        self.df_calc_diff = self.df_calc.copy()
+        if len(self.df_calc_diff.columns) == 3:
+            del self.df_calc_diff["+ $1"]
+        calc_diff_vals = self.df_calc_diff["Reform"] - self.df_calc_diff["Base"]
+        self.df_calc_diff["Change"] = calc_diff_vals
+        return self.df_calc_diff
