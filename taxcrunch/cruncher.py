@@ -46,9 +46,10 @@ class Cruncher:
         c.calc_diff_table()
 
     """
-    def __init__(self, file="adjustment_template.json", custom_reform=None):
+    def __init__(self, file="adjustment_template.json", custom_reform=None, baseline=None):
         self.file = file
         self.custom_reform = custom_reform
+        self.baseline = baseline
         self.params = CruncherParams()
         self.adjustment = self.adjust_file()
         self.params.adjust(self.adjustment)
@@ -56,6 +57,7 @@ class Cruncher:
         self.data = self.translate(self.ivar)
         self.ivar2, self.mtr_wrt = self.choose_mtr()
         self.data_mtr = self.translate(self.ivar2)
+        self.pol = self.choose_baseline()
         self.pol2 = self.choose_reform()
         self.calc1, self.calc_reform, self.calc_mtr = self.run_calc()
         self.df_basic_vals = self.basic_vals()
@@ -259,6 +261,40 @@ class Cruncher:
         elif self.mtr_options == "Don't Bother":
             return self.ivar2, "None"
 
+    def choose_baseline(self):
+        """
+        Creates Tax-Calculator Policy object for baseline policy
+
+        The default baseline policy is current law.
+
+        Returns:
+            self.pol: Tax-Calculator Policy object for baseline policy
+        """
+        REFORMS_URL = (
+            "https://raw.githubusercontent.com/"
+            "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
+        )
+
+        if self.baseline == None:
+            self.pol = tc.Policy()
+
+        else:
+            try:
+                baseline_file = self.baseline
+                baseline_url = REFORMS_URL + baseline_file
+                baseline = tc.Calculator.read_json_param_objects(baseline_url, None)
+                self.pol = tc.Policy()
+                self.pol.implement_reform(baseline["policy"])
+            #if reform is not found in Tax-Calculator folder, try as file path
+            except:
+                baseline_file = self.baseline
+                baseline = tc.Calculator.read_json_param_objects(baseline_file, None)
+                self.pol = tc.Policy()
+                self.pol.implement_reform(baseline["policy"])
+            except:
+                print('Baseline file was not found')
+        return self.pol
+
     def choose_reform(self):
         """
         Creates Tax-Calculator Policy object for reform analysis
@@ -299,9 +335,8 @@ class Cruncher:
         year = self.data.iloc[0][1]
         year = year.item()
         recs = tc.Records(data=self.data, start_year=year)
-        pol = tc.Policy()
 
-        self.calc1 = tc.Calculator(policy=pol, records=recs)
+        self.calc1 = tc.Calculator(policy=self.pol, records=recs)
         self.calc1.calc_all()
 
         self.calc_reform = tc.Calculator(policy=self.pol2, records=recs)
