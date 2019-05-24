@@ -275,24 +275,28 @@ class Cruncher:
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
 
-        if self.baseline == None:
+        #if no baseline policy is specified, baseline is current law
+        if self.baseline is None:
             self.pol = tc.Policy()
-
+        #if a baseline policy is specified, first see if user created json policy file
         else:
-            try:
-                baseline_file = self.baseline
-                baseline_url = REFORMS_URL + baseline_file
-                baseline = tc.Calculator.read_json_param_objects(baseline_url, None)
-                self.pol = tc.Policy()
-                self.pol.implement_reform(baseline["policy"])
-            #if reform is not found in Tax-Calculator folder, try as file path
-            except:
+            exists = os.path.isfile(self.baseline)
+            if exists:
                 baseline_file = self.baseline
                 baseline = tc.Calculator.read_json_param_objects(baseline_file, None)
                 self.pol = tc.Policy()
                 self.pol.implement_reform(baseline["policy"])
-            except:
-                print('Baseline file was not found')
+            #if the user did not create a json file, try the Tax-Calculator reforms file
+            else:
+                try:
+                    baseline_file = self.baseline
+                    baseline_url = REFORMS_URL + baseline_file
+                    baseline = tc.Calculator.read_json_param_objects(baseline_url, None)
+                    self.pol = tc.Policy()
+                    self.pol.implement_reform(baseline["policy"])
+                except:
+                    print("Baseline file does not exist")
+    
         return self.pol
 
     def choose_reform(self):
@@ -306,20 +310,26 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-
-        if self.reform_options == "None":
-            self.pol2 = tc.Policy()
-        elif self.reform_options == "Custom":
-            reform_filename = self.custom_reform
-            reform = tc.Calculator.read_json_param_objects(reform_filename, None)
-            self.pol2 = tc.Policy()
-            self.pol2.implement_reform(reform["policy"])
-        else:
+        #if user specified a preset reform in their adjustment file, pull reform from Tax-Calculator reforms folder
+        if self.reform_options != "None" and self.custom_reform is None:
             reform_name = self.reform_options
             reform_url = REFORMS_URL + reform_name
             reform = tc.Calculator.read_json_param_objects(reform_url, None)
             self.pol2 = tc.Policy()
             self.pol2.implement_reform(reform["policy"])
+        #otherwise, look for user-provided json reform file
+        elif self.reform_options == "None" and self.custom_reform is not None:
+            try:
+                reform_filename = self.custom_reform
+                reform = tc.Calculator.read_json_param_objects(reform_filename, None)
+                self.pol2 = tc.Policy()
+                self.pol2.implement_reform(reform["policy"])
+            except:
+                print("Reform file does not exist")
+        #if no reform file was given, set reform to current law
+        else:
+            self.pol2 = tc.Policy()
+            
         return self.pol2
 
     def run_calc(self):
