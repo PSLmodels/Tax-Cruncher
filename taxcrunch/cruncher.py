@@ -280,12 +280,13 @@ class Cruncher:
             self.pol = tc.Policy()
         #if a baseline policy is specified, first see if user created json policy file
         else:
-            exists = os.path.isfile(self.baseline)
+            CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+            exists = os.path.isfile(os.path.join(CURRENT_PATH, self.baseline))
             if exists:
-                baseline_file = self.baseline
-                baseline = tc.Calculator.read_json_param_objects(baseline_file, None)
+                baseline_file = os.path.join(CURRENT_PATH, self.baseline)
+                # baseline = tc.Calculator.read_json_param_objects(baseline_file, None)
                 self.pol = tc.Policy()
-                self.pol.implement_reform(baseline["policy"])
+                self.pol.implement_reform(tc.Policy.read_json_reform(baseline_file))
             #if the user did not create a json file, try the Tax-Calculator reforms file
             else:
                 try:
@@ -310,6 +311,8 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
+        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+
         #if user specified a preset reform in their adjustment file, pull reform from Tax-Calculator reforms folder
         if self.reform_options != "None" and self.custom_reform is None:
             reform_name = self.reform_options
@@ -321,6 +324,7 @@ class Cruncher:
         elif self.reform_options == "None" and self.custom_reform is not None:
             try:
                 reform_filename = self.custom_reform
+                reform_filename = os.path.join(CURRENT_PATH, self.custom_reform)
                 reform = tc.Calculator.read_json_param_objects(reform_filename, None)
                 self.pol2 = tc.Policy()
                 self.pol2.implement_reform(reform["policy"])
