@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import pandas as pd
 import taxcalc as tc
@@ -100,7 +101,7 @@ class Batch:
         df_base.index = range(rows)
         return df_base
 
-    def reform_table(self, reform):
+    def reform_table(self, reform_file):
         """
         Creates table of liabilities under specified reform.
 
@@ -121,20 +122,20 @@ class Batch:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
+        CURRENT_PATH = os.path.abspath(os.path.dirname(""))
 
-        #try Tax-Calculator reforms folder to see if reform exists
-        try:
-            reform_name = reform
-            reform_url = REFORMS_URL + reform_name
-            reform = tc.Calculator.read_json_param_objects(reform_url, None)
-        except:
-            pass
-        #if reform is not found in Tax-Calculator folder, try as file path
-        try:
-            reform_filename = reform
-            reform = tc.Calculator.read_json_param_objects(reform_filename, None)
-        except:
-            print('Reform file was not found')
+        #check to see if file path to reform_file exists
+        exists = os.path.isfile(os.path.join(CURRENT_PATH, reform_file))
+
+        if exists:
+            reform = tc.Calculator.read_json_param_objects(reform_file, None)
+        #if file path does not exist, check Tax-Calculator reforms file
+        else:
+            try:
+                reform_url = REFORMS_URL + reform_file
+                reform = tc.Calculator.read_json_param_objects(reform_url, None)
+            except:
+                raise 'Reform file does not exist'
 
         pol = tc.Policy()
         pol.implement_reform(reform["policy"])
