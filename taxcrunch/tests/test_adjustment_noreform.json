@@ -1,0 +1,75 @@
+{
+    "year": [
+        {"value": 2019}
+    ],
+    "mstat": [
+        {"value": 1}
+    ],
+    "page": [
+        {"value": 0}
+    ],
+    "sage": [
+        {"value": 0}
+    ],
+    "depx": [
+        {"value": 0}
+    ],
+    "dep13": [
+        {"value": 0}
+    ],
+    "dep17": [
+        {"value": 0}
+    ],
+    "dep18": [
+        {"value": 0}
+    ],
+    "pwages": [
+        {"value": 100000}
+    ],
+    "swages": [
+        {"value": 0}
+    ],
+    "dividends": [
+        {"value": 0}
+    ],
+    "intrec": [
+        {"value": 0}
+    ],
+    "stcg": [
+        {"value": 0}
+    ],
+    "ltcg": [
+        {"value": 0}
+    ],
+    "otherprop": [
+        {"value": 0}
+    ],
+    "nonprop": [
+        {"value": 0}
+    ],
+    "pensions": [
+        {"value": 0}
+    ],
+    "gssi": [
+        {"value": 0}
+    ],
+    "ui": [
+        {"value": 0}
+    ],
+    "proptax": [
+        {"value": 0}
+    ],
+    "otheritem": [
+        {"value": 0}
+    ],
+    "childcare": [
+        {"value": 0}
+    ],
+    "mortgage": [
+        {"value": 0}
+    ],
+    "mtr_options": [
+        {"value": "Taxpayer Earnings"}
+    ]
+}
+
