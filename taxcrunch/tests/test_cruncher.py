@@ -10,7 +10,7 @@ CURR_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def create_data():
-    c = cr.Cruncher(file="tests/test_adjustment.json")
+    c = cr.Cruncher(inputs="tests/test_adjustment.json")
     return c
 
 
@@ -23,11 +23,11 @@ def test_baseline_choice():
 
 def test_reform_choice():
     c = cr.Cruncher(
-        file="tests/test_adjustment_noreform.json", custom_reform="test_reform.json"
+        inputs="tests/test_adjustment_noreform.json", custom_reform="test_reform.json"
     )
     assert isinstance(c, cr.Cruncher)
     with pytest.raises(AttributeError):
-        cr.Cruncher(file="tests/test_adjustment.json", custom_reform="test_reform.json")
+        cr.Cruncher(inputs="tests/test_adjustment.json", custom_reform="test_reform.json")
     with pytest.raises(AttributeError):
         cr.Cruncher(custom_reform="fake_file.json")
 
