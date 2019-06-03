@@ -48,13 +48,13 @@ class Cruncher:
     """
 
     def __init__(
-        self, file="adjustment_template.json", custom_reform=None, baseline=None
+        self, inputs="adjustment_template.json", custom_reform=None, baseline=None
     ):
-        self.file = file
+        self.inputs = inputs
         self.custom_reform = custom_reform
         self.baseline = baseline
         self.params = CruncherParams()
-        self.adjustment = self.adjust_file()
+        self.adjustment = self.adjust_inputs()
         self.params.adjust(self.adjustment)
         self.ivar, self.mtr_options, self.reform_options = self.taxsim_inputs()
         self.data = self.translate(self.ivar)
@@ -68,12 +68,15 @@ class Cruncher:
         self.zero_brk = self.zero_bracket()
         self.df_calc = self.calc_table()
 
-    def adjust_file(self):
+    def adjust_inputs(self):
         """
         Adjust inputs based on 'adjustment_template.json' or a different specified json file
         """
         CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
-        self.adjustment = os.path.join(CURRENT_PATH, self.file)
+        if isinstance(self.inputs, str):       
+            self.adjustment = os.path.join(CURRENT_PATH, self.inputs)
+        else:
+            self.adjustment = self.inputs
         return self.adjustment
 
     def taxsim_inputs(self):
@@ -314,7 +317,7 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(""))
+        CURRENT_PATH = os.path.abspath(os.path.dirname(''))
 
         # if user specified a preset reform in their adjustment file, pull reform from Tax-Calculator reforms folder
         if self.reform_options != "None" and self.custom_reform is None:
@@ -324,15 +327,23 @@ class Cruncher:
             self.pol2 = tc.Policy()
             self.pol2.implement_reform(reform["policy"])
         # otherwise, look for user-provided json reform file
-        elif self.reform_options == "None" and self.custom_reform is not None:
+        # first as file path
+        elif self.reform_options == "None" and isinstance(self.custom_reform, str):
             try:
-                reform_filename = self.custom_reform
                 reform_filename = os.path.join(CURRENT_PATH, self.custom_reform)
                 reform = tc.Calculator.read_json_param_objects(reform_filename, None)
                 self.pol2 = tc.Policy()
                 self.pol2.implement_reform(reform["policy"])
             except:
-                print("Reform file does not exist")
+                print("Reform file path does not exist")
+        # then as dictionary
+        elif self.reform_options == "None" and isinstance(self.custom_reform, dict):
+            try: 
+                reform = self.custom_reform
+                self.pol2 = tc.Policy()
+                self.pol2.implement_reform(reform)
+            except:
+                print("Reform dictionary does not exist")
         # raise error if preset reform is chosen and custom reform is specified
         elif self.reform_options != "None" and self.custom_reform is not None:
             raise AttributeError(
