@@ -35,7 +35,8 @@ def get_inputs(meta_params_dict):
 	pol_params = policy_params.specification(
 			meta_data=True,
 			include_empty=True,
-			serializable=True
+			serializable=True,
+			year=2019
 			)
 
 	return {}, {"Tax Information": cruncher_params, "Policy": pol_params}
