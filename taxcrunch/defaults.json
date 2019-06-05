@@ -1,203 +1,430 @@
 {
-    "schema": {"labels": {}, "additional_members": {}},
+    "schema": {
+        "labels": {},
+        "additional_members": {}
+    },
     "RECID": {
         "title": "Taxpayer ID",
         "description": "",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "year": {
         "title": "Tax year",
         "description": "",
         "notes": "",
         "type": "int",
-        "value": [{"value": 2019}],
-        "validators": {"range": {"min": 2013, "max": 2028}},
+        "value": [
+            {
+                "value": 2019
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 2013,
+                "max": 2028
+            }
+        }
     },
     "mstat": {
         "title": "Marital Status",
         "description": "1. single or HOH (unmarried); 2. joint (married); 6. separate (married); 8. dependent taxpayer",
         "notes": "",
         "type": "int",
-        "value": [{"value": 1}],
-        "validators": {"choice": {"choices": [1, 2, 6, 8]}},
+        "value": [
+            {
+                "value": 1
+            }
+        ],
+        "validators": {
+            "choice": {
+                "choices": [
+                    1,
+                    2,
+                    6,
+                    8
+                ]
+            }
+        }
     },
     "page": {
         "title": "Age of primary taxpayer December 31st of tax year (or 0)",
         "description": "Taxpayer age variables determine eligibility for additional standard deductions, personal exemption, EITC and AMT exclusion.",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 114}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 114
+            }
+        }
     },
     "sage": {
         "title": "Age of spouse (or 0)",
         "description": "",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 114}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 114
+            }
+        }
     },
     "depx": {
         "title": "Number of dependents",
         "description": "Part of personal exemption calculation",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 15}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 15
+            }
+        }
     },
     "dep13": {
         "title": "Number of children under 13 with eligible child care expenses",
         "description": "Dependent Care Credit",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": "dep17"}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": "dep17"
+            }
+        }
     },
     "dep17": {
         "title": "Number of children under 17 for the entire tax year",
         "description": "Child Tax Credit",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": "dep13", "max": "dep18"}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": "dep13",
+                "max": "dep18"
+            }
+        }
     },
     "dep18": {
         "title": "Number of qualifying children for EITC",
         "description": "Typically younger than 19 or younger than 24 and a full-time student",
         "notes": "",
         "type": "int",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": "dep17", "max": "depx"}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": "dep17",
+                "max": "depx"
+            }
+        }
     },
     "pwages": {
         "title": "Wage and salary income of primary taxpayer",
         "description": "Include self-employment",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "swages": {
         "title": "Wage and salary income of spouse",
         "description": "Include self-employment",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "dividends": {
         "title": "Dividend income",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "intrec": {
         "title": "Interest received (+/-)",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": -9e99, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
     },
     "stcg": {
         "title": "Short term capital gains or losses (+/-)",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": -9e99, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
     },
     "ltcg": {
         "title": "Long term capital gains or losses (+/-)",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": -9e99, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
     },
     "otherprop": {
         "title": "Other property income subject to NIIT",
         "description": "Includes unearned partnership and S-corp income, rent, non-qualified dividends, capital gains distributions on form 1040, other income or loss not otherwise enumerated here.",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "nonprop": {
         "title": "Other non-property income not subject to Medicare NIIT (+/-)",
         "description": "Includes alimony, fellowships, state income tax refunds (itemizers only). Adjustment and items such as alimony paid, Koegh and IRA contributions, foreign income exclusion, NOLs.",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "pensions": {
         "title": "Taxable pensions and IRA distributions",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "gssi": {
         "title": "Gross social security benefits",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "ui": {
         "title": "Unemployment compensation received",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "proptax": {
         "title": "Real estate taxes paid",
         "description": "Preference for the AMT.",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "otheritem": {
         "title": "Other itemized deductions that are a preference for the AMT",
         "description": "Includes other state and local taxes (line 8 of Schedule A) plus local income tax, preference share of medical expenses, and miscellaneous (line 27).",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "childcare": {
         "title": "Child care expenses",
         "description": "",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "mortgage": {
         "title": "Deductions not included in 'otheritem' and not a preference for the AMT",
         "description": "Deductions from Schedule A for 2009: deductible medical expenses not included in Line 16, motor vehicle taxes paid (line 7), home mortgage interest (line 15), charitable contributions (line 19), casulty or theft losses (line 20).",
         "notes": "",
         "type": "float",
-        "value": [{"value": 0}],
-        "validators": {"range": {"min": 0, "max": 9e99}},
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     },
     "mtr_options": {
         "title": "Options for marginal tax rate calculation",
         "description": "Adds $1 to chosen field for analysis on how liabilities change.",
         "notes": "",
         "type": "str",
-        "value": [{"value": "Taxpayer Earnings"}],
+        "value": [
+            {
+                "value": "Taxpayer Earnings"
+            }
+        ],
         "validators": {
             "choice": {
                 "choices": [
@@ -211,17 +438,21 @@
                     "Gross Social Security Beneifts",
                     "Real Estate Taxes Paid",
                     "Mortgage",
-                    "Don't Bother",
+                    "Don't Bother"
                 ]
             }
-        },
+        }
     },
     "reform_options": {
         "title": "Options for policy reform",
         "description": "",
         "notes": "",
         "type": "str",
-        "value": [{"value": "None"}],
+        "value": [
+            {
+                "value": "None"
+            }
+        ],
         "validators": {
             "choice": {
                 "choices": [
@@ -238,9 +469,9 @@
                     "ptaxes1.json",
                     "ptaxes2.json",
                     "ptaxes3.json",
-                    "None",
+                    "None"
                 ]
             }
-        },
-    },
+        }
+    }
 }
