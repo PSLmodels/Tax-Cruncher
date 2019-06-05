@@ -29,9 +29,38 @@ def get_inputs(meta_params_dict):
     params = CruncherParams()
     policy_params = TCParams()
 
-    cruncher_params = params.specification(
+    keep = [
+        "mstat",
+        "page",
+        "sage",
+        "depx",
+        "dep13",
+        "dep17",
+        "dep18",
+        "pwages",
+        "swages",
+        "dividends",
+        "intrec",
+        "stcg",
+        "ltcg",
+        "otherprop",
+        "nonprop",
+        "pensions",
+        "gssi",
+        "ui",
+        "proptax",
+        "otheritem",
+        "childcare",
+        "mortgage",
+        "mtr_options"
+    ]
+    full_dict = params.specification(
         meta_data=True, include_empty=True, serializable=True
     )
+
+    params_dict = {var: full_dict[var] for var in keep}
+
+    cruncher_params = params_dict
 
     pol_params = policy_params.specification(
         meta_data=True, include_empty=True, serializable=True, year=2019
@@ -79,7 +108,7 @@ def comp_output(crunch):
 		<style>
         	.body tbody tr:nth-child(even) { background-color: #e8e9ea; }
         	.head thead { background-color: #cfe3f7; }
-        	.rhover tbody tr:hover { background-color: #e0e0e0 !important;}
+        	.rhover tbody tr:hover { background-color: #e0e0e0 !important; }
     	</style>
     	"""
 
