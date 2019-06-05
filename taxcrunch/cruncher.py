@@ -73,7 +73,7 @@ class Cruncher:
         Adjust inputs based on 'adjustment_template.json' or a different specified json file
         """
         CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
-        if isinstance(self.inputs, str):       
+        if isinstance(self.inputs, str):
             self.adjustment = os.path.join(CURRENT_PATH, self.inputs)
         else:
             self.adjustment = self.inputs
@@ -317,7 +317,7 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(''))
+        CURRENT_PATH = os.path.abspath(os.path.dirname(""))
 
         # if user specified a preset reform in their adjustment file, pull reform from Tax-Calculator reforms folder
         if self.reform_options != "None" and self.custom_reform is None:
@@ -338,7 +338,7 @@ class Cruncher:
                 print("Reform file path does not exist")
         # then as dictionary
         elif self.reform_options == "None" and isinstance(self.custom_reform, dict):
-            try: 
+            try:
                 reform = self.custom_reform
                 self.pol2 = tc.Policy()
                 self.pol2.implement_reform(reform)

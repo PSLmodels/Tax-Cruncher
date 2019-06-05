@@ -27,7 +27,9 @@ def test_reform_choice():
     )
     assert isinstance(c, cr.Cruncher)
     with pytest.raises(AttributeError):
-        cr.Cruncher(inputs="tests/test_adjustment.json", custom_reform="test_reform.json")
+        cr.Cruncher(
+            inputs="tests/test_adjustment.json", custom_reform="test_reform.json"
+        )
     with pytest.raises(AttributeError):
         cr.Cruncher(custom_reform="fake_file.json")
 
