@@ -2,6 +2,5 @@
 
 git clone https://github.com/Peter-Metz/Tax-Cruncher
 cd Tax-Cruncher
-git checkout master
-conda install PSLmodels::taxcalc conda-forge::paramtools
+conda install PSLmodels::taxcalc conda-forge::paramtools ipython
 pip install -e .
