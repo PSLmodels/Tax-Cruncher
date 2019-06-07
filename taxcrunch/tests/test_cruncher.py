@@ -15,23 +15,23 @@ def create_data():
 
 
 def test_baseline_choice():
-    c = cr.Cruncher(baseline="test_reform.json")
+    c = cr.Cruncher(baseline="tests/test_reform.json")
     assert isinstance(c, cr.Cruncher)
     with pytest.raises(AttributeError):
-        cr.Cruncher(baseline="fake_file.json")
+        cr.Cruncher(baseline="tests/fake_file.json")
 
 
 def test_reform_choice():
     c = cr.Cruncher(
-        inputs="tests/test_adjustment_noreform.json", custom_reform="test_reform.json"
+        inputs="tests/test_adjustment_noreform.json", custom_reform="tests/test_reform.json"
     )
     assert isinstance(c, cr.Cruncher)
     with pytest.raises(AttributeError):
         cr.Cruncher(
-            inputs="tests/test_adjustment.json", custom_reform="test_reform.json"
+            inputs="tests/test_adjustment.json", custom_reform="tests/test_reform.json"
         )
     with pytest.raises(AttributeError):
-        cr.Cruncher(custom_reform="fake_file.json")
+        cr.Cruncher(custom_reform="tests/fake_file.json")
 
 
 def test_basic_table():
