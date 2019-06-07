@@ -5,7 +5,7 @@ To analyze multiple tax filers, the user must specify a csv file with the filers
 
 1. RECID (ID for tax filer)
 2. year
-3. mstat (marital status)
+3. mstat (1 - single; 2 - joint (married); 6 - seperate (married); 8 - dependent)
 4. page (age of primary taxpayer)
 5. sage (age of spouse)
 6. depx (number of dependents)
