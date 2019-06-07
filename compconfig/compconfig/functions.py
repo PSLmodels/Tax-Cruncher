@@ -104,23 +104,15 @@ def comp_output(crunch):
     basic = crunch.basic_table()
     detail = crunch.calc_table()
 
-    style = """
-		<style>
-        	.body tbody tr:nth-child(even) { background-color: #e8e9ea; }
-        	.head thead { background-color: #cfe3f7; }
-        	.rhover tbody tr:hover { background-color: #e0e0e0 !important; }
-    	</style>
-    	"""
-
-    table_basic = style + basic.to_html(
-        classes="body head rhover", col_space=150, index=False, justify="center"
+    table_basic = basic.to_html(
+        classes="table table-striped table-hover"
     )
-    table_detail = style + detail.to_html(
-        classes="body head rhover", col_space=150, index=False, justify="center"
+    table_detail = detail.to_html(
+        classes="table table-striped table-hover"
     )
 
     comp_dict = {
-        "model_version": "1.0.0",
+        "model_version": "0.0.1",
         "renderable": [
             {"media_type": "table", "title": "Basic Liabilities", "data": table_basic},
             {
