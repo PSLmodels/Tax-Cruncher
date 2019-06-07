@@ -39,21 +39,21 @@
     },
     "mstat": {
         "title": "Marital Status",
-        "description": "1. single or HOH (unmarried); 2. joint (married); 6. separate (married); 8. dependent taxpayer",
+        "description": "Single or head of household (unmarried), joint (married), separate (married), or dependent taxpayer",
         "notes": "",
-        "type": "int",
+        "type": "str",
         "value": [
             {
-                "value": 1
+                "value": "Single"
             }
         ],
         "validators": {
             "choice": {
                 "choices": [
-                    1,
-                    2,
-                    6,
-                    8
+                    "Single",
+                    "Joint",
+                    "Separate",
+                    "Dependent"
                 ]
             }
         }

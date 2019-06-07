@@ -94,7 +94,14 @@ class Cruncher:
         for param in self.params.year:
             year = param["value"]
         for param in self.params.mstat:
-            mstat = param["value"]
+            if param["value"] == "Single":
+                mstat = 1
+            elif param["value"] == "Joint":
+                mstat = 2
+            elif param["value"] == "Separate":
+                mstat = 6
+            elif param["value"] == "Dependent":
+                mstat = 8
         for param in self.params.page:
             page = param["value"]
         for param in self.params.sage:
