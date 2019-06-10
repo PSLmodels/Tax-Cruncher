@@ -110,6 +110,7 @@ def convert_adj(adj, start_year):
 
                 new_adj[param][valobj["year"]] = defaultlist
             else:
+                print(valobj)
                 msg = (f"Dict should have 2 or 3 keys. It has {len(valobj)}"
                        f"instead (key={list(valobj.keys())}).")
                 raise ValueError(msg)
