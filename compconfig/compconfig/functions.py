@@ -92,10 +92,7 @@ def run_model(meta_params_dict, adjustment):
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     newvals = params.specification()
 
-    pol_params = TCParams()
-    pol_params.adjust(adjustment["Policy"], raise_errors=False)
-
-    crunch = Cruncher(inputs=newvals, custom_reform=pol_params)
+    crunch = Cruncher(inputs=newvals, custom_reform=convert_adj(adjustment["Policy"], 2019))
 
     return comp_output(crunch)
 
