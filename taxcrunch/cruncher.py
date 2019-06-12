@@ -287,7 +287,7 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(""))
+        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         # if no baseline policy is specified, baseline is current law
         if self.baseline is None:
@@ -324,7 +324,7 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(""))
+        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         # if user specified a preset reform in their adjustment file, pull reform from Tax-Calculator reforms folder
         if self.reform_options != "None" and self.custom_reform is None:
@@ -349,7 +349,9 @@ class Cruncher:
                 reform = self.custom_reform
                 self.pol2 = tc.Policy()
                 self.pol2.implement_reform(reform)
-            except:
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
                 print("Reform dictionary does not exist")
         # raise error if preset reform is chosen and custom reform is specified
         elif self.reform_options != "None" and self.custom_reform is not None:
