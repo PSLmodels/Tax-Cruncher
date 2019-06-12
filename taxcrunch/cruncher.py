@@ -292,20 +292,24 @@ class Cruncher:
         # if no baseline policy is specified, baseline is current law
         if self.baseline is None:
             self.pol = tc.Policy()
-        # if a baseline policy is specified, first see if user created json policy file
+        # if a baseline policy is specified, first see if user created json
+        # policy file
         else:
             exists = os.path.isfile(os.path.join(CURRENT_PATH, self.baseline))
             if exists:
                 baseline_file = os.path.join(CURRENT_PATH, self.baseline)
                 # baseline = tc.Calculator.read_json_param_objects(baseline_file, None)
                 self.pol = tc.Policy()
-                self.pol.implement_reform(tc.Policy.read_json_reform(baseline_file))
-            # if the user did not create a json file, try the Tax-Calculator reforms file
+                self.pol.implement_reform(
+                    tc.Policy.read_json_reform(baseline_file))
+            # if the user did not create a json file, try the Tax-Calculator
+            # reforms file
             else:
                 try:
                     baseline_file = self.baseline
                     baseline_url = REFORMS_URL + baseline_file
-                    baseline = tc.Calculator.read_json_param_objects(baseline_url, None)
+                    baseline = tc.Calculator.read_json_param_objects(
+                        baseline_url, None)
                     self.pol = tc.Policy()
                     self.pol.implement_reform(baseline["policy"])
                 except:
@@ -326,7 +330,8 @@ class Cruncher:
         )
         CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-        # if user specified a preset reform in their adjustment file, pull reform from Tax-Calculator reforms folder
+        # if user specified a preset reform in their adjustment file, pull
+        # reform from Tax-Calculator reforms folder
         if self.reform_options != "None" and self.custom_reform is None:
             reform_name = self.reform_options
             reform_url = REFORMS_URL + reform_name
@@ -337,8 +342,10 @@ class Cruncher:
         # first as file path
         elif self.reform_options == "None" and isinstance(self.custom_reform, str):
             try:
-                reform_filename = os.path.join(CURRENT_PATH, self.custom_reform)
-                reform = tc.Calculator.read_json_param_objects(reform_filename, None)
+                reform_filename = os.path.join(
+                    CURRENT_PATH, self.custom_reform)
+                reform = tc.Calculator.read_json_param_objects(
+                    reform_filename, None)
                 self.pol2 = tc.Policy()
                 self.pol2.implement_reform(reform["policy"])
             except:
@@ -409,7 +416,8 @@ class Cruncher:
         self.basic_vals.columns = ["Base", "Reform"]
         self.basic_vals.index = ["Individual Income Tax", "Payroll Tax"]
 
-        self.basic_vals["Change"] = self.basic_vals["Reform"] - self.basic_vals["Base"]
+        self.basic_vals["Change"] = self.basic_vals[
+            "Reform"] - self.basic_vals["Base"]
 
         self.basic_vals = self.basic_vals.round(2)
 
@@ -580,6 +588,7 @@ class Cruncher:
         self.df_calc_diff = self.df_calc.copy()
         if len(self.df_calc_diff.columns) == 3:
             del self.df_calc_diff["+ $1"]
-        calc_diff_vals = self.df_calc_diff["Reform"] - self.df_calc_diff["Base"]
+        calc_diff_vals = self.df_calc_diff[
+            "Reform"] - self.df_calc_diff["Base"]
         self.df_calc_diff["Change"] = calc_diff_vals
         return self.df_calc_diff
