@@ -90,6 +90,7 @@ def convert_adj(adj, start_year):
             new_adj[f"{param_name}-indexed"][start_year] = valobjs[0]["value"]
             continue
         for valobj in valobjs:
+            valobj["year"] = int(valobj["year"])
             if len(valobj) == 2:
                 new_adj[param][valobj["year"]] = valobj["value"]
             # has keys "year", "value", and one of "MARS", "idedtype", or "EIC"

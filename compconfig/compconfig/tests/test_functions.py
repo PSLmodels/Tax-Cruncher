@@ -16,10 +16,10 @@ def test_functions():
 def test_convert_adj():
     adj = {
         "STD": [
-            {"MARS": "single", "year": 2019, "value": 0},
+            {"MARS": "single", "year": "2019", "value": 0},
             {"MARS": "mjoint", "year": 2019, "value": 1}
         ],
-        "EITC_c": [{"EIC": "0kids", "year": 2019, "value": 1000.0}],
+        "EITC_c": [{"EIC": "0kids", "year": "2019", "value": 1000.0}],
         "BEN_ssi_repeal": [
             {"year": 2019, "value": True}
         ]
@@ -32,7 +32,7 @@ def test_convert_adj():
             2019: [0, 1, 12268.8, 18403.2, 24537.6]
         },
         "EITC_c": {
-            2019: [1000.0, 3529.87, 5829.75, 6558.98]
+            2019: [1000.0, 3538.53, 5844.04, 6575.05]
         },
         "BEN_ssi_repeal": {
             2019: True
