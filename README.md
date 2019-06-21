@@ -35,13 +35,13 @@ c.calc_diff_table()
 
 - Second, initiate the `Batch` class. The Batch class can be found in the `multi_cruncher` module. Initiate the Batch class with `b = Batch('INPUT_DATA_FILE')`
 
-- Third, analyze your data. You can analyze your data under current law or under a policy reform with two separate methods. To analyze your data under current law, use the method: `b.baseline_table()`. To analyze your data under a policy reform, first either choose a reform from the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) or create a custom JSON reform file, and then use the methods:
+- Third, analyze your data. You can analyze your data under current law or under a policy reform using the `create_table()` method. If you do not pass an argument to the method, the default policy is current law. To analyze your data under a policy reform, pass a JSON reform file, a reform dictionary, or a preset reform from the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) to the `create_table()` method.
 
 ```python
 #liabilities under current law
-b.baseline_table()
+b.create_table()
 #liabilities under reform 
-b.reform_table('REFORM_FILE_NAME')
+b.create_table('REFORM_FILE_NAME')
 ```
 
 How to install Tax-Cruncher
