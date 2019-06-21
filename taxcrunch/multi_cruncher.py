@@ -20,8 +20,10 @@ class Batch:
     class instance: Batch
 
     """
+
     def __init__(self, path):
         self.path = path
+        self.invar, self.rows = self.read_input()
 
         self.tc_vars = [
             "RECID",
@@ -64,86 +66,67 @@ class Batch:
             "Payroll Tax MTR"
         ]
 
-    def baseline_table(self):
+    def read_input(self):
         """
-        Creates table of liabilities under current law. 
+        Reads csv input file
 
-        Returns:
-            df_base: a Pandas dataframe. Each observation is a separate tax filer
-        """
-        ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
-        # translate INPUT variables into OUTPUT variables
-        c = cr.Cruncher()
-        invar = c.translate(ivar)
-        rows = len(invar.index)
-        df_base = []
-        # create Tax-Calculator records object from each row of csv file and run calculator
-        for r in range(rows):
-            unit = invar.iloc[r]
-            unit = pd.DataFrame(unit).transpose()
-
-            year = unit.iloc[0][1]
-            year = year.item()
-            recs = tc.Records(data=unit, start_year=year)
-            pol = tc.Policy()
-            calc = tc.Calculator(policy=pol, records=recs)
-            calc.calc_all()
-
-            calcs = calc.dataframe(self.tc_vars)
-            #calculate marginal tax rate for each unit
-            mtr = calc.mtr(wrt_full_compensation=False)
-            #income tax MTR, payroll tax MTR
-            mtr_df = pd.DataFrame(data=[mtr[1], mtr[0]]).transpose()
-            table = pd.concat([calcs, mtr_df], axis=1)
-            df_base.append(table)
-        df_base = pd.concat(df_base)
-        df_base.columns = self.labels
-        df_base.index = range(rows)
-        return df_base
-
-    def reform_table(self, reform_file):
-        """
-        Creates table of liabilities under specified reform.
-
-        The reform argument can be either the name of a reform file in the
-            Tax-Calculator reforms folder or the file path to a custom JSON
-            reform file
-
-        Returns:
-            df_base: a Pandas dataframe. Each observation is a separate tax filer
+        Returns
+            self.invar: Tax-Calculator style dataframe of inputs
+            self.rows: number of rows of input file
         """
         ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
-        invar = c.translate(ivar)
-        rows = len(invar.index)
-        # choose and implement reform from Tax-Calculator reforms folder
+        self.invar = c.translate(ivar)
+        self.rows = len(self.invar.index)
+        return self.invar, self.rows
+
+    def create_table(self, reform_file=None):
+        """
+        Creates table of liabilities. Default is current law, but user may specify
+            a policy reform.
+
+        The reform_file argument can be the name of a reform file in the
+            Tax-Calculator reforms folder, a file path to a custom JSON
+            reform file, or a dictionary with a policy reform.
+
+        Returns:
+            df_res: a Pandas dataframe. Each observation is a separate tax filer
+        """
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(""))
+        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-        #check to see if file path to reform_file exists
-        exists = os.path.isfile(os.path.join(CURRENT_PATH, reform_file))
-
-        if exists:
-            reform = tc.Calculator.read_json_param_objects(reform_file, None)
-        #if file path does not exist, check Tax-Calculator reforms file
+        # if a reform file is not specified, the default policy is current law
+        if reform_file == None:
+            pol = tc.Policy()
         else:
-            try:
-                reform_url = REFORMS_URL + reform_file
-                reform = tc.Calculator.read_json_param_objects(reform_url, None)
-            except:
-                raise 'Reform file does not exist'
+            # check to see if file path to reform_file exists
+            if isinstance(reform_file, str) and os.path.isfile(os.path.join(CURRENT_PATH, reform_file)):
+                reform = tc.Calculator.read_json_param_objects(
+                    reform_file, None)
+            # try reform_file as dictionary
+            elif isinstance(reform_file, dict):
+                reform = reform_file
+            # if file path does not exist, check Tax-Calculator reforms file
+            else:
+                try:
+                    reform_url = REFORMS_URL + reform_file
+                    reform = tc.Calculator.read_json_param_objects(
+                        reform_url, None)
+                except:
+                    raise 'Reform file does not exist'
 
-        pol = tc.Policy()
-        pol.implement_reform(reform["policy"])
+            pol = tc.Policy()
+            pol.implement_reform(reform["policy"])
 
-        df_reform = []
-        # create Tax-Calculator records object from each row of csv file and run calculator
-        for r in range(rows):
-            unit = invar.iloc[r]
+        df_res = []
+        # create Tax-Calculator records object from each row of csv file and
+        # run calculator
+        for r in range(self.rows):
+            unit = self.invar.iloc[r]
             unit = pd.DataFrame(unit).transpose()
 
             year = unit.iloc[0][1]
@@ -153,13 +136,13 @@ class Batch:
             calc.calc_all()
 
             calcs = calc.dataframe(self.tc_vars)
-            #calculate marginal tax rate for each unit
+            # calculate marginal tax rate for each unit
             mtr = calc.mtr(wrt_full_compensation=False)
-            #income tax MTR, payroll tax MTR
+            # income tax MTR, payroll tax MTR
             mtr_df = pd.DataFrame(data=[mtr[1], mtr[0]]).transpose()
             table = pd.concat([calcs, mtr_df], axis=1)
-            df_reform.append(table)
-        df_reform = pd.concat(df_reform)
-        df_reform.columns = self.labels
-        df_reform.index = range(rows)
-        return df_reform
+            df_res.append(table)
+        df_res = pd.concat(df_res)
+        df_res.columns = self.labels
+        df_res.index = range(self.rows)
+        return df_res
