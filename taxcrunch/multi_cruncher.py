@@ -74,7 +74,7 @@ class Batch:
             self.invar: Tax-Calculator style dataframe of inputs
             self.rows: number of rows of input file
         """
-        ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
+        ivar = pd.read_csv(self.path, sep=',', engine="python", header=None)
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         self.invar = c.translate(ivar)
