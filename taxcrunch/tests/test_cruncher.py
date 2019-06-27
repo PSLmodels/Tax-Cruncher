@@ -59,8 +59,3 @@ def test_mtr_table():
     table = c.mtr_table()
     assert isinstance(table, pd.DataFrame)
     assert abs(table.all(axis=None)) < 1
-
-def test_calc_diff_table():
-    c = create_data()
-    table = c.calc_diff_table()
-    assert isinstance(table, pd.DataFrame)
