@@ -196,7 +196,7 @@ class Cruncher:
         self.invar["RECID"] = ivar.loc[:, 0]
         self.invar["FLPDYR"] = ivar.loc[:, 1]
         # no Tax-Calculator use of TAXSIM variable 3, state code
-        mstat = self.ivar.loc[:, 2]
+        mstat = ivar.loc[:, 2]
         self.invar["age_head"] = ivar.loc[:, 3]
         self.invar["age_spouse"] = ivar.loc[:, 4]
         num_deps = ivar.loc[:, 5]
