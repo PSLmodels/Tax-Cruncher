@@ -62,8 +62,9 @@ class Batch:
             "Net Investment Income Tax",
             "Income Tax Before Credits",
             "FICA",
+            "Payroll Tax MTR",
             "Income Tax MTR",
-            "Payroll Tax MTR"
+            "Combined MTR"
         ]
 
     def read_input(self):
@@ -74,7 +75,11 @@ class Batch:
             self.invar: Tax-Calculator style dataframe of inputs
             self.rows: number of rows of input file
         """
-        ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
+        if isinstance(self.path, pd.DataFrame):
+            ivar = self.path
+        else:
+            ivar = pd.read_csv(self.path, delim_whitespace=True, header=None)
+
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         self.invar = c.translate(ivar)
@@ -122,27 +127,15 @@ class Batch:
             pol = tc.Policy()
             pol.implement_reform(reform["policy"])
 
-        df_res = []
-        # create Tax-Calculator records object from each row of csv file and
-        # run calculator
-        for r in range(self.rows):
-            unit = self.invar.iloc[r]
-            unit = pd.DataFrame(unit).transpose()
-
-            year = unit.iloc[0][1]
-            year = year.item()
-            recs = tc.Records(data=unit, start_year=year)
-            calc = tc.Calculator(policy=pol, records=recs)
-            calc.calc_all()
-
-            calcs = calc.dataframe(self.tc_vars)
-            # calculate marginal tax rate for each unit
-            mtr = calc.mtr(wrt_full_compensation=False)
-            # income tax MTR, payroll tax MTR
-            mtr_df = pd.DataFrame(data=[mtr[1], mtr[0]]).transpose()
-            table = pd.concat([calcs, mtr_df], axis=1)
-            df_res.append(table)
-        df_res = pd.concat(df_res)
+        year = self.invar['FLPDYR'][0]
+        year = year.item()
+        recs = tc.Records(data=self.invar, start_year=year)
+        calc = tc.Calculator(policy=pol, records=recs)
+        calc.calc_all()
+        calcs = calc.dataframe(self.tc_vars)
+        mtr = calc.mtr(wrt_full_compensation=False)
+        mtr_df = pd.DataFrame(data=mtr).transpose()
+        df_res = pd.concat([calcs, mtr_df], axis=1)
         df_res.columns = self.labels
         df_res.index = range(self.rows)
         return df_res
