@@ -1,7 +1,7 @@
 How to specify CSV input file
 ------
 
-To analyze multiple tax filers, the user must specify a csv file with the filers' data. Each row of the csv file represents a filer and each column represents a variable. The file should not have column headings and must be **comma-delimited** (this is the standard format of CSV files when created in Excel). The input file should have 24 columns in the following order:
+To analyze multiple tax filers, the user must specify a csv file with the filers' data. Each row of the csv file represents a filer and each column represents a variable. The file should not have column headings and must be **comma-delimited** (this is the standard format of CSV files when created in Excel). Please note that the **year** must be the **same for all entries**. The input file should have 24 columns in the following order:
 
 1. RECID (ID for tax filer)
 2. year
