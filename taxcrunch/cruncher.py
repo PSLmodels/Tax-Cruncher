@@ -196,7 +196,7 @@ class Cruncher:
         self.invar["RECID"] = ivar.loc[:, 0]
         self.invar["FLPDYR"] = ivar.loc[:, 1]
         # no Tax-Calculator use of TAXSIM variable 3, state code
-        mstat = self.ivar.loc[:, 2]
+        mstat = ivar.loc[:, 2]
         self.invar["age_head"] = ivar.loc[:, 3]
         self.invar["age_spouse"] = ivar.loc[:, 4]
         num_deps = ivar.loc[:, 5]
@@ -212,11 +212,11 @@ class Cruncher:
         self.invar["e00200s"] = ivar.loc[:, 10]
         self.invar["e00200"] = self.invar["e00200p"] + self.invar["e00200s"]
         self.invar["e00650"] = ivar.loc[:, 11]
+        self.invar["e00600"] = self.invar["e00650"]
         self.invar["e00300"] = ivar.loc[:, 12]
         self.invar["p22250"] = ivar.loc[:, 13]
         self.invar["p23250"] = ivar.loc[:, 14]
-        nonqualified_dividends = ivar.loc[:, 15]
-        self.invar["e00600"] = self.invar["e00650"] + nonqualified_dividends
+        self.invar["e02000"] = ivar.loc[:, 15]
         self.invar["e00800"] = ivar.loc[:, 16]
         self.invar["e01700"] = ivar.loc[:, 17]
         self.invar["e01500"] = self.invar["e01700"]
@@ -432,17 +432,15 @@ class Cruncher:
         """
         if self.mtr_options != "Don't Bother":
 
-            mtr_calc = self.calc1.mtr(
-                variable_str=self.mtr_wrt, wrt_full_compensation=False
-            )
+            mtr_calc = self.calc1.mtr(calc_all_already_called=True
+                                      )
             self.mtr_df = pd.DataFrame(
                 data=[mtr_calc[1], mtr_calc[0]],
                 index=["Income Tax MTR", "Payroll Tax MTR"],
             )
 
-            mtr_calc_reform = self.calc_reform.mtr(
-                variable_str=self.mtr_wrt, wrt_full_compensation=False
-            )
+            mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True
+                                                   )
             mtr_df_reform = pd.DataFrame(
                 data=[mtr_calc_reform[1], mtr_calc_reform[0]],
                 index=["Income Tax MTR", "Payroll Tax MTR"],
