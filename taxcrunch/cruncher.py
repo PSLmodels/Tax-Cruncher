@@ -489,15 +489,15 @@ class Cruncher:
             "c02500",
             "c04470",
             "c04800",
-            "c05200",
+            "taxbc",
             "c07220",
             "c11070",
             "c07180",
             "eitc",
+            "c62100",
             "c09600",
             "niit",
-            "taxbc",
-            "ptax_was",
+            "c05800"
         ]
         labels = [
             "AGI",
@@ -510,10 +510,10 @@ class Cruncher:
             "CTC Refundable",
             "Child care credit",
             "EITC",
-            "AMT",
+            "AMT Taxable Income",
+            "AMT Liability",
             "Net Investment Income Tax",
-            "Income Tax Before Credits",
-            "FICA",
+            "Income Tax Before Credits"
         ]
 
         df_calc1 = self.calc1.dataframe(calculation).transpose()
