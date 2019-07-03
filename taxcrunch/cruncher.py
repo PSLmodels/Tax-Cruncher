@@ -65,7 +65,6 @@ class Cruncher:
         self.calc1, self.calc_reform, self.calc_mtr = self.run_calc()
         self.df_basic_vals = self.basic_vals()
         self.df_mtr = self.mtr_table()
-        self.zero_brk = self.zero_bracket()
         self.df_calc = self.calc_table()
 
     def adjust_inputs(self):
@@ -451,6 +450,8 @@ class Cruncher:
 
             self.df_mtr["Change"] = self.df_mtr["Reform"] - self.df_mtr["Base"]
 
+            self.df_mtr = self.df_mtr.round(3)
+
             return self.df_mtr
 
         else:
@@ -473,40 +474,6 @@ class Cruncher:
         )
         self.df_basic = self.df_basic.round(2)
         return self.df_basic
-
-    def zero_bracket(self):
-        """
-        Calculates the variable 'Zero Bracket Amount' by subtracting taxable income from income
-
-        Returns:
-            self.zero_brk: a Pandas dataframe with 'Zero Bracket Amount'
-            self.zero_brk_mtr: a Pandas dataframe with 'Zero Bracket Amount'. 
-                Includes column for + $1 analysis
-        """
-        ii1 = self.calc1.array("e00200")
-        taxable1 = self.calc1.array("c04800")
-        zero_brk1 = ii1 - taxable1
-
-        ii2 = self.calc_reform.array("e00200")
-        taxable2 = self.calc_reform.array("c04800")
-        zero_brk2 = ii2 - taxable2
-
-        ii3 = self.calc_mtr.array("e00200")
-        taxable3 = self.calc_mtr.array("c04800")
-        zero_brk3 = ii3 - taxable3
-
-        if self.mtr_options == "Don't Bother":
-            self.zero_brk = np.concatenate((zero_brk1, zero_brk2))
-            self.zero_brk = pd.DataFrame(self.zero_brk).transpose()
-            self.zero_brk.columns = ["Base", "Reform"]
-            self.zero_brk.index = ["Zero Bracket Amount"]
-            return self.zero_brk
-        else:
-            self.zero_brk = np.concatenate((zero_brk1, zero_brk2, zero_brk3))
-            self.zero_brk = pd.DataFrame(self.zero_brk).transpose()
-            self.zero_brk.columns = ["Base", "Reform", "+ $1"]
-            self.zero_brk.index = ["Zero Bracket Amount"]
-            return self.zero_brk
 
     def calc_table(self):
         """
@@ -559,16 +526,10 @@ class Cruncher:
             self.df_calc = pd.concat([df_calc1, df_calc2], axis=1)
             self.df_calc.columns = ["Base", "Reform"]
             self.df_calc.index = labels
-            self.df_calc = pd.concat(
-                [self.df_calc.iloc[:3], self.zero_brk, self.df_calc.iloc[3:]]
-            )
         else:
             self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
             self.df_calc.columns = ["Base", "Reform", "+ $1"]
             self.df_calc.index = labels
-            self.df_calc = pd.concat(
-                [self.df_calc.iloc[:3], self.zero_brk, self.df_calc.iloc[3:]]
-            )
 
         self.df_calc = self.df_calc.round(2)
 
