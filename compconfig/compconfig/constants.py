@@ -41,3 +41,22 @@ POLICY_SCHEMA = {
         "checkbox": {"type": "bool"}
     }
 }
+
+class MetaParameters(paramtools.Parameters):
+    array_first = True
+    defaults = {
+        "year": {
+            "title": "Start Year",
+            "description": "Year for parameters.",
+            "type": "int",
+            "value": 2019,
+            "validators": {
+                "choice": {
+                    "choices": [
+                        yr for yr in range(2013,2028)
+                    ]
+                }
+            }
+        }
+    }
+
