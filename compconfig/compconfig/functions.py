@@ -149,6 +149,17 @@ def comp_output(crunch, df_base, df_reform):
                 "data": table_detail,
             },
         ],
-        "downloadable": [],
+        "downloadable": [
+            {
+                "media_type": "CSV",
+                "title": "basic_table",
+                "data": basic.to_csv(),
+            },
+            {
+                "media_type": "CSV",
+                "title": "calculation_table",
+                "data": detail.to_csv(),
+            },
+        ],
     }
     return comp_dict
