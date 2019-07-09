@@ -3,9 +3,10 @@ import json
 import traceback
 import paramtools
 import pandas as pd
+import inspect
 from .helpers import convert_defaults, convert_adj
 from .outputs import credit_plot, liability_plot
-import inspect
+from .constants import MetaParameters
 from bokeh.models import ColumnDataSource
 from taxcrunch.cruncher import Cruncher, CruncherParams
 from taxcrunch.multi_cruncher import Batch
@@ -29,6 +30,9 @@ def get_inputs(meta_params_dict):
     """
 	Return default parameters from Tax-Cruncher
 	"""
+    metaparams = MetaParameters()
+    metaparams.adjust(meta_params_dict)
+
     params = CruncherParams()
     policy_params = TCParams()
 
@@ -66,10 +70,12 @@ def get_inputs(meta_params_dict):
     cruncher_params = params_dict
 
     pol_params = policy_params.specification(
-        meta_data=True, include_empty=True, serializable=True, year=2019
+        meta_data=True, include_empty=True, serializable=True, year=metaparams.year
     )
 
-    return {}, {"Tax Information": cruncher_params, "Policy": pol_params}
+    meta = metaparams.specification(meta_data=True, include_empty=True, serializable=True)
+
+    return meta, {"Tax Information": cruncher_params, "Policy": pol_params}
 
 
 def validate_inputs(meta_params_dict, adjustment, errors_warnings):
@@ -91,11 +97,16 @@ def validate_inputs(meta_params_dict, adjustment, errors_warnings):
 
 
 def run_model(meta_params_dict, adjustment):
+    meta_params = MetaParameters()
+    meta_params.adjust(meta_params_dict)
+
+    policy_mods = convert_adj(adjustment["Policy"], meta_params.year.tolist())
+
     params = CruncherParams()
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     newvals = params.specification()
 
-    crunch = Cruncher(inputs=newvals, custom_reform=convert_adj(adjustment["Policy"], 2019))
+    crunch = Cruncher(inputs=newvals, custom_reform=policy_mods)
 
     #make dataset for bokeh plots
     ivar = crunch.ivar
@@ -108,7 +119,7 @@ def run_model(meta_params_dict, adjustment):
     df[10] = zeros
     b = Batch(df)
     df_base = b.create_table()
-    df_reform = b.create_table(convert_adj(adjustment["Policy"], 2019))
+    df_reform = b.create_table(policy_mods)
 
     return comp_output(crunch, df_base, df_reform)
     
