@@ -115,20 +115,23 @@ class Batch:
             if isinstance(reform_file, str) and os.path.isfile(os.path.join(CURRENT_PATH, reform_file)):
                 reform = tc.Calculator.read_json_param_objects(
                     reform_file, None)
+                pol = tc.Policy()
+                pol.implement_reform(reform["policy"])
             # try reform_file as dictionary
             elif isinstance(reform_file, dict):
                 reform = reform_file
+                pol = tc.Policy()
+                pol.implement_reform(reform)
             # if file path does not exist, check Tax-Calculator reforms file
             else:
                 try:
                     reform_url = REFORMS_URL + reform_file
                     reform = tc.Calculator.read_json_param_objects(
                         reform_url, None)
+                    pol = tc.Policy()
+                    pol.implement_reform(reform["policy"])
                 except:
                     raise 'Reform file does not exist'
-
-            pol = tc.Policy()
-            pol.implement_reform(reform["policy"])
 
         year = self.invar['FLPDYR'][0]
         year = year.item()
