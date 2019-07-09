@@ -9,8 +9,7 @@ def credit_plot(df_base, df_reform):
     df_base1 = ColumnDataSource(df_base)
     df_reform1 = ColumnDataSource(df_reform)
 
-    fig = figure(title="Tax Credits by Wage (Holding Other Inputs Constant)",
-                 plot_width=600, plot_height=500, x_range=(0, 70000))
+    fig = figure(plot_width=600, plot_height=500, x_range=(0, 70000))
     names = ['Earned Income Tax Credit', 'Child and Dependent Care Credit',
              'Child Tax Credit - Nonrefundable', 'Child Tax Credit - Refundable']
     calcs = ['EITC', 'Child care credit', 'CTC', 'CTC Refundable']
@@ -71,14 +70,14 @@ def credit_plot(df_base, df_reform):
 
     layout = column(fig, row(base_toggle, reform_toggle))
 
-    js, div = components(layout)
+    js_credit, div_credit = components(layout)
 
     outputs = {
         "media_type": "bokeh",
-        "title": "",
+        "title": "Tax Credits by Wage (Holding Other Inputs Constant)",
         "data": {
-            "javascript": js,
-            "html": div
+            "javascript": js_credit,
+            "html": div_credit
         }
     }
 
@@ -88,8 +87,7 @@ def credit_plot(df_base, df_reform):
 def liability_plot(df_base, df_reform):
     df_base2 = ColumnDataSource(df_base)
     df_reform2 = ColumnDataSource(df_reform)
-    fig = figure(title="Liabilities and Marginal Rates by Wage (Holding Other Inputs Constant)",
-                 plot_width=700, plot_height=500, x_range=(0, 300000), y_range=(-20000, 100000))
+    fig = figure(plot_width=700, plot_height=500, x_range=(0, 300000), y_range=(-20000, 100000))
     fig.extra_y_ranges = {"MTR": Range1d(start=-0.1, end=0.5)}
     fig.yaxis.axis_label = "Tax Liabilities"
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
@@ -156,14 +154,14 @@ def liability_plot(df_base, df_reform):
 
     layout = column(fig, row(base_toggle, reform_toggle))
 
-    js, div = components(layout)
+    js_liability, div_liability = components(layout)
 
     outputs = {
         "media_type": "bokeh",
-        "title": "",
+        "title": "Liabilities and Marginal Rates by Wage (Holding Other Inputs Constant)",
         "data": {
-            "javascript": js,
-            "html": div
+            "javascript": js_liability,
+            "html": div_liability
         }
     }
 
