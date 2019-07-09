@@ -500,16 +500,16 @@ class Cruncher:
             "c05800"
         ]
         labels = [
-            "AGI",
-            "UI in AGI",
-            "OASDI in AGI",
+            "Adjusted Gross Income (AGI)",
+            "Unemployment Insurance in AGI",
+            "Social Security in AGI",
             "Itemized Deductions",
-            "Taxable Inc",
+            "Taxable Income",
             "Regular Tax",
-            "CTC",
+            "Child Tax Credit (CTC)",
             "CTC Refundable",
-            "Child care credit",
-            "EITC",
+            "Child Care Credit",
+            "Earned Income Tax Credit (EITC)",
             "AMT Taxable Income",
             "AMT Liability",
             "Net Investment Income Tax",
