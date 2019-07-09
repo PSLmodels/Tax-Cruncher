@@ -4,8 +4,11 @@ import traceback
 import paramtools
 import pandas as pd
 from .helpers import convert_defaults, convert_adj
+from .outputs import credit_plot, liability_plot
 import inspect
+from bokeh.models import ColumnDataSource
 from taxcrunch.cruncher import Cruncher, CruncherParams
+from taxcrunch.multi_cruncher import Batch
 from taxcalc import Policy
 from IPython.display import HTML
 
@@ -94,10 +97,27 @@ def run_model(meta_params_dict, adjustment):
 
     crunch = Cruncher(inputs=newvals, custom_reform=convert_adj(adjustment["Policy"], 2019))
 
-    return comp_output(crunch)
+    #make dataset for bokeh plots
+    ivar = crunch.ivar
+    df = pd.concat([ivar]*5000, ignore_index=True)
+    increments = pd.DataFrame(list(range(0,500000,100)))
+    zeros = pd.DataFrame([0]*5000)
+    #ivar position of e00200p
+    df[9] = increments
+    #set spouse earning to zero
+    df[10] = zeros
+    b = Batch(df)
+    df_base = b.create_table()
+    df_reform = b.create_table(convert_adj(adjustment["Policy"], 2019))
 
+    return comp_output(crunch, df_base, df_reform)
+    
 
-def comp_output(crunch):
+def comp_output(crunch, df_base, df_reform):
+
+    credits = credit_plot(df_base, df_reform)
+    liabilities = liability_plot(df_base, df_reform)
+
     basic = crunch.basic_table()
     detail = crunch.calc_table()
 
@@ -110,7 +130,7 @@ def comp_output(crunch):
 
     comp_dict = {
         "model_version": "0.0.1",
-        "renderable": [
+        "renderable": [credits, liabilities,
             {"media_type": "table", "title": "Basic Liabilities", "data": table_basic},
             {
                 "media_type": "table",
