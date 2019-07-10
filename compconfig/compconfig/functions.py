@@ -5,7 +5,7 @@ import paramtools
 import pandas as pd
 import inspect
 from .helpers import convert_defaults, convert_adj
-from .outputs import credit_plot, liability_plot
+from .outputs import credit_plot, rate_plot, liability_plot
 from .constants import MetaParameters
 from bokeh.models import ColumnDataSource
 from taxcrunch.cruncher import Cruncher, CruncherParams
@@ -120,14 +120,21 @@ def run_model(meta_params_dict, adjustment):
     b = Batch(df)
     df_base = b.create_table()
     df_reform = b.create_table(policy_mods)
+    #compute average tax rates
+    df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']
+    df_base['PATR'] = df_base['Payroll Tax'] / df_base['AGI']
+    df_reform['IATR'] = df_reform['Individual Income Tax'] / df_reform['AGI']
+    df_reform['PATR'] = df_reform['Payroll Tax'] / df_reform['AGI']
 
     return comp_output(crunch, df_base, df_reform)
     
 
 def comp_output(crunch, df_base, df_reform):
 
-    credits = credit_plot(df_base, df_reform)
     liabilities = liability_plot(df_base, df_reform)
+    rates = rate_plot(df_base, df_reform)
+    credits = credit_plot(df_base, df_reform)
+    
 
     basic = crunch.basic_table()
     detail = crunch.calc_table()
@@ -141,8 +148,9 @@ def comp_output(crunch, df_base, df_reform):
 
     comp_dict = {
         "model_version": "0.0.1",
-        "renderable": [credits, liabilities,
+        "renderable": [
             {"media_type": "table", "title": "Basic Liabilities", "data": table_basic},
+            liabilities, rates, credits,
             {
                 "media_type": "table",
                 "title": "Calculation of Liabilities",
