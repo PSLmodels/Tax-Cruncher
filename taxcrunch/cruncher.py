@@ -413,7 +413,7 @@ class Cruncher:
 
         self.basic_vals = pd.concat([basic_vals1, basic_vals2], axis=1)
         self.basic_vals.columns = ["Base", "Reform"]
-        self.basic_vals.index = ["Individual Income Tax", "Payroll Tax"]
+        self.basic_vals.index = ["Individual Income Tax", "Employee + Employer Payroll Tax"]
 
         self.basic_vals["Change"] = self.basic_vals[
             "Reform"] - self.basic_vals["Base"]
@@ -435,14 +435,14 @@ class Cruncher:
                                       )
             self.mtr_df = pd.DataFrame(
                 data=[mtr_calc[1], mtr_calc[0]],
-                index=["Income Tax MTR", "Payroll Tax MTR"],
+                index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
             )
 
             mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True
                                                    )
             mtr_df_reform = pd.DataFrame(
                 data=[mtr_calc_reform[1], mtr_calc_reform[0]],
-                index=["Income Tax MTR", "Payroll Tax MTR"],
+                index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
             )
 
             self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
@@ -510,7 +510,7 @@ class Cruncher:
             "CTC Refundable",
             "Child Care Credit",
             "Earned Income Tax Credit (EITC)",
-            "AMT Taxable Income",
+            "Alternative Minimum Tax (AMT) Taxable Income",
             "AMT Liability",
             "Net Investment Income Tax",
             "Income Tax Before Credits"
