@@ -49,7 +49,7 @@ How to install Tax-Cruncher
 Install from source:
 
 ```
-git clone https://github.com/Peter-Metz/Tax-Cruncher
+git clone https://github.com/PSLmodels/Tax-Cruncher
 cd Tax-Cruncher
 conda env create
 conda activate taxcrunch-env
