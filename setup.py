@@ -15,7 +15,7 @@ setuptools.setup(
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/peter-metz/Tax-Cruncher",
+    url="https://github.com/pslmodels/Tax-Cruncher",
     packages=setuptools.find_packages(),
     install_requires=["taxcalc", "paramtools"],
     include_package_data=True,
