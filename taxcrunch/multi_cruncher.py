@@ -35,14 +35,15 @@ class Batch:
             "c02500",
             "c04470",
             "c04800",
-            "c05200",
+            "taxbc",
             "c07220",
             "c11070",
             "c07180",
             "eitc",
+            "c62100",
             "c09600",
             "niit",
-            "taxbc",
+            "c05800",
             "ptax_was"
         ]
         self.labels = [
@@ -60,7 +61,8 @@ class Batch:
             "CTC Refundable",
             "Child care credit",
             "EITC",
-            "AMT",
+            "AMT Taxable Income",
+            "AMT Liability",
             "Net Investment Income Tax",
             "Income Tax Before Credits",
             "FICA",
