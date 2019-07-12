@@ -37,15 +37,3 @@ def test_get_pol_link():
     reform_preset = "Trump2016.json"
     m = b.get_pol(reform_file=reform_preset)
     assert m._II_rt1[2017-2013] == 0.12
-
-
-
-
-
-
-
-
-        
-
-
-
