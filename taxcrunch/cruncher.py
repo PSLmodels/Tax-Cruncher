@@ -385,13 +385,16 @@ class Cruncher:
         recs = tc.Records(data=self.data, start_year=year)
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
+        self.calc1.advance_to_year(year)
         self.calc1.calc_all()
 
         self.calc_reform = tc.Calculator(policy=self.pol2, records=recs)
+        self.calc_reform.advance_to_year(year)
         self.calc_reform.calc_all()
 
         recs_mtr = tc.Records(data=self.data_mtr, start_year=year)
         self.calc_mtr = tc.Calculator(policy=self.pol2, records=recs_mtr)
+        self.calc_mtr.advance_to_year(year)
         self.calc_mtr.calc_all()
 
         return self.calc1, self.calc_reform, self.calc_mtr
