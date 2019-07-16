@@ -19,7 +19,7 @@ def test_get_pol_no_reform():
 def test_get_pol_directory_file():
     b = mcr.Batch(path="example_test_input.csv")
     # use the full file pathname for testing purposes
-    local_reform = "/Users/phillipsmclaughlin/Tax-Cruncher/taxcrunch/tests/test_reform.json"
+    local_reform = "tests/test_reform.json"
     n = b.get_pol(reform_file=local_reform)
     assert n._CTC_c[2018-2013] == 1000
 
@@ -44,9 +44,9 @@ def test_calc_table():
     b = mcr.Batch(path="example_test_input.csv")
     table = b.create_table()
     assert isinstance(table, pd.DataFrame)
-    table.to_csv("expected_calc_table.csv")
-    # expected_table = pd.read_csv(
-        os.path.join(CURR_PATH, "expected_calc_table.csv"), index_col=0
+    # table.to_csv("expected_multi_table.csv")
+    expected_table = pd.read_csv(
+        os.path.join(CURR_PATH, "expected_multi_table.csv"), index_col=0
     )
     for col in table.columns:
         assert np.allclose(table[col], expected_table[col])
