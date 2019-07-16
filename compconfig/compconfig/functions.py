@@ -10,6 +10,7 @@ from .constants import MetaParameters
 from bokeh.models import ColumnDataSource
 from taxcrunch.cruncher import Cruncher, CruncherParams
 from taxcrunch.multi_cruncher import Batch
+import taxcrunch
 from taxcalc import Policy
 from IPython.display import HTML
 
@@ -147,7 +148,7 @@ def comp_output(crunch, df_base, df_reform):
     )
 
     comp_dict = {
-        "model_version": "0.0.1",
+        "model_version": "Tax-Cruncher v" + taxcrunch.__version__,
         "renderable": [
             {"media_type": "table", "title": "Basic Liabilities", "data": table_basic},
             liabilities, rates, credits,
