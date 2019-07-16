@@ -103,6 +103,7 @@ def run_model(meta_params_dict, adjustment):
 
     policy_mods = convert_adj(adjustment["Policy"], meta_params.year.tolist())
 
+    adjustment["Tax Information"]["year"] = meta_params.year
     params = CruncherParams()
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     newvals = params.specification()
