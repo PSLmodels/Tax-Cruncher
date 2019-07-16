@@ -91,7 +91,17 @@ class Batch:
         return self.invar, self.rows
 
     def create_table(self, reform_file=None):
-        # if a reform file is not specified, the default policy is current law
+         """
+        Creates table of liabilities. Default is current law, but user may specify
+            a policy reform which is read and implemented below in get_pol()
+
+        The reform_file argument can be the name of a reform file in the
+            Tax-Calculator reforms folder, a file path to a custom JSON
+            reform file, or a dictionary with a policy reform. 
+
+        Returns:
+            df_res: a Pandas dataframe. Each observation is a separate tax filer
+        """
         pol = self.get_pol(reform_file)
         year = self.invar['FLPDYR'][0]
         year = year.item()
@@ -108,19 +118,10 @@ class Batch:
         return df_res
 
     def get_pol(self, reform_file):
+       """
+       Reads the specified reform and implements it
+       """
        
-        # specified reform is read and implemented
-        """
-        Creates table of liabilities. Default is current law, but user may specify
-            a policy reform.
-
-        The reform_file argument can be the name of a reform file in the
-            Tax-Calculator reforms folder, a file path to a custom JSON
-            reform file, or a dictionary with a policy reform.
-
-        Returns:
-            df_res: a Pandas dataframe. Each observation is a separate tax filer
-        """
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
