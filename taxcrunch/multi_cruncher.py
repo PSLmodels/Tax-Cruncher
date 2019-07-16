@@ -96,6 +96,7 @@ class Batch:
         year = year.item()
         recs = tc.Records(data=self.invar, start_year=year)
         calc = tc.Calculator(policy=pol, records=recs)
+        calc.advance_to_year(year)
         calc.calc_all()
         calcs = calc.dataframe(self.tc_vars)
         mtr = calc.mtr(wrt_full_compensation=False)
@@ -129,10 +130,9 @@ class Batch:
         else:
             # check to see if file path to reform_file exists
             if isinstance(reform_file, str) and os.path.isfile(os.path.join(CURRENT_PATH, reform_file)):
-                reform = tc.Calculator.read_json_param_objects(
-                    reform_file, None)
+                reform_path = os.path.join(CURRENT_PATH, reform_file)
                 pol = tc.Policy()
-                pol.implement_reform(reform["policy"])
+                pol.implement_reform(tc.Policy.read_json_reform(reform_path))
             # try reform_file as dictionary
             elif isinstance(reform_file, dict):
                 reform = reform_file
@@ -142,10 +142,8 @@ class Batch:
             else:
                 try:
                     reform_url = REFORMS_URL + reform_file
-                    reform = tc.Calculator.read_json_param_objects(
-                        reform_url, None)
                     pol = tc.Policy()
-                    pol.implement_reform(reform["policy"])
+                    pol.implement_reform(tc.Policy.read_json_reform(reform_url))
                 except:
                     raise 'Reform file does not exist'
         return pol
