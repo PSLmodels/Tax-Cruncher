@@ -91,6 +91,7 @@ class Batch:
         return self.invar, self.rows
 
     def create_table(self, reform_file=None):
+        # if a reform file is not specified, the default policy is current law
         pol = self.get_pol(reform_file)
         year = self.invar['FLPDYR'][0]
         year = year.item()
@@ -108,7 +109,7 @@ class Batch:
 
     def get_pol(self, reform_file):
        
-        # if a reform file is not specified, the default policy is current law
+        # specified reform is read and implemented
         """
         Creates table of liabilities. Default is current law, but user may specify
             a policy reform.
