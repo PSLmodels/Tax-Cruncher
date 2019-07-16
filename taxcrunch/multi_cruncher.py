@@ -91,7 +91,7 @@ class Batch:
         return self.invar, self.rows
 
     def create_table(self, reform_file=None):
-         """
+        """
         Creates table of liabilities. Default is current law, but user may specify
             a policy reform which is read and implemented below in get_pol()
 
@@ -118,9 +118,9 @@ class Batch:
         return df_res
 
     def get_pol(self, reform_file):
-       """
-       Reads the specified reform and implements it
-       """
+        """
+        Reads the specified reform and implements it
+        """
        
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
