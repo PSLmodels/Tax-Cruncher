@@ -33,13 +33,13 @@ def liability_plot(df_base, df_reform):
     object2.visible = toggle.active
     """
     base_callback = CustomJS(code=plot_js, args={})
-    base_toggle = Toggle(label="Base", button_type="default",
+    base_toggle = Toggle(label="Base (Solid)", button_type="default",
                          callback=base_callback, active=True)
     base_callback.args = {"toggle": base_toggle, "object1": iitax_base,
                           "object2": payroll_base}
 
     reform_callback = CustomJS(code=plot_js, args={})
-    reform_toggle = Toggle(label="Reform", button_type="default",
+    reform_toggle = Toggle(label="Reform (Dashed)", button_type="default",
                            callback=reform_callback, active=True)
     reform_callback.args = {"toggle": reform_toggle, "object1": iitax_reform,
                             "object2": payroll_reform}
@@ -108,14 +108,14 @@ def rate_plot(df_base, df_reform):
     object4.visible = toggle.active
     """
     base_callback = CustomJS(code=plot_js, args={})
-    base_toggle = Toggle(label="Base", button_type="default",
+    base_toggle = Toggle(label="Base (Solid)", button_type="default",
                          callback=base_callback, active=True)
     base_callback.args = {"toggle": base_toggle, "object1": iitax_atr_base,
                           "object2": payroll_atr_base, "object3": iitax_mtr_base,
                           "object4": payroll_mtr_base}
 
     reform_callback = CustomJS(code=plot_js, args={})
-    reform_toggle = Toggle(label="Reform", button_type="default",
+    reform_toggle = Toggle(label="Reform (Dashed)", button_type="default",
                            callback=reform_callback, active=True)
     reform_callback.args = {"toggle": reform_toggle, "object1": iitax_atr_reform,
                             "object2": payroll_atr_reform, "object3": iitax_mtr_reform,
@@ -181,14 +181,14 @@ def credit_plot(df_base, df_reform):
     object4.visible = toggle.active
     """
     base_callback = CustomJS(code=plot_js, args={})
-    base_toggle = Toggle(label="Base", button_type="default",
+    base_toggle = Toggle(label="Base (Solid)", button_type="default",
                          callback=base_callback, active=True)
     base_callback.args = {"toggle": base_toggle, "object1": eitc_base,
                           "object2": cdcc_base, "object3": ctc_base,
                           "object4": ctc_refund_base}
 
     reform_callback = CustomJS(code=plot_js, args={})
-    reform_toggle = Toggle(label="Reform", button_type="default",
+    reform_toggle = Toggle(label="Reform (Dashed)", button_type="default",
                            callback=reform_callback, active=True)
     reform_callback.args = {"toggle": reform_toggle, "object1": eitc_reform,
                             "object2": cdcc_reform, "object3": ctc_reform,

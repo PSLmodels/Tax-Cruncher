@@ -297,7 +297,6 @@ class Cruncher:
             exists = os.path.isfile(os.path.join(CURRENT_PATH, self.baseline))
             if exists:
                 baseline_file = os.path.join(CURRENT_PATH, self.baseline)
-                # baseline = tc.Calculator.read_json_param_objects(baseline_file, None)
                 self.pol = tc.Policy()
                 self.pol.implement_reform(
                     tc.Policy.read_json_reform(baseline_file))
@@ -307,10 +306,8 @@ class Cruncher:
                 try:
                     baseline_file = self.baseline
                     baseline_url = REFORMS_URL + baseline_file
-                    baseline = tc.Calculator.read_json_param_objects(
-                        baseline_url, None)
                     self.pol = tc.Policy()
-                    self.pol.implement_reform(baseline["policy"])
+                    self.pol.implement_reform(tc.Policy.read_json_reform(baseline_url))
                 except:
                     print("Baseline file does not exist")
 
@@ -334,19 +331,16 @@ class Cruncher:
         if self.reform_options != "None" and self.custom_reform is None:
             reform_name = self.reform_options
             reform_url = REFORMS_URL + reform_name
-            reform = tc.Calculator.read_json_param_objects(reform_url, None)
             self.pol2 = tc.Policy()
-            self.pol2.implement_reform(reform["policy"])
+            self.pol2.implement_reform(tc.Policy.read_json_reform(reform_url))
         # otherwise, look for user-provided json reform file
         # first as file path
         elif self.reform_options == "None" and isinstance(self.custom_reform, str):
             try:
                 reform_filename = os.path.join(
                     CURRENT_PATH, self.custom_reform)
-                reform = tc.Calculator.read_json_param_objects(
-                    reform_filename, None)
                 self.pol2 = tc.Policy()
-                self.pol2.implement_reform(reform["policy"])
+                self.pol2.implement_reform(tc.Policy.read_json_reform(reform_filename))
             except:
                 print("Reform file path does not exist")
         # then as dictionary
@@ -385,13 +379,16 @@ class Cruncher:
         recs = tc.Records(data=self.data, start_year=year)
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
+        self.calc1.advance_to_year(year)
         self.calc1.calc_all()
 
         self.calc_reform = tc.Calculator(policy=self.pol2, records=recs)
+        self.calc_reform.advance_to_year(year)
         self.calc_reform.calc_all()
 
         recs_mtr = tc.Records(data=self.data_mtr, start_year=year)
         self.calc_mtr = tc.Calculator(policy=self.pol2, records=recs_mtr)
+        self.calc_mtr.advance_to_year(year)
         self.calc_mtr.calc_all()
 
         return self.calc1, self.calc_reform, self.calc_mtr
