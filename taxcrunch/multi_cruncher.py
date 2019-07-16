@@ -84,7 +84,6 @@ class Batch:
             ivar = self.path
         else:
             ivar = pd.read_csv(self.path, sep=',', engine="python", header=None)
-
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         self.invar = c.translate(ivar)
@@ -92,24 +91,42 @@ class Batch:
         return self.invar, self.rows
 
     def create_table(self, reform_file=None):
-        """
+         """
         Creates table of liabilities. Default is current law, but user may specify
-            a policy reform.
+            a policy reform which is read and implemented below in get_pol()
 
         The reform_file argument can be the name of a reform file in the
             Tax-Calculator reforms folder, a file path to a custom JSON
-            reform file, or a dictionary with a policy reform.
+            reform file, or a dictionary with a policy reform. 
 
         Returns:
             df_res: a Pandas dataframe. Each observation is a separate tax filer
         """
+        pol = self.get_pol(reform_file)
+        year = self.invar['FLPDYR'][0]
+        year = year.item()
+        recs = tc.Records(data=self.invar, start_year=year)
+        calc = tc.Calculator(policy=pol, records=recs)
+        calc.advance_to_year(year)
+        calc.calc_all()
+        calcs = calc.dataframe(self.tc_vars)
+        mtr = calc.mtr(wrt_full_compensation=False)
+        mtr_df = pd.DataFrame(data=mtr).transpose()
+        df_res = pd.concat([calcs, mtr_df], axis=1)
+        df_res.columns = self.labels
+        df_res.index = range(self.rows)
+        return df_res
+
+    def get_pol(self, reform_file):
+       """
+       Reads the specified reform and implements it
+       """
+       
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
         CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
-
-        # if a reform file is not specified, the default policy is current law
         if reform_file == None:
             pol = tc.Policy()
         else:
@@ -131,17 +148,4 @@ class Batch:
                     pol.implement_reform(tc.Policy.read_json_reform(reform_url))
                 except:
                     raise 'Reform file does not exist'
-
-        year = self.invar['FLPDYR'][0]
-        year = year.item()
-        recs = tc.Records(data=self.invar, start_year=year)
-        calc = tc.Calculator(policy=pol, records=recs)
-        calc.advance_to_year(year)
-        calc.calc_all()
-        calcs = calc.dataframe(self.tc_vars)
-        mtr = calc.mtr(wrt_full_compensation=False)
-        mtr_df = pd.DataFrame(data=mtr).transpose()
-        df_res = pd.concat([calcs, mtr_df], axis=1)
-        df_res.columns = self.labels
-        df_res.index = range(self.rows)
-        return df_res
+        return pol
