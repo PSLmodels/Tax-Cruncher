@@ -2,11 +2,13 @@
 
 Tax-Cruncher calculates federal tax liabilities from individual data under different policy proposals. 
 
-Tax-Cruncher accepts  inputs similar to NBER's [TAXSIM Version 27](https://users.nber.org/~taxsim/taxsim27/), converts those inputs to a format usable by [Tax-Calculator](https://github.com/PSLmodels/Tax-Calculator), an open-source microsimulation model of federal individual income and payroll tax law, and uses Tax-Calculator capabilities to analyze the user-specified inputs under various tax policy proposals.
+Tax-Cruncher accepts inputs similar to NBER's [TAXSIM Version 27](https://users.nber.org/~taxsim/taxsim27/), converts those inputs to a format usable by [Tax-Calculator](https://github.com/PSLmodels/Tax-Calculator), an open-source microsimulation model of federal individual income and payroll tax law, and uses Tax-Calculator capabilities to analyze the user-specified inputs under various tax policy proposals.
+
+Tax-Cruncher's web application is hosted on [COMP](https://www.compmodels.org/PSLmodels/Tax-Cruncher/). The code that powers the web application can be found in this repository in the [compconfig](https://github.com/PSLmodels/Tax-Cruncher/tree/master/compconfig) directory.
 
 How to use Tax-Cruncher
 ------------
-Tax-Cruncher can analyze individual data from one filer or multiple filers under different policy proposals. The procedures for the two uses are different.
+Tax-Cruncher can analyze individual data from one filer or multiple filers under different policy proposals. The procedures for the two uses are different. For examples on how to use Tax-Cruncher and the outputs you can expect to generate, explore the Jupyter Notebooks in the [docs](https://github.com/PSLmodels/Tax-Cruncher/tree/master/docs) directory.
 
 **To analyze individual data from one filer:** 
 
@@ -56,3 +58,6 @@ conda activate taxcrunch-env
 pip install -e .
 ```
 
+How to cite Tax-Cruncher
+--------------
+Please cite the source of your analysis as "Tax-Cruncher release #.#.#, author's calculations." If you would like to link to Tax-Cruncher, please use `https://github.com/PSLmodels/Tax-Cruncher`.
