@@ -44,7 +44,7 @@
     },
     "mstat": {
         "title": "Marital Status",
-        "description": "Single or head of household (unmarried), joint (married), separate (married), or dependent taxpayer",
+        "description": "Single or head of household (unmarried), joint (married), separate (married)",
         "section_1": "Demographics",
         "notes": "",
         "type": "str",
@@ -57,9 +57,7 @@
             "choice": {
                 "choices": [
                     "Single",
-                    "Joint",
-                    "Separate",
-                    "Dependent"
+                    "Joint"
                 ]
             }
         }

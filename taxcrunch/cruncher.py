@@ -97,10 +97,6 @@ class Cruncher:
                 mstat = 1
             elif param["value"] == "Joint":
                 mstat = 2
-            elif param["value"] == "Separate":
-                mstat = 6
-            elif param["value"] == "Dependent":
-                mstat = 8
         for param in self.params.page:
             page = param["value"]
         for param in self.params.sage:
@@ -200,6 +196,8 @@ class Cruncher:
         self.invar["age_spouse"] = ivar.loc[:, 4]
         num_deps = ivar.loc[:, 5]
         mars = np.where(mstat == 1, np.where(num_deps > 0, 4, 1), 2)
+        assert np.all(np.logical_or(mars == 1,
+                                np.logical_or(mars == 2, mars == 4)))
         self.invar["MARS"] = mars
         self.invar["f2441"] = ivar.loc[:, 6]
         self.invar["n24"] = ivar.loc[:, 7]
