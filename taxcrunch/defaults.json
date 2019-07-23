@@ -44,7 +44,7 @@
     },
     "mstat": {
         "title": "Marital Status",
-        "description": "Single or head of household (unmarried), joint (married), separate (married)",
+        "description": "Single or head of household (unmarried), joint (married)",
         "section_1": "Demographics",
         "notes": "",
         "type": "str",
