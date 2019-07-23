@@ -79,11 +79,13 @@ class Batch:
             self.invar: Tax-Calculator style dataframe of inputs
             self.rows: number of rows of input file
         """
+        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         if isinstance(self.path, pd.DataFrame):
             ivar = self.path
         else:
-            ivar = pd.read_csv(self.path, sep=',', engine="python", header=None)
+            input_file = os.path.join(CURRENT_PATH, self.path)
+            ivar = pd.read_csv(input_file, sep=',', engine="python", header=None)
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         self.invar = c.translate(ivar)
