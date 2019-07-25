@@ -1,0 +1,51 @@
+{
+    "project_one_line": {
+        "start_header": null,
+        "end_header": null,
+        "source": "https://github.com/PSLmodels/Tax-Cruncher",
+        "type": "html",
+        "data": "<p>Calculates federal tax liabilities from individual data under different policy proposals</p>"
+    },
+    "project_overview": {
+        "start_header": "Tax-Cruncher",
+        "end_header": "How to use Tax-Cruncher",
+        "source": "README.md",
+        "type": "github_file",
+        "data": null
+    },
+    "user_documentation": {
+        "start_header": null,
+        "end_header": null,
+        "type": "html",
+        "source": "https://github.com/PSLmodels/Tax-Cruncher#how-to-use-tax-cruncher",
+        "data": "<a href=\"https://github.com/PSLmodels/Tax-Cruncher#how-to-use-tax-cruncher\">https://github.com/PSLmodels/Tax-Cruncher#how-to-use-tax-cruncher</a>"
+    },
+    "user_changelog_recent": {
+        "start_header": null,
+        "end_header": null,
+        "source": "https://github.com/PSLmodels/Tax-Cruncher/releases",
+        "type": "html",
+        "data": "<a href=\"https://github.com/PSLmodels/Tax-Cruncher/releases\">https://github.com/PSLmodels/Tax-Cruncher/releases</a>"
+    },
+    "contributor_overview": {
+        "start_header": null,
+        "end_header": null,
+        "source": null,
+        "type": null,
+        "data": null
+    },
+    "link_to_webapp": {
+        "data": "<a href=\"https://www.compmodels.org/PSLmodels/Tax-Cruncher/\">Tax-Cruncher</a>",
+        "source": null,
+        "type": "html",
+        "start_header": null,
+        "end_header": null
+    },
+    "core_maintainers": {
+        "start_header": null,
+        "end_header": null,
+        "data": "<ul><li>Peter Metz</li></ul>",
+        "source": null,
+        "type": "html"
+    }
+}
