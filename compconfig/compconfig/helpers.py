@@ -88,15 +88,23 @@ def convert_adj(adj, start_year):
         if param.endswith("checkbox"):
             param_name = param.split("_checkbox")[0]
             new_adj[f"{param_name}-indexed"][start_year] = valobjs[0]["value"]
+            pol.implement_reform({f"{param_name}-indexed": {start_year: valobjs[0]["value"]}},
+                                 raise_errors=False)
+            continue
+    for param, valobjs in adj.items():
+        if param.endswith("checkbox"):
             continue
         for valobj in valobjs:
             valobj["year"] = int(valobj["year"])
-            if len(valobj) == 2:
+            if not (set(valobj.keys()) - set(["value", "year"])):
                 new_adj[param][valobj["year"]] = valobj["value"]
-            # has keys "year", "value", and one of "MARS", "idedtype", or "EIC"
-            elif len(valobj) == 3:
-                other_label = next(k for k in valobj.keys()
-                                   if k not in ("year", "value"))
+            else:
+                try:
+                    other_label = next(k for k in valobj.keys()
+                                       if k not in ("year", "value"))
+                except StopIteration:
+                    print(valobj)
+                    raise StopIteration
                 param_meta = pol._vals[f"_{param}"]
                 if other_label != param_meta["vi_name"]:
                     msg = (f"Label {other_label} does not match expected"
@@ -118,11 +126,5 @@ def convert_adj(adj, start_year):
                 defaultlist[other_label_ix] = valobj["value"]
 
                 new_adj[param][valobj["year"]] = defaultlist
-            else:
-                print(valobj)
-                msg = (f"Dict should have 2 or 3 keys. It has {len(valobj)}"
-                       f"instead (key={list(valobj.keys())}).")
-                raise ValueError(msg)
-                # make sure values are updated so that extend logic works.
-                pol.implement_reform(new_adj)
+            pol.implement_reform(new_adj, raise_errors=False)
     return new_adj
