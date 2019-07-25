@@ -46,7 +46,7 @@ class MetaParameters(paramtools.Parameters):
     array_first = True
     defaults = {
         "year": {
-            "title": "Start Year",
+            "title": "Year",
             "description": "Year for parameters.",
             "type": "int",
             "value": 2019,

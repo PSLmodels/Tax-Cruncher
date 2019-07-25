@@ -8,8 +8,10 @@ from bokeh.models import ColumnDataSource, CustomJS, Toggle, NumeralTickFormatte
 def liability_plot(df_base, df_reform):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
+
+    tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500,
-                 x_range=(0, 300000), y_range=(-20000, 100000))
+                 x_range=(0, 300000), y_range=(-20000, 100000), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Liabilities"
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
 
@@ -69,8 +71,10 @@ def liability_plot(df_base, df_reform):
 def rate_plot(df_base, df_reform):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
+
+    tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500,
-                 x_range=(0, 300000), y_range=(-0.3, 0.5))
+                 x_range=(0, 300000), y_range=(-0.3, 0.5), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Rate"
     fig.yaxis.formatter = NumeralTickFormatter(format="0%")
 
@@ -147,7 +151,9 @@ def credit_plot(df_base, df_reform):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
 
-    fig = figure(plot_width=600, plot_height=500, x_range=(0, 70000))
+    tools = "pan, zoom_in, zoom_out, reset"
+    fig = figure(plot_width=600, plot_height=500, x_range=(
+        0, 70000), tools=tools, active_drag="pan")
 
     eitc_base = fig.line(x="Wages", y="EITC", line_color='#2b83ba', muted_color='#2b83ba',
                          line_width=2, legend="Earned Income Tax Credit", muted_alpha=0.1, source=df_base)
