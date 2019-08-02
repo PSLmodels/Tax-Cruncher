@@ -82,7 +82,7 @@
     },
     "sage": {
         "title": "Age of spouse",
-        "description": "Must be 0 if filing as Single",
+        "description": "",
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
@@ -117,7 +117,7 @@
         }
     },
     "dep13": {
-        "title": "1. Number of children under 13 with eligible child care expenses",
+        "title": "Number of children under 13 with eligible child care expenses",
         "description": "Dependent Care Credit",
         "section_1": "Dependents",
         "notes": "",
@@ -135,8 +135,8 @@
         }
     },
     "dep17": {
-        "title": "2. Number of children under 17 for the entire tax year",
-        "description": "Child Tax Credit (add the value inputted for 1)",
+        "title": "Number of children under 17 for the entire tax year",
+        "description": "Child Tax Credit (include children under 13",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -153,8 +153,8 @@
         }
     },
     "dep18": {
-        "title": "3. Number of qualifying children for EITC",
-        "description": "Typically younger than 19 or 24 and a full-time student (add the value inputted for 2)",
+        "title": "Number of qualifying children for EITC",
+        "description": "Typically younger than 19 or 24 and a full-time student (include children under 17)",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -190,7 +190,7 @@
     },
     "swages": {
         "title": "Wage and salary income of spouse",
-        "description": "Include self-employment, this must be 0 if filing as single",
+        "description": "Include self-employment",
         "section_1": "Income",
         "notes": "",
         "type": "float",
@@ -208,7 +208,7 @@
     },
     "dividends": {
         "title": "Dividend income",
-        "description": "",
+        "description": "Qualified dividends",
         "section_1": "Income",
         "notes": "",
         "type": "float",
@@ -226,7 +226,7 @@
     },
     "intrec": {
         "title": "Interest received (+/-)",
-        "description": "Savings account, US savings bonds, Treasury notes/bills/bonds, etc",
+        "description": "For example interest from US bank accounts, US savings bonds, Treasury notes/bills/bonds, etc",
         "section_1": "Income",
         "notes": "",
         "type": "float",
@@ -244,7 +244,7 @@
     },
     "stcg": {
         "title": "Short term capital gains or losses (+/-)",
-        "description": "Any income received from investments held for less than a year",
+        "description": "Income received from investments held for less than a year",
         "section_1": "Income",
         "notes": "",
         "type": "float",
@@ -262,7 +262,7 @@
     },
     "ltcg": {
         "title": "Long term capital gains or losses (+/-)",
-        "description": "Any income received from investments held for more than a year",
+        "description": "Income received from investments held for more than a year",
         "section_1": "Income",
         "notes": "",
         "type": "float",
