@@ -19,6 +19,8 @@ def liability_plot(df_base, df_reform, wages):
     filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="Household wages", render_mode='css',
                            text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
+    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    fig.add_layout(axis)
 
     iitax_base = fig.line(x="Wages", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
                           line_width=2, legend="Individual Income Tax Liability", muted_alpha=0.1, source=df_base)
@@ -87,7 +89,9 @@ def rate_plot(df_base, df_reform, wages):
     filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="Household wages", render_mode='css', 
                                 text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
-
+    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    fig.add_layout(axis)
+    
     iitax_atr_base = fig.line(x="Wages", y="IATR", line_color='#2b83ba', muted_color='#2b83ba',
                               line_width=2, legend="Income Tax Average Rate", muted_alpha=0.1, source=df_base)
     payroll_atr_base = fig.line(x="Wages", y="PATR", line_color='#abdda4', muted_color='#abdda4',
@@ -169,7 +173,9 @@ def credit_plot(df_base, df_reform, wages):
     filer_income_label = Label(x=wages, y=45, y_units='screen', x_offset=10, text="Household wages", render_mode='css',
                                 text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
-
+    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    fig.add_layout(axis)
+    
     eitc_base = fig.line(x="Wages", y="EITC", line_color='#2b83ba', muted_color='#2b83ba',
                          line_width=2, legend="Earned Income Tax Credit", muted_alpha=0.1, source=df_base)
     ctc_base = fig.line(x="Wages", y="CTC", line_color='#abdda4', muted_color='#abdda4',
