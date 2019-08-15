@@ -2,18 +2,26 @@ from bokeh.embed import components
 from bokeh.layouts import column, row, WidgetBox, layout
 from bokeh.palettes import Spectral4
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, CustomJS, Toggle, NumeralTickFormatter, LinearAxis, Range1d
+from bokeh.models import ColumnDataSource, CustomJS, Toggle, NumeralTickFormatter, LinearAxis, Range1d, Span, Label
 
 
-def liability_plot(df_base, df_reform):
+def liability_plot(df_base, df_reform, wages):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
-
     tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500,
-                 x_range=(0, 300000), y_range=(-20000, 100000), tools=tools, active_drag="pan")
+                 x_range=(-10000, 300000), y_range=(-20000, 100000), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Liabilities"
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
+
+    filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    fig.add_layout(filer_income)
+    label_format = f'{wages:,}'
+    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="$" + label_format, render_mode='css',
+                           text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
+    fig.add_layout(filer_income_label)
+    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    fig.add_layout(axis)
 
     iitax_base = fig.line(x="Wages", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
                           line_width=2, legend="Individual Income Tax Liability", muted_alpha=0.1, source=df_base)
@@ -68,16 +76,24 @@ def liability_plot(df_base, df_reform):
     return outputs
 
 
-def rate_plot(df_base, df_reform):
+def rate_plot(df_base, df_reform, wages):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
-
     tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500,
-                 x_range=(0, 300000), y_range=(-0.3, 0.5), tools=tools, active_drag="pan")
+                x_range=(-10000, 300000), y_range=(-0.3, 0.5), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Rate"
     fig.yaxis.formatter = NumeralTickFormatter(format="0%")
-
+    
+    filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    fig.add_layout(filer_income)
+    label_format = f'{wages:,}'
+    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="$" + label_format, render_mode='css', 
+                                text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
+    fig.add_layout(filer_income_label)
+    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    fig.add_layout(axis)
+    
     iitax_atr_base = fig.line(x="Wages", y="IATR", line_color='#2b83ba', muted_color='#2b83ba',
                               line_width=2, legend="Income Tax Average Rate", muted_alpha=0.1, source=df_base)
     payroll_atr_base = fig.line(x="Wages", y="PATR", line_color='#abdda4', muted_color='#abdda4',
@@ -147,13 +163,21 @@ def rate_plot(df_base, df_reform):
     return outputs
 
 
-def credit_plot(df_base, df_reform):
+def credit_plot(df_base, df_reform, wages):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
-
     tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500, x_range=(
-        0, 70000), tools=tools, active_drag="pan")
+        -2500, 70000), tools=tools, active_drag="pan")
+
+    filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    fig.add_layout(filer_income)
+    label_format = f'{wages:,}'
+    filer_income_label = Label(x=wages, y=45, y_units='screen', x_offset=10, text="$" + label_format, render_mode='css',
+                                text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
+    fig.add_layout(filer_income_label)
+    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    fig.add_layout(axis)
 
     eitc_base = fig.line(x="Wages", y="EITC", line_color='#2b83ba', muted_color='#2b83ba',
                          line_width=2, legend="Earned Income Tax Credit", muted_alpha=0.1, source=df_base)
