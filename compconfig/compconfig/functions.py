@@ -112,6 +112,8 @@ def run_model(meta_params_dict, adjustment):
 
     #make dataset for bokeh plots
     ivar = crunch.ivar
+    wages = ivar[9] + ivar[10]
+    wages = int(wages)
     df = pd.concat([ivar]*5000, ignore_index=True)
     increments = pd.DataFrame(list(range(0,500000,100)))
     zeros = pd.DataFrame([0]*5000)
@@ -128,14 +130,14 @@ def run_model(meta_params_dict, adjustment):
     df_reform['IATR'] = df_reform['Individual Income Tax'] / df_reform['AGI']
     df_reform['PATR'] = df_reform['Payroll Tax'] / df_reform['AGI']
 
-    return comp_output(crunch, df_base, df_reform)
+    return comp_output(crunch, df_base, df_reform, wages)
     
 
-def comp_output(crunch, df_base, df_reform):
+def comp_output(crunch, df_base, df_reform, wages):
 
-    liabilities = liability_plot(df_base, df_reform)
-    rates = rate_plot(df_base, df_reform)
-    credits = credit_plot(df_base, df_reform)
+    liabilities = liability_plot(df_base, df_reform, wages)
+    rates = rate_plot(df_base, df_reform, wages)
+    credits = credit_plot(df_base, df_reform, wages)
     
 
     basic = crunch.basic_table()
