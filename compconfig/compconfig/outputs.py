@@ -17,7 +17,7 @@ def liability_plot(df_base, df_reform, wages):
     filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
     label_format = f'{wages:,}'
-    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="$" + label_format, render_mode='css',
+    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="Household Wages: $" + label_format,
                            text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
     axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
@@ -88,7 +88,7 @@ def rate_plot(df_base, df_reform, wages):
     filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
     label_format = f'{wages:,}'
-    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="$" + label_format, render_mode='css', 
+    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="Household Wages: $" + label_format, 
                                 text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
     axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
@@ -173,7 +173,7 @@ def credit_plot(df_base, df_reform, wages):
     filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
     label_format = f'{wages:,}'
-    filer_income_label = Label(x=wages, y=45, y_units='screen', x_offset=10, text="$" + label_format, render_mode='css',
+    filer_income_label = Label(x=wages, y=45, y_units='screen', x_offset=10, text="Household Wages: $" + label_format,
                                 text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
     axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
