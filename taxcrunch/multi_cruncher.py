@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import taxcalc as tc
 from taxcrunch import cruncher as cr
+from datetime import date
 
 
 class Batch:
@@ -85,7 +86,8 @@ class Batch:
             ivar = self.path
         else:
             input_file = os.path.join(CURRENT_PATH, self.path)
-            ivar = pd.read_csv(input_file, sep=',', engine="python", header=None)
+            ivar = pd.read_csv(input_file, sep=',',
+                               engine="python", header=None)
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         self.invar = c.translate(ivar)
@@ -119,11 +121,27 @@ class Batch:
         df_res.index = range(self.rows)
         return df_res
 
+    def write_output_file(self, output_filename=None, reform_file=None):
+        """
+        Writes an output table as a csv. Like the create_table() method, default is current
+            law and optional reform_file argument is a file path to or dictionary of a reform.
+
+        Default output filename is "cruncher-mm-dd-YYYY.csv" but user can change output filename
+            with output_filename argument.
+        """
+        if output_filename is None:
+            today = date.today()
+            today_str = today.strftime("%m-%d-%Y")
+            output_filename = "cruncher-" + today_str + ".csv"
+        df_res = self.create_table(reform_file)
+        assert isinstance(df_res, pd.DataFrame)
+        df_res.to_csv(output_filename, index=False, float_format='%.2f')
+
     def get_pol(self, reform_file):
         """
         Reads the specified reform and implements it
         """
-       
+
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
@@ -147,7 +165,8 @@ class Batch:
                 try:
                     reform_url = REFORMS_URL + reform_file
                     pol = tc.Policy()
-                    pol.implement_reform(tc.Policy.read_json_reform(reform_url))
+                    pol.implement_reform(
+                        tc.Policy.read_json_reform(reform_url))
                 except:
                     raise 'Reform file does not exist'
         return pol
