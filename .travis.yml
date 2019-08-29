@@ -16,6 +16,8 @@ install:
   - conda create -n taxcrunch-env python=$TRAVIS_PYTHON_VERSION;
   - source activate taxcrunch-env
   - conda env update -f environment.yml
+  - source activate taxcrunch-env
+  - which python
 
 # command to run tests
 script:
