@@ -18,7 +18,9 @@ install:
   - conda env update -f environment.yml
   - source activate taxcrunch-env
   - which python
+  - python -c "import pandas; print('got pandas!', pandas.__version__)"
 
 # command to run tests
 script:
+  - python -c "import pandas; print('still got pandas!', pandas.__version__)"
   - pytest -v
