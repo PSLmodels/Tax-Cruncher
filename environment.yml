@@ -1,4 +1,17 @@
 name: taxcrunch-env
+channels:
+- PSLmodels
+- conda-forge
 dependencies:
-- PSLmodels::taxcalc
-- conda-forge::paramtools
+- python>=3.6.5
+- taxcalc>=2.4.2
+- behresp>=0.9.0
+- pandas>=0.23
+- numpy>=1.13
+- ipython
+- pytest
+- dask
+- bokeh
+- markdown
+- pip:
+  - compdevkit
