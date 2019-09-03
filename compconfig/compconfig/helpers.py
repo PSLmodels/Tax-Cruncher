@@ -26,9 +26,9 @@ def convert_defaults(pcl):
 
     new_pcl = defaultdict(dict)
     new_pcl["schema"] = POLICY_SCHEMA
-    LAST_YEAR = 2026
+    LAST_YEAR = 2028
     pol = Policy()
-    pol.set_year(2026)
+    pol.set_year(2028)
     for param, item in pcl.items():
         values = []
         pol_val = getattr(pol, f"_{param}").tolist()
