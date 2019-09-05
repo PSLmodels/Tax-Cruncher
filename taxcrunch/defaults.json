@@ -369,8 +369,8 @@
         }
     },
     "proptax": {
-        "title": "Real estate taxes paid",
-        "description": "Preference for the Alternative Minumum Tax.",
+        "title": "Itemizable real estate taxes paid",
+        "description": "",
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
@@ -387,8 +387,8 @@
         }
     },
     "otheritem": {
-        "title": "Miscellaneous deductions that are a preference for the Alternative Minimum Tax",
-        "description": "Includes other state and local taxes (line 8 of Schedule A) plus local income tax, preference share of medical expenses, and miscellaneous (line 27).",
+        "title": "Itemizable state and local income/sales taxes",
+        "description": "",
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
@@ -423,8 +423,8 @@
         }
     },
     "mortgage": {
-        "title": "Miscellaneous deductions that are not a preference for the Alternative Minimum Tax",
-        "description": "Deductions from Schedule A for 2009: deductible medical expenses not included in Line 16, motor vehicle taxes paid (line 7), home mortgage interest (line 15), charitable contributions (line 19), casulty or theft losses (line 20).",
+        "title": "Other itemizable expenses",
+        "description": "Include itemizable interest paid, charitable contributions, and casualty or theft losses",
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
