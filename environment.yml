@@ -8,6 +8,7 @@ dependencies:
 - behresp>=0.9.0
 - pandas>=0.23
 - numpy>=1.13
+- paramtools>=0.9.0
 - ipython
 - pytest
 - dask
