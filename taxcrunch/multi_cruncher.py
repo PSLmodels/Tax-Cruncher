@@ -110,10 +110,13 @@ class Batch:
             input_file = os.path.join(CURRENT_PATH, self.path)
             ivar = pd.read_csv(input_file, sep=',',
                                engine="python", header=None)
+        # check that input CSV has 24 columns
         assert len(ivar.columns) == 24
+        # check that year is the same across all rows
+        assert ivar[1].max() == ivar[1].min()
         rows = len(ivar)
         params = BatchParams()
-        #validate input
+        # validate input
         params.adjust(ivar)
         array = np.empty((0, rows))
         for label in params._data:
