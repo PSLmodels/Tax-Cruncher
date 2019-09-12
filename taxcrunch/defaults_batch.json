@@ -13,11 +13,8 @@
         "description": "",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value":[0],
         "validators": {
             "range": {
                 "min": 0,
@@ -30,11 +27,8 @@
         "description": "",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [2019]
-            }
-        ],
+        "number_dims": 1,
+        "value": [2019],
         "validators": {
             "range": {
                 "min": 2013,
@@ -48,11 +42,8 @@
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [1]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [1],
         "validators": {
             "range": {
                 "min": 1,
@@ -66,11 +57,8 @@
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -84,11 +72,8 @@
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -102,11 +87,8 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -120,11 +102,8 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -138,11 +117,8 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": "dep13",
@@ -156,11 +132,8 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": "dep17",
@@ -174,11 +147,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -192,11 +162,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -210,11 +177,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -228,11 +192,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+        "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": -9e+99,
@@ -246,11 +207,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": -9e+99,
@@ -264,11 +222,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+        "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": -9e+99,
@@ -282,11 +237,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -300,11 +252,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+        "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -318,11 +267,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -336,11 +282,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+        "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -354,11 +297,8 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -372,11 +312,8 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -390,11 +327,8 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -408,11 +342,8 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -426,11 +357,8 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-        "value": [
-            {
-                "value": [0]
-            }
-        ],
+	    "number_dims": 1,
+        "value": [0],
         "validators": {
             "range": {
                 "min": 0,
@@ -439,3 +367,4 @@
         }
     }
 }
+
