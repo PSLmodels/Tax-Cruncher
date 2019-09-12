@@ -13,7 +13,7 @@
         "description": "",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value":[0],
         "validators": {
             "range": {
@@ -42,7 +42,7 @@
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [1],
         "validators": {
             "range": {
@@ -57,7 +57,7 @@
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -72,7 +72,7 @@
         "section_1": "Demographics",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -87,7 +87,7 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -102,7 +102,7 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -117,7 +117,7 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -132,7 +132,7 @@
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -147,7 +147,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -162,7 +162,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -177,7 +177,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -207,7 +207,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -237,7 +237,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -267,7 +267,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -297,7 +297,7 @@
         "section_1": "Income",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -312,7 +312,7 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -327,7 +327,7 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -342,7 +342,7 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
@@ -357,7 +357,7 @@
         "section_1": "Taxes and Expenses",
         "notes": "",
         "type": "float",
-	    "number_dims": 1,
+        "number_dims": 1,
         "value": [0],
         "validators": {
             "range": {
