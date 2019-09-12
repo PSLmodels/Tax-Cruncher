@@ -18,12 +18,8 @@ class BatchParams(Parameters):
     # custom adjust method to validate Batch inputs
     def adjust(self, ivar):
         input_list = ivar.transpose().to_numpy().tolist()
-        params = {"RECID": [], "year": [], "mstat": [], "page": [], "sage": [],
-                  "depx": [], "dep13": [], "dep17": [], "dep18": [], "pwages": [],
-                  "swages": [], "dividends": [], "intrec": [], "stcg": [], "ltcg": [],
-                  "otherprop": [], "nonprop": [], "pensions": [], "gssi": [], "ui": [],
-                  "proptax": [], "otheritem": [], "childcare": [], "mortgage": []}
-        for label, row in zip(params, range(len(input_list))):
+        params = {}
+        for label, row in zip(self, range(len(input_list))):
             params[label] = input_list[row]
 
         return super().adjust(params)
@@ -122,11 +118,11 @@ class Batch:
         for label in params._data:
             array = np.append(array, [params._data[label][
                               'value'][0]['value']], axis=0)
-        ivar2 = pd.DataFrame(array).transpose()
+        params_df = pd.DataFrame(array).transpose()
 
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
-        self.invar = c.translate(ivar2)
+        self.invar = c.translate(params_df)
         self.rows = len(self.invar.index)
         return self.invar, self.rows
 
