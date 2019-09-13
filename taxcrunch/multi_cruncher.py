@@ -153,6 +153,40 @@ class Batch:
         df_res.index = range(self.rows)
         return df_res
 
+    def create_diff_table(self, reform_file, baseline=None):
+        """
+        Creates a table that displays differences between baseline and reform. 
+
+        Baseline default is current law.
+
+        The reform_file argument can be the name of a reform file in the
+            Tax-Calculator reforms folder, a file path to a custom JSON
+            reform file, or a dictionary with a policy reform. 
+
+        Returns:
+            df_diff_id: a Pandas dataframe.
+        """
+        if baseline is None:
+            t_base = self.create_table()
+        else:
+            t_base = self.create_table(baseline)
+        t_reform = self.create_table(reform_file)
+        df_all = pd.merge(t_reform, t_base, on='ID')
+        df_ids = df_all['ID']
+        cols = len(t_base.columns)
+        df_diff = df_all.diff(periods= -(cols - 1),
+                              axis=1).iloc[:, 1:cols]
+        df_diff_id = pd.concat([df_ids, df_diff], axis=1)
+        # new column labels that have "Diff" at the end
+        diff_labels = ['ID']
+        for label in self.labels:
+            if label == 'ID':
+                pass
+            else:
+                diff_labels.append(label + " Diff")
+        df_diff_id.columns = diff_labels
+        return df_diff_id
+
     def write_output_file(self, output_filename=None, reform_file=None):
         """
         Writes an output table as a csv. Like the create_table() method, default is current
@@ -166,6 +200,15 @@ class Batch:
             today_str = today.strftime("%m-%d-%Y")
             output_filename = "cruncher-" + today_str + ".csv"
         df_res = self.create_table(reform_file)
+        assert isinstance(df_res, pd.DataFrame)
+        df_res.to_csv(output_filename, index=False, float_format='%.2f')
+
+    def write_diff_file(self, reform_file, baseline=None, output_filename=None):
+        if output_filename is None:
+            today = date.today()
+            today_str = today.strftime("%m-%d-%Y")
+            output_filename = "cruncher-diff-" + today_str + ".csv"
+        df_res = self.create_diff_table(reform_file=reform_file, baseline=baseline)
         assert isinstance(df_res, pd.DataFrame)
         df_res.to_csv(output_filename, index=False, float_format='%.2f')
 
