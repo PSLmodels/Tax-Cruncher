@@ -3,8 +3,26 @@ import os
 import numpy as np
 import pandas as pd
 import taxcalc as tc
+from paramtools import Parameters
 from taxcrunch import cruncher as cr
 from datetime import date
+
+
+CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+
+class BatchParams(Parameters):
+
+    defaults = os.path.join(CURRENT_PATH, "defaults_batch.json")
+
+    # custom adjust method to validate Batch inputs
+    def adjust(self, ivar):
+        input_list = ivar.transpose().to_numpy().tolist()
+        params = {}
+        for label, row in zip(self, range(len(input_list))):
+            params[label] = input_list[row]
+
+        return super().adjust(params)
 
 
 class Batch:
@@ -88,9 +106,23 @@ class Batch:
             input_file = os.path.join(CURRENT_PATH, self.path)
             ivar = pd.read_csv(input_file, sep=',',
                                engine="python", header=None)
+        # check that input CSV has 24 columns
+        assert len(ivar.columns) == 24
+        # check that year is the same across all rows
+        assert ivar[1].max() == ivar[1].min()
+        rows = len(ivar)
+        params = BatchParams()
+        # validate input
+        params.adjust(ivar)
+        array = np.empty((0, rows))
+        for label in params._data:
+            array = np.append(array, [params._data[label][
+                              'value'][0]['value']], axis=0)
+        params_df = pd.DataFrame(array).transpose()
+
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
-        self.invar = c.translate(ivar)
+        self.invar = c.translate(params_df)
         self.rows = len(self.invar.index)
         return self.invar, self.rows
 
@@ -108,7 +140,7 @@ class Batch:
         """
         pol = self.get_pol(reform_file)
         year = self.invar['FLPDYR'][0]
-        year = year.item()
+        year = int(year.item())
         recs = tc.Records(data=self.invar, start_year=year)
         calc = tc.Calculator(policy=pol, records=recs)
         calc.advance_to_year(year)

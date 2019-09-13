@@ -1,0 +1,370 @@
+{
+    "schema": {
+        "labels": {},
+        "additional_members": {
+            "section_1": {
+                "type": "str",
+                "number_dims": 0
+            }
+        }
+    },
+    "RECID": {
+        "title": "Taxpayer ID",
+        "description": "",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value":[0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "year": {
+        "title": "Tax year",
+        "description": "",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [2019],
+        "validators": {
+            "range": {
+                "min": 2013,
+                "max": 2028
+            }
+        }
+    },
+    "mstat": {
+        "title": "Marital Status",
+        "description": "Single or head of household (unmarried), joint (married)",
+        "section_1": "Demographics",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [1],
+        "validators": {
+            "range": {
+                "min": 1,
+                "max": 2
+            }
+        }
+    },
+    "page": {
+        "title": "Age of primary taxpayer December 31st of tax year (or 0)",
+        "description": "Taxpayer age variables determine eligibility for additional standard deductions, personal exemption, Earned Income Tax Credit and Alternative Minumum Tax exclusion.",
+        "section_1": "Demographics",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 114
+            }
+        }
+    },
+    "sage": {
+        "title": "Age of spouse",
+        "description": "",
+        "section_1": "Demographics",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 114
+            }
+        }
+    },
+    "depx": {
+        "title": "Number of dependents",
+        "description": "Part of personal exemption calculation",
+        "section_1": "Dependents",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 15
+            }
+        }
+    },
+    "dep13": {
+        "title": "Number of children under 13 with eligible child care expenses",
+        "description": "Dependent Care Credit",
+        "section_1": "Dependents",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": "dep17"
+            }
+        }
+    },
+    "dep17": {
+        "title": "Number of children under 17 for the entire tax year",
+        "description": "Child Tax Credit (include children under 13)",
+        "section_1": "Dependents",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": "dep13",
+                "max": "dep18"
+            }
+        }
+    },
+    "dep18": {
+        "title": "Number of qualifying children for EITC",
+        "description": "Typically younger than 19 or 24 and a full-time student (include children under 17)",
+        "section_1": "Dependents",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": "dep17",
+                "max": "depx"
+            }
+        }
+    },
+    "pwages": {
+        "title": "Wage and salary income of primary taxpayer",
+        "description": "Include self-employment",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "swages": {
+        "title": "Wage and salary income of spouse",
+        "description": "Include self-employment",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "dividends": {
+        "title": "Dividend income",
+        "description": "Qualified dividends",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "intrec": {
+        "title": "Interest received (+/-)",
+        "description": "For example interest from US bank accounts, US savings bonds, Treasury notes/bills/bonds, etc",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
+    },
+    "stcg": {
+        "title": "Short term capital gains or losses (+/-)",
+        "description": "Income received from investments held for less than a year",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
+    },
+    "ltcg": {
+        "title": "Long term capital gains or losses (+/-)",
+        "description": "Income received from investments held for more than a year",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": -9e+99,
+                "max": 9e+99
+            }
+        }
+    },
+    "otherprop": {
+        "title": "Other property income subject to Net Investment Income Tax",
+        "description": "Includes unearned partnership and S-corp income, rent, non-qualified dividends, capital gains distributions on form 1040, other income or loss not otherwise enumerated here.",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "nonprop": {
+        "title": "Other non-property income not subject to Medicare Net Investment Income Tax (+/-)",
+        "description": "Includes alimony, fellowships, state income tax refunds (itemizers only). Adjustment and items such as alimony paid, Koegh and IRA contributions, foreign income exclusion, NOLs.",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "pensions": {
+        "title": "Taxable pensions and IRA distributions",
+        "description": "",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "gssi": {
+        "title": "Gross social security benefits",
+        "description": "",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "ui": {
+        "title": "Unemployment compensation received",
+        "description": "",
+        "section_1": "Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "proptax": {
+        "title": "Itemizable real estate taxes paid",
+        "description": "",
+        "section_1": "Taxes and Expenses",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "otheritem": {
+        "title": "Itemizable state and local income/sales taxes",
+        "description": "",
+        "section_1": "Taxes and Expenses",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "childcare": {
+        "title": "Child care expenses",
+        "description": "For qualifying children under 13 or a disabled dependent of any age",
+        "section_1": "Taxes and Expenses",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "mortgage": {
+        "title": "Other itemizable expenses",
+        "description": "Include itemizable interest paid, charitable contributions, and casualty or theft losses",
+        "section_1": "Taxes and Expenses",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    }
+}
+
