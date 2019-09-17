@@ -4,7 +4,7 @@ Tax-Cruncher calculates federal tax liabilities from individual data under diffe
 
 Tax-Cruncher accepts inputs similar to NBER's [TAXSIM Version 27](https://users.nber.org/~taxsim/taxsim27/), converts those inputs to a format usable by [Tax-Calculator](https://github.com/PSLmodels/Tax-Calculator), an open-source microsimulation model of federal individual income and payroll tax law, and uses Tax-Calculator capabilities to analyze the user-specified inputs under various tax policy proposals.
 
-Tax-Cruncher's web application is hosted on [COMP](https://www.compmodels.org/PSLmodels/Tax-Cruncher/). The code that powers the web application can be found in this repository in the [compconfig](https://github.com/PSLmodels/Tax-Cruncher/tree/master/compconfig) directory.
+Tax-Cruncher's web application is hosted on [Compute Studio](https://compute.studio/PSLmodels/Tax-Cruncher/). The code that powers the web application can be found in this repository in the [compconfig](https://github.com/PSLmodels/Tax-Cruncher/tree/master/compconfig) directory.
 
 How to use Tax-Cruncher
 ------------
