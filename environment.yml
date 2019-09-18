@@ -15,4 +15,4 @@ dependencies:
 - bokeh
 - markdown
 - pip:
-  - compdevkit
+  - cs-kit
