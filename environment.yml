@@ -14,6 +14,6 @@ dependencies:
 - dask
 - bokeh
 - markdown
-- s3like
 - pip:
   - cs-kit
+  - s3like
