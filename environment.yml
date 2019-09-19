@@ -16,4 +16,3 @@ dependencies:
 - markdown
 - pip:
   - cs-kit
-  - s3like
