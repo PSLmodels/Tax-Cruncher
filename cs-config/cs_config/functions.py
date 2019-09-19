@@ -27,15 +27,23 @@ class TCParams(paramtools.Parameters):
     defaults = RES
 
 
+def get_version():
+    version = taxcrunch.__version__
+    return f"Tax-Cruncher v{version}"
+
+
 def get_inputs(meta_params_dict):
     """
-	Return default parameters from Tax-Cruncher
-	"""
+    Return default parameters from Tax-Cruncher
+    """
     metaparams = MetaParameters()
     metaparams.adjust(meta_params_dict)
 
     params = CruncherParams()
     policy_params = TCParams()
+
+    policy_params.set_state(
+        year=metaparams.year.tolist())
 
     keep = [
         "mstat",
@@ -60,23 +68,19 @@ def get_inputs(meta_params_dict):
         "otheritem",
         "childcare",
         "mortgage",
-        "mtr_options"
+        "mtr_options",
+        "schema"
     ]
-    full_dict = params.specification(
-        meta_data=True, include_empty=True, serializable=True
-    )
+    cruncher_dict = params.dump()
 
-    params_dict = {var: full_dict[var] for var in keep}
+    default_params = {
+        "Tax Information": {k: v for k, v in cruncher_dict.items() if k in keep},
+        "Policy": policy_params.dump()
+    }
 
-    cruncher_params = params_dict
+    meta = metaparams.dump()
 
-    pol_params = policy_params.specification(
-        meta_data=True, include_empty=True, serializable=True, year=metaparams.year
-    )
-
-    meta = metaparams.specification(meta_data=True, include_empty=True, serializable=True)
-
-    return meta, {"Tax Information": cruncher_params, "Policy": pol_params}
+    return {"meta_parameters": meta, "model_parameters": default_params}
 
 
 def validate_inputs(meta_params_dict, adjustment, errors_warnings):
@@ -94,7 +98,7 @@ def validate_inputs(meta_params_dict, adjustment, errors_warnings):
     policy_params.adjust(pol_params, raise_errors=False)
     errors_warnings["Policy"]["errors"].update(policy_params.errors)
 
-    return errors_warnings
+    return {"errors_warnings": errors_warnings}
 
 
 def run_model(meta_params_dict, adjustment):
@@ -110,35 +114,34 @@ def run_model(meta_params_dict, adjustment):
 
     crunch = Cruncher(inputs=newvals, custom_reform=policy_mods)
 
-    #make dataset for bokeh plots
+    # make dataset for bokeh plots
     ivar = crunch.ivar
     wages = ivar[9] + ivar[10]
     wages = int(wages)
-    df = pd.concat([ivar]*5000, ignore_index=True)
-    increments = pd.DataFrame(list(range(0,500000,100)))
-    zeros = pd.DataFrame([0]*5000)
-    #ivar position of e00200p
+    df = pd.concat([ivar] * 5000, ignore_index=True)
+    increments = pd.DataFrame(list(range(0, 500000, 100)))
+    zeros = pd.DataFrame([0] * 5000)
+    # ivar position of e00200p
     df[9] = increments
-    #set spouse earning to zero
+    # set spouse earning to zero
     df[10] = zeros
     b = Batch(df)
     df_base = b.create_table()
     df_reform = b.create_table(policy_mods)
-    #compute average tax rates
+    # compute average tax rates
     df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']
     df_base['PATR'] = df_base['Payroll Tax'] / df_base['AGI']
     df_reform['IATR'] = df_reform['Individual Income Tax'] / df_reform['AGI']
     df_reform['PATR'] = df_reform['Payroll Tax'] / df_reform['AGI']
 
     return comp_output(crunch, df_base, df_reform, wages)
-    
+
 
 def comp_output(crunch, df_base, df_reform, wages):
 
     liabilities = liability_plot(df_base, df_reform, wages)
     rates = rate_plot(df_base, df_reform, wages)
     credits = credit_plot(df_base, df_reform, wages)
-    
 
     basic = crunch.basic_table()
     detail = crunch.calc_table()
@@ -151,7 +154,6 @@ def comp_output(crunch, df_base, df_reform, wages):
     )
 
     comp_dict = {
-        "model_version": "Tax-Cruncher v" + taxcrunch.__version__,
         "renderable": [
             {"media_type": "table", "title": "Basic Liabilities", "data": table_basic},
             liabilities, rates, credits,
