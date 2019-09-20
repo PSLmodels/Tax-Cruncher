@@ -1,0 +1,85 @@
+// Title: Tax Cuts and Jobs Act, final version
+// Reform_File_Author: Cody Kallen (with updates by Martin Holmer)
+// Reform_Reference: 2018 IRS forms and this URL:
+//        http://docs.house.gov/billsthisweek/20171218/CRPT-115HRPT-466.pdf
+// Reform_Baseline: 2017_law.json
+// Reform_Description:
+// - New personal income tax schedule (regular/non-AMT/non-pass-through) (1)
+// - New pass-through income tax schedule (2)
+// - New standard deductions (3)
+// - Repeal personal exemption (4)
+// - Modification to child tax credit, nonrefundable dependent credits (5)
+// - Modification of Alternative Minimum Tax exemption parameters (6)
+// - Changes to certain above the line deductions (7)
+// - Changes to itemized deductions (8)
+// - Switch to chained CPI from CPI-U for tax parameter adjustment (9)
+// Reform_Parameter_Map:
+// - 1: II_*
+// - 2: PT_*
+// - 3: STD (can safely ignore WARNINGs about 2026+ values)
+// - 4: II_em
+// - 5: ODC_c, _CTC_c, _CTC_ps, _ACTC_c, _ACTC_Income_thd
+// - 6: AMT_em*
+// - 7: ALD_*
+// - 8: ID_* (can safely ignore WARNINGs about values for several parameters)
+// - 9: CPI_offset
+// Note: II_brk*, PT_brk*, STD, II_em are rounded to nearest integer value
+{
+    "II_rt1": {"2018": 0.10},
+    "II_rt2": {"2018": 0.12},
+    "II_rt3": {"2018": 0.22},
+    "II_rt4": {"2018": 0.24},
+    "II_rt5": {"2018": 0.32},
+    "II_rt6": {"2018": 0.35},
+    "II_rt7": {"2018": 0.37},
+    "II_brk1": {"2018": [9525, 19050, 9525, 13600, 19050]},
+    "II_brk2": {"2018": [38700, 77400, 38700, 51800, 77400]},
+    "II_brk3": {"2018": [82500, 165000, 82500, 82500, 165000]},
+    "II_brk4": {"2018": [157500, 315000, 157500, 157500, 315000]},
+    "II_brk5": {"2018": [200000, 400000, 200000, 200000, 400000]},
+    "II_brk6": {"2018": [500000, 600000, 300000, 500000, 600000]},
+    "PT_rt1": {"2018": 0.10},
+    "PT_rt2": {"2018": 0.12},
+    "PT_rt3": {"2018": 0.22},
+    "PT_rt4": {"2018": 0.24},
+    "PT_rt5": {"2018": 0.32},
+    "PT_rt6": {"2018": 0.35},
+    "PT_rt7": {"2018": 0.37},
+    "PT_brk1": {"2018": [9525, 19050, 9525, 13600, 19050]},
+    "PT_brk2": {"2018": [38700, 77400, 38700, 51800, 77400]},
+    "PT_brk3": {"2018": [82500, 165000, 82500, 82500, 165000]},
+    "PT_brk4": {"2018": [157500, 315000, 157500, 157500, 315000]},
+    "PT_brk5": {"2018": [200000, 400000, 200000, 200000, 400000]},
+    "PT_brk6": {"2018": [500000, 600000, 300000, 500000, 600000]},
+    "PT_qbid_rt": {"2018": 0.2},
+    "PT_qbid_taxinc_thd": {"2018": [157500, 315000, 157500, 157500, 315000]},
+    "PT_qbid_taxinc_gap": {"2018": [50000, 100000, 50000, 50000, 100000]},
+    "PT_qbid_w2_wages_rt": {"2018": 0.5},
+    "PT_qbid_alt_w2_wages_rt": {"2018": 0.25},
+    "PT_qbid_alt_property_rt": {"2018": 0.025},
+    "STD": {"2018": [12000, 24000, 12000, 18000, 24000]},
+    "II_em": {"2018": 0},
+    "ODC_c": {"2018": 500},
+    "CTC_c": {"2018": 2000},
+    "CTC_ps": {"2018": [200000, 400000, 200000, 200000, 400000]},
+    "ACTC_c": {"2018": 1400,
+               "2022": 1500,
+               "2025": 1600},
+    "ACTC_Income_thd": {"2018": 2500},
+    "AMT_em": {"2018": [70300, 109400, 54700, 70300, 109400]},
+    "AMT_em_ps": {"2018": [500000, 1000000, 500000, 500000, 1000000]},
+    "AMT_em_pe": {"2018": 718800},
+    "ALD_DomesticProduction_hc": {"2018": 1},
+    "ALD_AlimonyPaid_hc": {"2019": 1},
+    "ALD_AlimonyReceived_hc": {"2019": 0},
+    "ALD_BusinessLosses_c": {"2018": [250000, 500000, 250000, 250000, 500000]},
+    "ID_ps": {"2018": [9e99, 9e99, 9e99, 9e99, 9e99]},
+    "ID_prt": {"2018": 0.00},
+    "ID_crt": {"2018": 1.0},
+    "ID_Charity_crt_all": {"2018": 0.6},
+    "ID_Casualty_hc": {"2018": 1},
+    "ID_AllTaxes_c": {"2018": [10000, 10000, 5000, 10000, 10000]},
+    "ID_Miscellaneous_hc": {"2018": 1},
+    "ID_Medical_frt": {"2017": 0.075,
+                       "2019": 0.100}
+}
