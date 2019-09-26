@@ -13,6 +13,7 @@ from taxcrunch.multi_cruncher import Batch
 import taxcrunch
 from taxcalc import Policy
 from IPython.display import HTML
+from collections import OrderedDict
 
 TCPATH = inspect.getfile(Policy)
 TCDIR = os.path.dirname(TCPATH)
@@ -45,6 +46,11 @@ def get_inputs(meta_params_dict):
     policy_params.set_state(
         year=metaparams.year.tolist())
 
+    filtered_pol_params = OrderedDict()
+    for k, v in policy_params.dump().items():
+        if k =="schema" or v.get("section_1", False):
+            filtered_pol_params[k] = v
+
     keep = [
         "mstat",
         "page",
@@ -75,7 +81,7 @@ def get_inputs(meta_params_dict):
 
     default_params = {
         "Tax Information": {k: v for k, v in cruncher_dict.items() if k in keep},
-        "Policy": policy_params.dump()
+        "Policy": filtered_pol_params
     }
 
     meta = metaparams.dump()
