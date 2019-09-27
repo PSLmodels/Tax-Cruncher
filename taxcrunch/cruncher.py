@@ -425,35 +425,32 @@ class Cruncher:
         Returns:
             self.df_mtr: a Pandas dataframe MTR results with respect to 'mtr_options'
         """
-        if self.mtr_options != "Don't Bother":
 
-            mtr_calc = self.calc1.mtr(calc_all_already_called=True
-                                      )
-            self.mtr_df = pd.DataFrame(
-                data=[mtr_calc[1], mtr_calc[0]],
-                index=["Income Tax Marginal Rate",
-                       "Payroll Tax Marginal Rate"],
-            )
+        mtr_calc = self.calc1.mtr(calc_all_already_called=True
+                                  )
+        self.mtr_df = pd.DataFrame(
+            data=[mtr_calc[1], mtr_calc[0]],
+            index=["Income Tax Marginal Rate",
+                   "Payroll Tax Marginal Rate"],
+        )
 
-            mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True
-                                                   )
-            mtr_df_reform = pd.DataFrame(
-                data=[mtr_calc_reform[1], mtr_calc_reform[0]],
-                index=["Income Tax Marginal Rate",
-                       "Payroll Tax Marginal Rate"],
-            )
+        mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True
+                                               )
+        mtr_df_reform = pd.DataFrame(
+            data=[mtr_calc_reform[1], mtr_calc_reform[0]],
+            index=["Income Tax Marginal Rate",
+                   "Payroll Tax Marginal Rate"],
+        )
 
-            self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
-            self.df_mtr.columns = ["Base", "Reform"]
+        self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
+        self.df_mtr.columns = ["Base", "Reform"]
 
-            self.df_mtr["Change"] = self.df_mtr["Reform"] - self.df_mtr["Base"]
+        self.df_mtr["Change"] = self.df_mtr["Reform"] - self.df_mtr["Base"]
 
-            self.df_mtr = self.df_mtr.round(3)
+        self.df_mtr = self.df_mtr.round(3)
 
-            return self.df_mtr
+        return self.df_mtr
 
-        else:
-            pass
 
     def basic_table(self):
         """
@@ -520,15 +517,10 @@ class Cruncher:
 
         df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
 
-        if self.mtr_options == "Don't Bother":
-            self.df_calc = pd.concat([df_calc1, df_calc2], axis=1)
-            self.df_calc.columns = ["Base", "Reform"]
-            self.df_calc.index = labels
-        else:
-            self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
-            self.df_calc.columns = ["Base", "Reform",
-                                    "+ $1 ({})".format(self.mtr_options)]
-            self.df_calc.index = labels
+        self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
+        self.df_calc.columns = ["Base", "Reform",
+                                "+ $1 ({})".format(self.mtr_options)]
+        self.df_calc.index = labels
 
         self.df_calc = self.df_calc.round(2)
 
