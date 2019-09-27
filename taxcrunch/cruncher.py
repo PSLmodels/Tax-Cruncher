@@ -197,7 +197,7 @@ class Cruncher:
         num_deps = ivar.loc[:, 5]
         mars = np.where(mstat == 1, np.where(num_deps > 0, 4, 1), 2)
         assert np.all(np.logical_or(mars == 1,
-                                np.logical_or(mars == 2, mars == 4)))
+                                    np.logical_or(mars == 2, mars == 4)))
         self.invar["MARS"] = mars
         self.invar["f2441"] = ivar.loc[:, 6]
         self.invar["n24"] = ivar.loc[:, 7]
@@ -268,8 +268,6 @@ class Cruncher:
         elif self.mtr_options == "Mortgage":
             self.ivar2.loc[:, 23] = self.ivar2.loc[:, 23] + 1
             return self.ivar2, "e19200"
-        elif self.mtr_options == "Don't Bother":
-            return self.ivar2, "None"
 
     def choose_baseline(self):
         """
@@ -305,7 +303,8 @@ class Cruncher:
                     baseline_file = self.baseline
                     baseline_url = REFORMS_URL + baseline_file
                     self.pol = tc.Policy()
-                    self.pol.implement_reform(tc.Policy.read_json_reform(baseline_url))
+                    self.pol.implement_reform(
+                        tc.Policy.read_json_reform(baseline_url))
                 except:
                     print("Baseline file does not exist")
 
@@ -338,7 +337,8 @@ class Cruncher:
                 reform_filename = os.path.join(
                     CURRENT_PATH, self.custom_reform)
                 self.pol2 = tc.Policy()
-                self.pol2.implement_reform(tc.Policy.read_json_reform(reform_filename))
+                self.pol2.implement_reform(
+                    tc.Policy.read_json_reform(reform_filename))
             except:
                 print("Reform file path does not exist")
         # then as dictionary
@@ -408,7 +408,8 @@ class Cruncher:
 
         self.basic_vals = pd.concat([basic_vals1, basic_vals2], axis=1)
         self.basic_vals.columns = ["Base", "Reform"]
-        self.basic_vals.index = ["Individual Income Tax", "Employee + Employer Payroll Tax"]
+        self.basic_vals.index = [
+            "Individual Income Tax", "Employee + Employer Payroll Tax"]
 
         self.basic_vals["Change"] = self.basic_vals[
             "Reform"] - self.basic_vals["Base"]
@@ -430,14 +431,16 @@ class Cruncher:
                                       )
             self.mtr_df = pd.DataFrame(
                 data=[mtr_calc[1], mtr_calc[0]],
-                index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
+                index=["Income Tax Marginal Rate",
+                       "Payroll Tax Marginal Rate"],
             )
 
             mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True
                                                    )
             mtr_df_reform = pd.DataFrame(
                 data=[mtr_calc_reform[1], mtr_calc_reform[0]],
-                index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
+                index=["Income Tax Marginal Rate",
+                       "Payroll Tax Marginal Rate"],
             )
 
             self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
@@ -523,7 +526,8 @@ class Cruncher:
             self.df_calc.index = labels
         else:
             self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
-            self.df_calc.columns = ["Base", "Reform", "+ $1"]
+            self.df_calc.columns = ["Base", "Reform",
+                                    "+ $1 ({})".format(self.mtr_options)]
             self.df_calc.index = labels
 
         self.df_calc = self.df_calc.round(2)
