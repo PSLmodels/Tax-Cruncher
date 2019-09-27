@@ -5,7 +5,7 @@ from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, CustomJS, Toggle, NumeralTickFormatter, LinearAxis, Range1d, Span, Label
 
 
-def liability_plot(df_base, df_reform, wages):
+def liability_plot(df_base, df_reform, span, mtr_opt):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
@@ -14,23 +14,23 @@ def liability_plot(df_base, df_reform, wages):
     fig.yaxis.axis_label = "Tax Liabilities"
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
 
-    filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    filer_income = Span(location=span, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
-    label_format = f'{wages:,}'
-    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="Household Wages: $" + label_format,
+    label_format = f'{span:,}'
+    filer_income_label = Label(x=span, y=25, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format,
                            text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
     axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
     fig.add_layout(axis)
 
-    iitax_base = fig.line(x="Wages", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
+    iitax_base = fig.line(x="Axis", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
                           line_width=2, legend="Individual Income Tax Liability", muted_alpha=0.1, source=df_base)
-    payroll_base = fig.line(x="Wages", y="Payroll Tax", line_color='#abdda4', muted_color='#abdda4',
+    payroll_base = fig.line(x="Axis", y="Payroll Tax", line_color='#abdda4', muted_color='#abdda4',
                             line_width=2, legend='Payroll Tax Liability', muted_alpha=0.1, source=df_base)
 
-    iitax_reform = fig.line(x="Wages", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
+    iitax_reform = fig.line(x="Axis", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
                             line_width=2, line_dash='dashed', legend="Individual Income Tax Liability", muted_alpha=0.1, source=df_reform)
-    payroll_reform = fig.line(x="Wages", y="Payroll Tax", line_color='#abdda4', muted_color='#abdda4',
+    payroll_reform = fig.line(x="Axis", y="Payroll Tax", line_color='#abdda4', muted_color='#abdda4',
                               line_width=2, line_dash='dashed', legend='Payroll Tax Liability', muted_alpha=0.1, source=df_reform)
 
     iitax_base.muted = False
@@ -55,7 +55,7 @@ def liability_plot(df_base, df_reform, wages):
                             "object2": payroll_reform}
 
     fig.xaxis.formatter = NumeralTickFormatter(format="$0,000")
-    fig.xaxis.axis_label = "Household Wages"
+    fig.xaxis.axis_label = mtr_opt
     fig.xaxis.minor_tick_line_color = None
 
     fig.legend.click_policy = "mute"
@@ -66,7 +66,7 @@ def liability_plot(df_base, df_reform, wages):
 
     outputs = {
         "media_type": "bokeh",
-        "title": "Tax Liabilities by Wage (Holding Other Inputs Constant)",
+        "title": "Tax Liabilities by {} (Holding Other Inputs Constant)".format(mtr_opt),
         "data": {
             "javascript": js_liability,
             "html": div_liability
@@ -76,7 +76,7 @@ def liability_plot(df_base, df_reform, wages):
     return outputs
 
 
-def rate_plot(df_base, df_reform, wages):
+def rate_plot(df_base, df_reform, span, mtr_opt):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
@@ -85,31 +85,31 @@ def rate_plot(df_base, df_reform, wages):
     fig.yaxis.axis_label = "Tax Rate"
     fig.yaxis.formatter = NumeralTickFormatter(format="0%")
     
-    filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    filer_income = Span(location=span, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
-    label_format = f'{wages:,}'
-    filer_income_label = Label(x=wages, y=25, y_units='screen', x_offset=10, text="Household Wages: $" + label_format, 
+    label_format = f'{span:,}'
+    filer_income_label = Label(x=span, y=25, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format, 
                                 text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
     axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
     fig.add_layout(axis)
     
-    iitax_atr_base = fig.line(x="Wages", y="IATR", line_color='#2b83ba', muted_color='#2b83ba',
+    iitax_atr_base = fig.line(x="Axis", y="IATR", line_color='#2b83ba', muted_color='#2b83ba',
                               line_width=2, legend="Income Tax Average Rate", muted_alpha=0.1, source=df_base)
-    payroll_atr_base = fig.line(x="Wages", y="PATR", line_color='#abdda4', muted_color='#abdda4',
+    payroll_atr_base = fig.line(x="Axis", y="PATR", line_color='#abdda4', muted_color='#abdda4',
                                 line_width=2, legend='Payroll Tax Average Rate', muted_alpha=0.1, source=df_base)
-    iitax_mtr_base = fig.line(x="Wages", y="Income Tax MTR", line_color='#fdae61', muted_color='#fdae61',
+    iitax_mtr_base = fig.line(x="Axis", y="Income Tax MTR", line_color='#fdae61', muted_color='#fdae61',
                               line_width=2, legend="Income Tax Marginal Rate", muted_alpha=0.1, source=df_base)
-    payroll_mtr_base = fig.line(x="Wages", y="Payroll Tax MTR", line_color='#d7191c', muted_color='#d7191c',
+    payroll_mtr_base = fig.line(x="Axis", y="Payroll Tax MTR", line_color='#d7191c', muted_color='#d7191c',
                                 line_width=2, legend='Payroll Tax Marginal Rate', muted_alpha=0.1, source=df_base)
 
-    iitax_atr_reform = fig.line(x="Wages", y="IATR", line_color='#2b83ba', muted_color='#2b83ba', line_width=2,
+    iitax_atr_reform = fig.line(x="Axis", y="IATR", line_color='#2b83ba', muted_color='#2b83ba', line_width=2,
                                 line_dash='dashed', legend="Income Tax Average Rate", muted_alpha=0.1, source=df_reform)
-    payroll_atr_reform = fig.line(x="Wages", y="PATR", line_color='#abdda4', muted_color='#abdda4', line_width=2,
+    payroll_atr_reform = fig.line(x="Axis", y="PATR", line_color='#abdda4', muted_color='#abdda4', line_width=2,
                                   line_dash='dashed', legend='Payroll Tax Average Rate', muted_alpha=0.1, source=df_reform)
-    iitax_mtr_reform = fig.line(x="Wages", y="Income Tax MTR", line_color='#fdae61', muted_color='#fdae61',
+    iitax_mtr_reform = fig.line(x="Axis", y="Income Tax MTR", line_color='#fdae61', muted_color='#fdae61',
                                 line_width=2, line_dash='dashed', legend="Income Tax Marginal Rate", muted_alpha=0.1, source=df_reform)
-    payroll_mtr_reform = fig.line(x="Wages", y="Payroll Tax MTR", line_color='#d7191c', muted_color='#d7191c',
+    payroll_mtr_reform = fig.line(x="Axis", y="Payroll Tax MTR", line_color='#d7191c', muted_color='#d7191c',
                                   line_width=2, line_dash='dashed', legend='Payroll Tax Marginal Rate', muted_alpha=0.1, source=df_reform)
 
     iitax_atr_base.muted = False
@@ -142,7 +142,7 @@ def rate_plot(df_base, df_reform, wages):
                             "object4": payroll_mtr_reform}
 
     fig.xaxis.formatter = NumeralTickFormatter(format="$0,000")
-    fig.xaxis.axis_label = "Household Wages"
+    fig.xaxis.axis_label = mtr_opt
     fig.xaxis.minor_tick_line_color = None
 
     fig.legend.click_policy = "mute"
@@ -153,7 +153,7 @@ def rate_plot(df_base, df_reform, wages):
 
     outputs = {
         "media_type": "bokeh",
-        "title": "Tax Rates by Wage (Holding Other Inputs Constant)",
+        "title": "Tax Rates by {} (Holding Other Inputs Constant)".format(mtr_opt),
         "data": {
             "javascript": js_rate,
             "html": div_rate
@@ -163,38 +163,38 @@ def rate_plot(df_base, df_reform, wages):
     return outputs
 
 
-def credit_plot(df_base, df_reform, wages):
+def credit_plot(df_base, df_reform, span, mtr_opt):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500, x_range=(
         -2500, 70000), tools=tools, active_drag="pan")
 
-    filer_income = Span(location=wages, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    filer_income = Span(location=span, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
-    label_format = f'{wages:,}'
-    filer_income_label = Label(x=wages, y=45, y_units='screen', x_offset=10, text="Household Wages: $" + label_format,
+    label_format = f'{span:,}'
+    filer_income_label = Label(x=span, y=45, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format,
                                 text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
     fig.add_layout(filer_income_label)
     axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
     fig.add_layout(axis)
 
-    eitc_base = fig.line(x="Wages", y="EITC", line_color='#2b83ba', muted_color='#2b83ba',
+    eitc_base = fig.line(x="Axis", y="EITC", line_color='#2b83ba', muted_color='#2b83ba',
                          line_width=2, legend="Earned Income Tax Credit", muted_alpha=0.1, source=df_base)
-    ctc_base = fig.line(x="Wages", y="CTC", line_color='#abdda4', muted_color='#abdda4',
+    ctc_base = fig.line(x="Axis", y="CTC", line_color='#abdda4', muted_color='#abdda4',
                         line_width=2, legend='Nonrefundable Child Tax Credit', muted_alpha=0.1, source=df_base)
-    ctc_refund_base = fig.line(x="Wages", y="CTC Refundable", line_color='#fdae61', muted_color='#fdae61',
+    ctc_refund_base = fig.line(x="Axis", y="CTC Refundable", line_color='#fdae61', muted_color='#fdae61',
                                line_width=2, legend='Refundable Child Tax Credit', muted_alpha=0.1, source=df_base)
-    cdcc_base = fig.line(x="Wages", y="Child care credit", line_color='#d7191c', muted_color='#d7191c',
+    cdcc_base = fig.line(x="Axis", y="Child care credit", line_color='#d7191c', muted_color='#d7191c',
                          line_width=2, legend='Child and Dependent Care Credit', muted_alpha=0.1, source=df_base)
 
-    eitc_reform = fig.line(x="Wages", y="EITC", line_color='#2b83ba', muted_color='#2b83ba', line_width=2,
+    eitc_reform = fig.line(x="Axis", y="EITC", line_color='#2b83ba', muted_color='#2b83ba', line_width=2,
                            line_dash='dashed', legend="Earned Income Tax Credit", muted_alpha=0.1, source=df_reform)
-    ctc_reform = fig.line(x="Wages", y="CTC", line_color='#abdda4', muted_color='#abdda4', line_width=2,
+    ctc_reform = fig.line(x="Axis", y="CTC", line_color='#abdda4', muted_color='#abdda4', line_width=2,
                           line_dash='dashed', legend='Nonrefundable Child Tax Credit', muted_alpha=0.1, source=df_reform)
-    ctc_refund_reform = fig.line(x="Wages", y="CTC Refundable", line_color='#fdae61', muted_color='#fdae61',
+    ctc_refund_reform = fig.line(x="Axis", y="CTC Refundable", line_color='#fdae61', muted_color='#fdae61',
                                  line_width=2, line_dash='dashed', legend='Refundable Child Tax Credit', muted_alpha=0.1, source=df_reform)
-    cdcc_reform = fig.line(x="Wages", y="Child care credit", line_color='#d7191c', muted_color='#d7191c', line_width=2,
+    cdcc_reform = fig.line(x="Axis", y="Child care credit", line_color='#d7191c', muted_color='#d7191c', line_width=2,
                            line_dash='dashed', legend='Child and Dependent Care Credit', muted_alpha=0.1, source=df_reform)
 
     ctc_base.muted = True
@@ -227,7 +227,7 @@ def credit_plot(df_base, df_reform, wages):
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
     fig.yaxis.axis_label = "Tax Credits"
     fig.xaxis.formatter = NumeralTickFormatter(format="$0,000")
-    fig.xaxis.axis_label = "Household Wages"
+    fig.xaxis.axis_label = mtr_opt
     fig.xaxis.minor_tick_line_color = None
 
     fig.legend.click_policy = "mute"
@@ -238,7 +238,7 @@ def credit_plot(df_base, df_reform, wages):
 
     outputs = {
         "media_type": "bokeh",
-        "title": "Tax Credits by Wage (Holding Other Inputs Constant)",
+        "title": "Tax Credits by {} (Holding Other Inputs Constant)".format(mtr_opt),
         "data": {
             "javascript": js_credit,
             "html": div_credit
