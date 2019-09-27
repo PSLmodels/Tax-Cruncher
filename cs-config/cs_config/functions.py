@@ -122,32 +122,62 @@ def run_model(meta_params_dict, adjustment):
 
     # make dataset for bokeh plots
     ivar = crunch.ivar
-    wages = ivar[9] + ivar[10]
-    wages = int(wages)
+    _, mtr_opt, _ = crunch.taxsim_inputs()
     df = pd.concat([ivar] * 5000, ignore_index=True)
     increments = pd.DataFrame(list(range(0, 500000, 100)))
-    zeros = pd.DataFrame([0] * 5000)
-    # ivar position of e00200p
-    df[9] = increments
-    # set spouse earning to zero
-    df[10] = zeros
+
+    # use Calculation Option to determine what var to increment
+    if mtr_opt == 'Taxpayer Earnings':
+        span = int(ivar[9])
+        df[9] = increments
+    elif mtr_opt == 'Spouse Earnings':
+        span = int(ivar[10])
+        df[10] = increments
+    elif mtr_opt == 'Short Term Gains':
+        span = int(ivar[13])
+        df[13] = increments
+    elif mtr_opt == 'Long Term Gains':
+        span = int(ivar[14])
+        df[14] = increments
+    elif mtr_opt == 'Qualified Dividends':
+        span = int(ivar[14])
+        df[11] = increments
+    elif mtr_opt == 'Interest Received':
+        span = int(ivar[12])
+        df[12] = increments
+    elif mtr_opt == 'Pensions':
+        span = int(ivar[17])
+        df[17] = increments
+    elif mtr_opt == 'Gross Social Security Benefits':
+        span = int(ivar[18])
+        df[18] = increments
+    elif mtr_opt == 'Real Estate Taxes Paid':
+        span = int(ivar[20])
+        df[20] = increments
+    elif mtr_opt == 'Mortgage':
+        span = int(ivar[23])
+        df[23] = increments    
+
     b = Batch(df)
     df_base = b.create_table()
     df_reform = b.create_table(policy_mods)
+
     # compute average tax rates
     df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']
     df_base['PATR'] = df_base['Payroll Tax'] / df_base['AGI']
     df_reform['IATR'] = df_reform['Individual Income Tax'] / df_reform['AGI']
     df_reform['PATR'] = df_reform['Payroll Tax'] / df_reform['AGI']
+    df_base['Axis'] = increments
+    df_reform['Axis'] = increments
 
-    return comp_output(crunch, df_base, df_reform, wages)
+    return comp_output(crunch, df_base, df_reform, span, mtr_opt)
 
 
-def comp_output(crunch, df_base, df_reform, wages):
+def comp_output(crunch, df_base, df_reform, span, mtr_opt):
 
-    liabilities = liability_plot(df_base, df_reform, wages)
-    rates = rate_plot(df_base, df_reform, wages)
-    credits = credit_plot(df_base, df_reform, wages)
+    liabilities = liability_plot(df_base, df_reform, span, mtr_opt)
+    rates = rate_plot(df_base, df_reform, span, mtr_opt)
+    credits = credit_plot(df_base, df_reform, span, mtr_opt)
 
     basic = crunch.basic_table()
     detail = crunch.calc_table()
