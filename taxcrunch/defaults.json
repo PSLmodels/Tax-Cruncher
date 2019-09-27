@@ -441,8 +441,8 @@
         }
     },
     "mtr_options": {
-        "title": "Options for marginal tax rate calculation",
-        "description": "Adds $1 to chosen field for analysis on how liabilities change.",
+        "title": "Options for skyline chart analysis",
+        "description": "Skyline charts will be created by incrementing this measure.",
         "section_1": "Calculation Options",
         "notes": "",
         "type": "str",
