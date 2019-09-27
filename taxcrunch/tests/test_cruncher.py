@@ -40,7 +40,7 @@ def test_calc_table():
     c = create_data()
     table = c.calc_table()
     assert isinstance(table, pd.DataFrame)
-    assert table.iloc[0]["Reform"] + 1 == table.iloc[0]["+ $1"]
+    assert table.iloc[0]["Reform"] + 1 == table.iloc[0]["+ $1 (Taxpayer Earnings)"]
     # table.to_csv("expected_calc_table.csv")
     expected_table = pd.read_csv(
         os.path.join(CURR_PATH, "expected_calc_table.csv"), index_col=0
