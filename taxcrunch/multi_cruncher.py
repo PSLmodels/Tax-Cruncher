@@ -11,6 +11,8 @@ from datetime import date
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
+FINITE_DIFF = 0.01
+
 
 class BatchParams(Parameters):
 
@@ -43,7 +45,8 @@ class Batch:
 
     def __init__(self, path):
         self.path = path
-        self.invar, self.rows = self.read_input()
+        self.invar, self.invar_marg, self.rows = self.read_input()
+        self.mtr = self.calc_mtr(reform_file=None)
 
         self.tc_vars = [
             "RECID",
@@ -121,11 +124,15 @@ class Batch:
                               'value'][0]['value']], axis=0)
         params_df = pd.DataFrame(array).transpose()
 
+        params_marg = params_df.copy()
+        params_marg.loc[:, 9] = params_marg.loc[:, 9] + FINITE_DIFF
+
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()
         self.invar = c.translate(params_df)
+        self.invar_marg = c.translate(params_marg)
         self.rows = len(self.invar.index)
-        return self.invar, self.rows
+        return self.invar, self.invar_marg, self.rows
 
     def create_table(self, reform_file=None, be_sub=0, be_inc=0, be_cg=0):
         """
@@ -173,7 +180,7 @@ class Batch:
                 calc_base, calc, response_elasticities, dump=True)
             calcs = df2br[self.tc_vars]
 
-        mtr = calc.mtr(wrt_full_compensation=False)
+        mtr = self.calc_mtr(reform_file)
         mtr_df = pd.DataFrame(data=mtr).transpose()
         df_res = pd.concat([calcs, mtr_df], axis=1)
         df_res.columns = self.labels
@@ -216,7 +223,7 @@ class Batch:
     def write_output_file(self, output_filename=None, reform_file=None, be_sub=0, be_inc=0, be_cg=0):
         """
         Writes an output table as a csv. Like the create_table() method, default is current
-            law and optional reform_file argument is a file path to or dictionary of a reform.
+            law and optional reform_file argument is a file path to json file or dictionary of a reform.
 
         Default output filename is "cruncher-mm-dd-YYYY.csv" but user can change output filename
             with output_filename argument.
@@ -270,3 +277,40 @@ class Batch:
             except:
                 raise 'Reform file does not exist'
         return pol
+
+    def calc_mtr(self, reform_file):
+        """
+        Calculates income tax, payroll tax, and combined marginal rates
+        """
+        year = self.invar['FLPDYR'][0]
+        year = int(year.item())
+        recs_base = tc.Records(data=self.invar, start_year=year)
+        if reform_file == None:
+            pol = tc.Policy()
+        else:
+            pol = self.get_pol(reform_file)
+
+        calc_base = tc.Calculator(policy=pol, records=recs_base)
+        calc_base.advance_to_year(year)
+        calc_base.calc_all()
+        payrolltax_base = calc_base.array('payrolltax')
+        incometax_base = calc_base.array('iitax')
+        combined_taxes_base = incometax_base + payrolltax_base
+
+        recs_marg = tc.Records(data=self.invar_marg, start_year=year)
+        calc_marg = tc.Calculator(policy=pol, records=recs_marg)
+        calc_marg.advance_to_year(year)
+        calc_marg.calc_all()
+        payrolltax_marg = calc_marg.array('payrolltax')
+        incometax_marg = calc_marg.array('iitax')
+        combined_taxes_marg = incometax_marg + payrolltax_marg
+
+        payrolltax_diff = payrolltax_marg - payrolltax_base
+        incometax_diff = incometax_marg - incometax_base
+        combined_diff = combined_taxes_marg - combined_taxes_base
+
+        mtr_payrolltax = payrolltax_diff / FINITE_DIFF
+        mtr_incometax = incometax_diff / FINITE_DIFF
+        mtr_combined = combined_diff / FINITE_DIFF
+
+        return (mtr_payrolltax, mtr_incometax, mtr_combined)
