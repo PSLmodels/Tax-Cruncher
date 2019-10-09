@@ -7,38 +7,42 @@ import taxcalc as tc
 import taxcrunch.cruncher as cr
 import taxcrunch.multi_cruncher as mcr
 
-def test_get_pol_no_reform():
-    b = mcr.Batch(path="tests/example_test_input.csv")
-    assert isinstance(b, mcr.Batch)
-    m = b.get_pol(reform_file=None)
-    assert isinstance(m,tc.Policy)
-
-def test_get_pol_directory_file():
-    b = mcr.Batch(path="tests/example_test_input.csv")
-    # use the full file pathname for testing purposes
-    local_reform = "tests/test_reform.json"
-    n = b.get_pol(reform_file=local_reform) 
-    assert n._CTC_c[2018-2013] == 1000
+b = mcr.Batch(path="tests/example_test_input.csv")
 
 reform_dict = {
     "CTC_c": {2013: 1300, 2018: 1800}
     }
 
-def test_get_pol_dict():
-    b = mcr.Batch(path="tests/example_test_input.csv")
+def test_read_input(crunch=b):
+    
+    invar, invar_marg, rows = b.read_input()
+    assert isinstance(invar, pd.DataFrame)
+    assert isinstance(rows, int)
+
+    # check that number of input rows matches output rows
+    assert rows == len(b.create_table().index)
+
+def test_get_pol_directory_file(crunch=b):
+
+    local_reform = "tests/test_reform.json"
+    n = b.get_pol(reform_file=local_reform) 
+    assert n._CTC_c[2018-2013] == 1000
+
+def test_get_pol_dict(crunch=b):
+    
     m = b.get_pol(reform_file=reform_dict)
     assert m._CTC_c[2018-2013] == 1800
 
-def test_get_pol_link():
-    b = mcr.Batch(path="tests/example_test_input.csv")
+def test_get_pol_link(crunch=b):
+    
     reform_preset = "Trump2016.json"
     m = b.get_pol(reform_file=reform_preset)
     assert m._II_rt1[2017-2013] == 0.12
 
 CURR_PATH = os.path.abspath(os.path.dirname(__file__))
 
-def test_calc_table():
-    b = mcr.Batch(path="tests/example_test_input.csv")
+def test_calc_table(crunch=b):
+    
     table = b.create_table()
     assert isinstance(table, pd.DataFrame)
     # table.to_csv("expected_multi_table.csv")
@@ -47,3 +51,29 @@ def test_calc_table():
     )
     for col in table.columns:
         assert np.allclose(table[col], expected_table[col])
+
+def test_create_table_behresp_args(crunch=b):
+    
+    table = b.create_table(reform_file=reform_dict, be_sub=0.25)
+    assert isinstance(table, pd.DataFrame)
+
+    # be_sub must be positive
+    with pytest.raises(AssertionError):
+        b.create_table(reform_file=reform_dict, be_sub=-0.25)
+
+    # can only specify response if there is a reform
+    with pytest.raises(AssertionError):
+        b.create_table(be_sub=0.25)
+
+def test_diff_tables(crunch=b):
+
+    table = b.create_diff_table(reform_file=reform_dict)
+    assert isinstance(table,pd.DataFrame)
+
+    # can only specify response if there is a reform
+    with pytest.raises(AssertionError):
+        b.create_diff_table(reform_file=None, be_sub=0.25)
+
+    # baseline must be current law if response
+    with pytest.raises(AssertionError):
+        b.create_diff_table(reform_file="Trump2016.json", baseline=reform_dict, be_sub=0.25)
