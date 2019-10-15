@@ -14,5 +14,6 @@ dependencies:
 - dask
 - bokeh
 - markdown
+- pip
 - pip:
   - cs-kit
