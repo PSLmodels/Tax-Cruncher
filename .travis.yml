@@ -16,9 +16,7 @@ install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda config --set always_yes yes
   - conda update -n base -c defaults conda
-  - conda create -n taxcrunch-env python=$TRAVIS_PYTHON_VERSION;
-  - source activate taxcrunch-env
-  - conda env update -f environment.yml
+  - conda env create --name taxcrunch-env --file=environment.yml python=$TRAVIS_PYTHON_VERSION
   - source activate taxcrunch-env
 
 # command to run tests
