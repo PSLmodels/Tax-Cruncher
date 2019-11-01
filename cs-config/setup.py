@@ -9,9 +9,9 @@ import setuptools
 import os
 
 setuptools.setup(
-    name="compconfig",
-    description="COMP configuration files.",
-    url="https://github.com/comp-org/COMP-Developer-Toolkit",
+    name="cs-config",
+    description="Compute Studio configuration files.",
+    url="https://github.com/compute-studio/compute-studio-kit",
     packages=setuptools.find_packages(),
     include_package_data=True,
 )
