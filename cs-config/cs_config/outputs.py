@@ -1,4 +1,4 @@
-from bokeh.embed import components
+from bokeh.embed import json_item
 from bokeh.layouts import column, row, WidgetBox, layout
 from bokeh.palettes import Spectral4
 from bokeh.plotting import figure
@@ -62,15 +62,12 @@ def liability_plot(df_base, df_reform, span, mtr_opt):
 
     layout = column(fig, row(base_toggle, reform_toggle))
 
-    js_liability, div_liability = components(layout)
+    data = json_item(layout)
 
     outputs = {
         "media_type": "bokeh",
         "title": "Tax Liabilities by {} (Holding Other Inputs Constant)".format(mtr_opt),
-        "data": {
-            "javascript": js_liability,
-            "html": div_liability
-        }
+        "data": data
     }
 
     return outputs
@@ -149,15 +146,12 @@ def rate_plot(df_base, df_reform, span, mtr_opt):
 
     layout = column(fig, row(base_toggle, reform_toggle))
 
-    js_rate, div_rate = components(layout)
+    data = json_item(layout)
 
     outputs = {
         "media_type": "bokeh",
         "title": "Tax Rates by {} (Holding Other Inputs Constant)".format(mtr_opt),
-        "data": {
-            "javascript": js_rate,
-            "html": div_rate
-        }
+        "data": data
     }
 
     return outputs
@@ -234,15 +228,12 @@ def credit_plot(df_base, df_reform, span, mtr_opt):
 
     layout = column(fig, row(base_toggle, reform_toggle))
 
-    js_credit, div_credit = components(layout)
+    data = json_item(layout)
 
     outputs = {
         "media_type": "bokeh",
         "title": "Tax Credits by {} (Holding Other Inputs Constant)".format(mtr_opt),
-        "data": {
-            "javascript": js_credit,
-            "html": div_credit
-        }
+        "data": data
     }
 
     return outputs
