@@ -1,7 +1,7 @@
 How to specify CSV input file
 ------
 
-To analyze multiple tax filers, the user must specify a csv file with the filers' data. Each row of the csv file represents a filer and each column represents a variable. The file should not have column headings and must be **comma-delimited** (this is the standard format of CSV files when created in Excel). Please note that the **year** must be the **same for all entries**. The input file should have 24 columns in the following order:
+To analyze multiple tax filers, the user must specify a csv file with the filers' data. Each row of the csv file represents a filer and each column represents a variable. Please note that the file should not have column headings and year must be the same for all observations. The input file should have 24 columns in the following order:
 
 1. RECID (ID for tax filer)
 2. year
@@ -22,11 +22,11 @@ To analyze multiple tax filers, the user must specify a csv file with the filers
 17. nonprop (other non-property income)
 18. pensions (taxable pensions)
 19. gssi (gross social security benefits)
-20. ui (unemployment insurance)
+20. ui (unemployment insurance received)
 21. proptax (real estate taxes paid)
-22. otheritem (other itemized deductions)
+22. otheritem (other itemized deductions subject to SALT cap, e.g. state and local taxes)
 23. childcare (child care expenses)
-24. mortgage (deductions not included in 'otheritem')
+24. mortgage (itemized deductions not subject to SALT cap, e.g., charitable contributions and home mortgage interest)
 
 For example, a 50-year old single filer with 3 dependents under 13 who makes $50,000 per year could be represented by the following:
 
