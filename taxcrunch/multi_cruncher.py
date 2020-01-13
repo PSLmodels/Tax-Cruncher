@@ -34,7 +34,7 @@ class Batch:
 
     Parameters
     ----------
-    path: file path to csv file with input data
+    path: file path to csv file with input data or a Pandas DataFrame
         Make sure that the file is formatted according to the instructions in the README
 
     Returns
@@ -100,13 +100,11 @@ class Batch:
             self.invar: Tax-Calculator style dataframe of inputs
             self.rows: number of rows of input file
         """
-        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         if isinstance(self.path, pd.DataFrame):
             ivar = self.path
         else:
-            input_file = os.path.join(CURRENT_PATH, self.path)
-            ivar = pd.read_csv(input_file, sep=',',
+            ivar = pd.read_csv(self.path, sep=',',
                                engine="python", header=None)
         # check that input CSV has 24 columns
         assert len(ivar.columns) == 24
@@ -253,18 +251,15 @@ class Batch:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         # check to see if file path to reform_file exists
-        if isinstance(reform_file, str) and os.path.isfile(os.path.join(CURRENT_PATH, reform_file)):
-            reform_path = os.path.join(CURRENT_PATH, reform_file)
+        if isinstance(reform_file, str) and os.path.isfile(reform_file):
             pol = tc.Policy()
-            pol.implement_reform(tc.Policy.read_json_reform(reform_path))
+            pol.implement_reform(tc.Policy.read_json_reform(reform_file))
         # try reform_file as dictionary
         elif isinstance(reform_file, dict):
-            reform = reform_file
             pol = tc.Policy()
-            pol.implement_reform(reform)
+            pol.implement_reform(reform_file)
         # if file path does not exist, check Tax-Calculator reforms file
         else:
             try:
