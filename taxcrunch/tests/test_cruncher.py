@@ -8,25 +8,28 @@ from taxcrunch import cruncher as cr
 
 CURR_PATH = os.path.abspath(os.path.dirname(__file__))
 
+input_path = os.path.join(CURR_PATH, "test_adjustment.json")
+reform_path = os.path.join(CURR_PATH, "test_reform.json")
+no_reform_path = os.path.join(CURR_PATH, "test_adjustment_noreform.json")
 
 def create_data():
-    c = cr.Cruncher(inputs="tests/test_adjustment.json")
+    c = cr.Cruncher(inputs=input_path)
     return c
 
 
 def test_baseline_choice():
-    c = cr.Cruncher(baseline="tests/test_reform.json")
+    c = cr.Cruncher(baseline=reform_path)
     assert isinstance(c, cr.Cruncher)
 
 
 def test_reform_choice():
     c = cr.Cruncher(
-        inputs="tests/test_adjustment_noreform.json", custom_reform="tests/test_reform.json"
+        inputs=no_reform_path, custom_reform=reform_path
     )
     assert isinstance(c, cr.Cruncher)
     with pytest.raises(AttributeError):
         cr.Cruncher(
-            inputs="tests/test_adjustment.json", custom_reform="tests/test_reform.json"
+            inputs=input_path, custom_reform=reform_path
         )
 
 

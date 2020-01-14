@@ -7,7 +7,11 @@ import taxcalc as tc
 import taxcrunch.cruncher as cr
 import taxcrunch.multi_cruncher as mcr
 
-b = mcr.Batch(path="tests/example_test_input.csv")
+CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+input_path = os.path.join(CURRENT_PATH, "example_test_input.csv")
+reform_path = os.path.join(CURRENT_PATH, "test_reform.json")
+b = mcr.Batch(input_path)
 
 reform_dict = {
     "CTC_c": {2013: 1300, 2018: 1800}
@@ -24,8 +28,7 @@ def test_read_input(crunch=b):
 
 def test_get_pol_directory_file(crunch=b):
 
-    local_reform = "tests/test_reform.json"
-    n = b.get_pol(reform_file=local_reform) 
+    n = b.get_pol(reform_file=reform_path) 
     assert n._CTC_c[2018-2013] == 1000
 
 def test_get_pol_dict(crunch=b):
