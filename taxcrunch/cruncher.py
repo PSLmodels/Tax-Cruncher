@@ -47,8 +47,10 @@ class Cruncher:
 
     """
 
+    INPUT_PATH = os.path.join(CURRENT_PATH, "adjustment_template.json")
+
     def __init__(
-        self, inputs="adjustment_template.json", custom_reform=None, baseline=None
+        self, inputs=INPUT_PATH, custom_reform=None, baseline=None
     ):
         self.inputs = inputs
         self.custom_reform = custom_reform
@@ -71,9 +73,8 @@ class Cruncher:
         """
         Adjust inputs based on 'adjustment_template.json' or a different specified json file
         """
-        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
-        if isinstance(self.inputs, str):
-            self.adjustment = os.path.join(CURRENT_PATH, self.inputs)
+        if isinstance(self.inputs, str) and os.path.isfile(self.inputs):
+            self.adjustment = self.inputs
         else:
             self.adjustment = self.inputs
         return self.adjustment
@@ -282,7 +283,6 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         # if no baseline policy is specified, baseline is current law
         if self.baseline is None:
@@ -290,9 +290,9 @@ class Cruncher:
         # if a baseline policy is specified, first see if user created json
         # policy file
         else:
-            exists = os.path.isfile(os.path.join(CURRENT_PATH, self.baseline))
+            exists = os.path.isfile(self.baseline)
             if exists:
-                baseline_file = os.path.join(CURRENT_PATH, self.baseline)
+                baseline_file = self.baseline
                 self.pol = tc.Policy()
                 self.pol.implement_reform(
                     tc.Policy.read_json_reform(baseline_file))
@@ -321,7 +321,6 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-        CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
         # if user specified a preset reform in their adjustment file, pull
         # reform from Tax-Calculator reforms folder
@@ -334,8 +333,7 @@ class Cruncher:
         # first as file path
         elif self.reform_options == "None" and isinstance(self.custom_reform, str):
             try:
-                reform_filename = os.path.join(
-                    CURRENT_PATH, self.custom_reform)
+                reform_filename = self.custom_reform
                 self.pol2 = tc.Policy()
                 self.pol2.implement_reform(
                     tc.Policy.read_json_reform(reform_filename))
@@ -450,7 +448,6 @@ class Cruncher:
         self.df_mtr = self.df_mtr.round(3)
 
         return self.df_mtr
-
 
     def basic_table(self):
         """

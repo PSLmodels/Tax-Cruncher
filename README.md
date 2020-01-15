@@ -14,10 +14,10 @@ Tax-Cruncher can analyze individual data from one filer or multiple filers under
 
 - First, define your inputs. You may either edit `taxcrunch/adjustment_template.json` directly in your local repository or create a separate JSON file that includes just the parameters you would like to adjust.
 
-- Second, pick the policy proposal you would like to analyze. Browse the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) for a preset reform, or specify your own reform in a JSON file in accordance with the [instructions](https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/reforms/REFORMS.md#how-to-specify-a-tax-reform-in-a-json-policy-reform-file) in the Tax-Calculator repository. Fill out the `reform_options` field in your adjustment file with the appropriate preset reform name. Do not specify a preset reform if you specified a file path to a custom reform.
+- Second, pick the policy proposal you would like to analyze. Browse the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) for a preset reform, or specify your own reform in a JSON file in accordance with the [instructions](https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/reforms/REFORMS.md#how-to-specify-a-tax-reform-in-a-json-policy-reform-file) in the Tax-Calculator repository. Fill out the `reform_options` field in your adjustment file with the appropriate preset reform name. Do not specify a preset reform if you created a custom reform.
 
 - Third, initiate the Cruncher class. If you modified `taxcrunch/adjustment_template.json` directly and chose a preset policy reform file, you can initiate the class with `c = Cruncher()`. Otherwise, initiate the Cruncher class with: 
-`c = Cruncher(inputs='ADJUSTMENT_FILE_NAME', custom_reform='REFORM_FILE_NAME')`.
+`c = Cruncher(inputs='ADJUSTMENT_FILE_PATH', custom_reform='REFORM_FILE_PATH')`.
 
 - Fourth, analyze your reform. Try out the following methods:
 ```python
@@ -35,7 +35,7 @@ c.calc_diff_table()
 
 - First, define your inputs in a csv file. Instructions on how to make this CSV file can be found [here](docs/INPUT_INSTRUCTIONS.md).
 
-- Second, initiate the `Batch` class. The Batch class can be found in the `multi_cruncher` module. Initiate the Batch class with `b = Batch('INPUT_DATA_FILE')`
+- Second, initiate the `Batch` class. The Batch class can be found in the `multi_cruncher` module. Initiate the Batch class with `b = Batch('INPUT_DATA_FILE_PATH')`
 
 - Third, analyze your data. You can analyze your data under current law or under a policy reform using the `create_table()` method. If you do not pass an argument to the method, the default policy is current law. To analyze your data under a policy reform, pass a JSON reform file, a reform dictionary, or a preset reform from the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) to the `create_table()` method.
 
@@ -43,7 +43,7 @@ c.calc_diff_table()
 #liabilities under current law
 b.create_table()
 #liabilities under reform 
-b.create_table('REFORM_FILE_NAME')
+b.create_table('REFORM_FILE_PATH')
 ```
 
 How to install Tax-Cruncher
