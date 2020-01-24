@@ -8,41 +8,28 @@ Tax-Cruncher's web application is hosted on [Compute Studio](https://compute.stu
 
 How to use Tax-Cruncher
 ------------
-Tax-Cruncher can analyze individual data from one filer or multiple filers under different policy proposals. The procedures for the two uses are different. For examples on how to use Tax-Cruncher and the outputs you can expect to generate, explore the Jupyter Notebooks in the [docs](https://github.com/PSLmodels/Tax-Cruncher/tree/master/docs) directory.
+Tax-Cruncher can analyze individual data from one filer or multiple filers.
 
 **To analyze individual data from one filer:** 
 
-- First, define your inputs. You may either edit `taxcrunch/adjustment_template.json` directly in your local repository or create a separate JSON file that includes just the parameters you would like to adjust.
-
-- Second, pick the policy proposal you would like to analyze. Browse the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) for a preset reform, or specify your own reform in a JSON file in accordance with the [instructions](https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/reforms/REFORMS.md#how-to-specify-a-tax-reform-in-a-json-policy-reform-file) in the Tax-Calculator repository. Fill out the `reform_options` field in your adjustment file with the appropriate preset reform name. Do not specify a preset reform if you created a custom reform.
-
-- Third, initiate the Cruncher class. If you modified `taxcrunch/adjustment_template.json` directly and chose a preset policy reform file, you can initiate the class with `c = Cruncher()`. Otherwise, initiate the Cruncher class with: 
-`c = Cruncher(inputs='ADJUSTMENT_FILE_PATH', custom_reform='REFORM_FILE_PATH')`.
-
-- Fourth, analyze your reform. Try out the following methods:
-```python
-#basic outputs
-c.basic_table()
-#marginal tax rates
-c.mtr_table()
-#detailed outputs with marginal tax rate analysis 
-c.calc_table()
-#detailed outputs with difference between reform and baseline
-c.calc_diff_table()
-```
+- The easiest way to analyze one tax filer is with the [web application](https://compute.studio/PSLmodels/Tax-Cruncher/) hosted on Compute Studio.
 
 **To analyze individual data from multiple filers:**
 
-- First, define your inputs in a csv file. Instructions on how to make this CSV file can be found [here](docs/INPUT_INSTRUCTIONS.md).
+*For a more complete demo of Tax-Cruncher's multi-filer capabalities, explore this [Jupyter Notebook](https://github.com/PSLmodels/Tax-Cruncher/blob/master/docs/cruncher_demo.ipynb).*
 
-- Second, initiate the `Batch` class. The Batch class can be found in the `multi_cruncher` module. Initiate the Batch class with `b = Batch('INPUT_DATA_FILE_PATH')`
+- First, define your inputs in a csv file. Each row of the file represents one filing unit. Instructions on how to construct a csv input file can be found [here](docs/INPUT_INSTRUCTIONS.md).
 
-- Third, analyze your data. You can analyze your data under current law or under a policy reform using the `create_table()` method. If you do not pass an argument to the method, the default policy is current law. To analyze your data under a policy reform, pass a JSON reform file, a reform dictionary, or a preset reform from the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) to the `create_table()` method.
+- Second, initiate the `Batch` class found in the `taxcrunch/multi_cruncher` module. Initiate the Batch class with `b = Batch('INPUT_DATA_FILE_PATH')`.
+
+- Third, analyze your data. You can analyze your data under current law or under a policy reform using the `create_table()` method. If you do not pass an argument to the method, Tax-Cruncher will analyze your data under current law. To analyze your data under a policy reform, pass a JSON reform file, a reform dictionary, or a preset reform from the Tax-Calculator [reforms folder](https://github.com/PSLmodels/Tax-Calculator/tree/master/taxcalc/reforms) to the `create_table()` method.
 
 ```python
-#liabilities under current law
+# initiate Batch class
+b = Batch('FILE_PATH')
+# liabilities under current law
 b.create_table()
-#liabilities under reform 
+# liabilities under reform 
 b.create_table('REFORM_FILE_PATH')
 ```
 
