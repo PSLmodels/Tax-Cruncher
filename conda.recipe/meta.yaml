@@ -1,6 +1,9 @@
 package:
   name: taxcrunch
   version: 0.0.0
+  
+source:
+  path: ..
 
 requirements:
   build:
