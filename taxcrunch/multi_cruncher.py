@@ -157,7 +157,8 @@ class Batch:
         """
         year = self.invar['FLPDYR'][0]
         year = int(year.item())
-        recs = tc.Records(data=self.invar, start_year=year)
+        recs = tc.Records(data=self.invar, start_year=year,
+                          gfactors=None, weights=None, adjust_ratios=None)
 
         if reform_file == None:
             pol = tc.Policy()
@@ -277,7 +278,8 @@ class Batch:
         """
         year = self.invar['FLPDYR'][0]
         year = int(year.item())
-        recs_base = tc.Records(data=self.invar, start_year=year)
+        recs_base = tc.Records(data=self.invar, start_year=year,
+                               gfactors=None, weights=None, adjust_ratios=None)
         if reform_file == None:
             pol = tc.Policy()
         else:
@@ -290,7 +292,8 @@ class Batch:
         incometax_base = calc_base.array('iitax')
         combined_taxes_base = incometax_base + payrolltax_base
 
-        recs_marg = tc.Records(data=self.invar_marg, start_year=year)
+        recs_marg = tc.Records(data=self.invar_marg, start_year=year,
+                               gfactors=None, weights=None, adjust_ratios=None)
         calc_marg = tc.Calculator(policy=pol, records=recs_marg)
         calc_marg.advance_to_year(year)
         calc_marg.calc_all()
