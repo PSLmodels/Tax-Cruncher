@@ -14,13 +14,15 @@ def liability_plot(df_base, df_reform, span, mtr_opt):
     fig.yaxis.axis_label = "Tax Liabilities"
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
 
-    filer_income = Span(location=span, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    filer_income = Span(location=span, dimension='height',
+                        line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
     label_format = f'{span:,}'
     filer_income_label = Label(x=span, y=25, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format,
-                           text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
+                               text_color='#303030', text_font="arial", text_font_style="italic", text_font_size="10pt")
     fig.add_layout(filer_income_label)
-    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    axis = Span(location=0, dimension='width',
+                line_color='#bfbfbf', line_width=1.5)
     fig.add_layout(axis)
 
     iitax_base = fig.line(x="Axis", y="Individual Income Tax", line_color='#2b83ba', muted_color='#2b83ba',
@@ -80,19 +82,21 @@ def rate_plot(df_base, df_reform, span, mtr_opt):
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
     fig = figure(plot_width=600, plot_height=500,
-                x_range=(-10000, 300000), y_range=(-0.3, 0.5), tools=tools, active_drag="pan")
+                 x_range=(-10000, 300000), y_range=(-0.3, 0.5), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Rate"
     fig.yaxis.formatter = NumeralTickFormatter(format="0%")
-    
-    filer_income = Span(location=span, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+
+    filer_income = Span(location=span, dimension='height',
+                        line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
     label_format = f'{span:,}'
-    filer_income_label = Label(x=span, y=25, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format, 
-                                text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
+    filer_income_label = Label(x=span, y=25, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format,
+                               text_color='#303030', text_font="arial", text_font_style="italic", text_font_size="10pt")
     fig.add_layout(filer_income_label)
-    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    axis = Span(location=0, dimension='width',
+                line_color='#bfbfbf', line_width=1.5)
     fig.add_layout(axis)
-    
+
     iitax_atr_base = fig.line(x="Axis", y="IATR", line_color='#2b83ba', muted_color='#2b83ba',
                               line_width=2, legend_label="Income Tax Average Rate", muted_alpha=0.1, source=df_base)
     payroll_atr_base = fig.line(x="Axis", y="PATR", line_color='#abdda4', muted_color='#abdda4',
@@ -168,13 +172,15 @@ def credit_plot(df_base, df_reform, span, mtr_opt):
     fig = figure(plot_width=600, plot_height=500, x_range=(
         -2500, 70000), tools=tools, active_drag="pan")
 
-    filer_income = Span(location=span, dimension='height', line_color='black', line_dash='dotted', line_width=1.5)
+    filer_income = Span(location=span, dimension='height',
+                        line_color='black', line_dash='dotted', line_width=1.5)
     fig.add_layout(filer_income)
     label_format = f'{span:,}'
     filer_income_label = Label(x=span, y=45, y_units='screen', x_offset=10, text="{}: $".format(mtr_opt) + label_format,
-                                text_color='#303030', text_font="arial", text_font_style="italic", text_font_size = "10pt")
+                               text_color='#303030', text_font="arial", text_font_style="italic", text_font_size="10pt")
     fig.add_layout(filer_income_label)
-    axis = Span(location=0, dimension='width', line_color='#bfbfbf', line_width=1.5)
+    axis = Span(location=0, dimension='width',
+                line_color='#bfbfbf', line_width=1.5)
     fig.add_layout(axis)
 
     eitc_base = fig.line(x="Axis", y="EITC", line_color='#2b83ba', muted_color='#2b83ba',
