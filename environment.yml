@@ -12,7 +12,7 @@ dependencies:
 - ipython
 - pytest
 - dask
-- bokeh<2.0.0
+- bokeh
 - markdown
 - pip
 - pip:
