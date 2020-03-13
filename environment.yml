@@ -4,7 +4,7 @@ channels:
 - conda-forge
 dependencies:
 - python>=3.6.5
-- taxcalc<2.8.0
+- taxcalc
 - behresp>=0.9.0
 - pandas>=0.23
 - numpy>=1.13
@@ -12,7 +12,7 @@ dependencies:
 - ipython
 - pytest
 - dask
-- bokeh<2.0.0
+- bokeh
 - markdown
 - pip
 - pip:
