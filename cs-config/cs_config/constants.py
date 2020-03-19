@@ -8,7 +8,7 @@ POLICY_SCHEMA = {
             "validators": {
                 "choice": {
                     "choices": [
-                        yr for yr in range(2013,2029)
+                        yr for yr in range(2013, 2030 + 1)
                     ]
                 }
             }
@@ -53,10 +53,9 @@ class MetaParameters(paramtools.Parameters):
             "validators": {
                 "choice": {
                     "choices": [
-                        yr for yr in range(2013,2029)
+                        yr for yr in range(2013, 2030 + 1)
                     ]
                 }
             }
         }
     }
-
