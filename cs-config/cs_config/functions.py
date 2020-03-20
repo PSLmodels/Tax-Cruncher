@@ -12,7 +12,6 @@ from taxcrunch.cruncher import Cruncher, CruncherParams
 from taxcrunch.multi_cruncher import Batch
 import taxcrunch
 from taxcalc import Policy
-from IPython.display import HTML
 from collections import OrderedDict
 
 TCPATH = inspect.getfile(Policy)
@@ -156,7 +155,7 @@ def run_model(meta_params_dict, adjustment):
         df[20] = increments
     elif mtr_opt == 'Mortgage':
         span = int(ivar[23])
-        df[23] = increments    
+        df[23] = increments
 
     b = Batch(df)
     df_base = b.create_table()
