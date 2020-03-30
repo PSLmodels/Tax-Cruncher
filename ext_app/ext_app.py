@@ -1,5 +1,4 @@
 import pandas as pd
-from taxcrunch.multi_cruncher import Batch
 import numpy as np
 import bokeh
 from bokeh.io import output_notebook, output_file, save, curdoc
