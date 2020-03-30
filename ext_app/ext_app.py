@@ -16,8 +16,8 @@ import os
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-csv_path = os.path.join(CURRENT_PATH, 'cruncher_data.csv')
-df = pd.read_csv(csv_path)
+csv_path = os.path.join(CURRENT_PATH, 'cruncher_data.csv.gz')
+df = pd.read_csv(csv_path, compression='gzip')
 
 js = """
 function commas(x) {

@@ -88,4 +88,4 @@ df_merge_temp = df_baseline.merge(
     tcja_ext[['ID', 'Individual Income Tax']], on='ID')
 df = df_merge_temp.rename(columns={'Individual Income Tax': 'itax ext'})
 
-df.to_csv('cruncher_data.csv', index=False)
+df.to_csv('cruncher_data.csv.gz', compression='gzip', index=False)
