@@ -260,7 +260,7 @@ class Cruncher:
         elif self.mtr_options == "Pensions":
             self.ivar2.loc[:, 17] = self.ivar2.loc[:, 17] + 1
             return self.ivar2, "e01700"
-        elif self.mtr_options == "Gross Social Security Beneifts":
+        elif self.mtr_options == "Gross Social Security Benefits":
             self.ivar2.loc[:, 18] = self.ivar2.loc[:, 18] + 1
             return self.ivar2, "e02400"
         elif self.mtr_options == "Real Estate Taxes Paid":
