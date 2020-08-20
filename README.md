@@ -35,6 +35,11 @@ b.create_table('REFORM_FILE_PATH')
 
 How to install Tax-Cruncher
 -------------
+Install with conda:
+```
+conda install -c pslmodels taxcrunch
+```
+
 Install from source:
 
 ```
