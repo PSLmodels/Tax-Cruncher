@@ -89,96 +89,37 @@ class Cruncher:
             self.reform_options: a string with the user's choice of reform
 
         """
-        for param in self.params.RECID:
-            RECID = param["value"]
-        for param in self.params.year:
-            year = param["value"]
-        for param in self.params.mstat:
-            if param["value"] == "Single":
-                mstat = 1
-            elif param["value"] == "Joint":
-                mstat = 2
-        for param in self.params.page:
-            page = param["value"]
-        for param in self.params.sage:
-            sage = param["value"]
-        for param in self.params.depx:
-            depx = param["value"]
-        for param in self.params.dep13:
-            dep13 = param["value"]
-        for param in self.params.dep17:
-            dep17 = param["value"]
-        for param in self.params.dep18:
-            dep18 = param["value"]
-        for param in self.params.pwages:
-            pwages = param["value"]
-        for param in self.params.swages:
-            swages = param["value"]
-        for param in self.params.dividends:
-            dividends = param["value"]
-        for param in self.params.intrec:
-            intrec = param["value"]
-        for param in self.params.stcg:
-            stcg = param["value"]
-        for param in self.params.ltcg:
-            ltcg = param["value"]
-        for param in self.params.otherprop:
-            otherprop = param["value"]
-        for param in self.params.nonprop:
-            nonprop = param["value"]
-        for param in self.params.pensions:
-            pensions = param["value"]
-        for param in self.params.gssi:
-            gssi = param["value"]
-        for param in self.params.ui:
-            ui = param["value"]
-        for param in self.params.proptax:
-            proptax = param["value"]
-        for param in self.params.otheritem:
-            otheritem = param["value"]
-        for param in self.params.childcare:
-            childcare = param["value"]
-        for param in self.params.mortgage:
-            mortgage = param["value"]
-        for param in self.params.mtr_options:
-            self.mtr_options = param["value"]
-        for param in self.params.reform_options:
-            self.reform_options = param["value"]
 
-        ts_vars = [
-            RECID,
-            year,
-            mstat,
-            page,
-            sage,
-            depx,
-            dep13,
-            dep17,
-            dep18,
-            pwages,
-            swages,
-            dividends,
-            intrec,
-            stcg,
-            ltcg,
-            otherprop,
-            nonprop,
-            pensions,
-            gssi,
-            ui,
-            proptax,
-            otheritem,
-            childcare,
-            mortgage,
-        ]
+        self.mtr_options = self.params.to_array('mtr_options')
 
-        ts_values = []
-        for ts_var in ts_vars:
-            ts_values.append(ts_var)
+        self.reform_options = self.params.to_array('reform_options')
 
-        array_var = np.asarray(ts_values)
-        self.ivar = pd.DataFrame(array_var.reshape(1, len(array_var)))
+        # construct list of taxsim param names
+        param_list = []
+        for key in self.params.dump().keys():
+            if key == 'mtr_options':
+                pass
+            else:
+                if "section_1" in self.params.dump()[key]:
+                    param_list.append(key)
+
+        param_list.insert(0, 'year')
+        param_list.insert(0, 'RECID')
+
+        # construct list of values for params
+        param_vals = []
+        for param in param_list:
+            val = self.params.to_array(param)
+            if val == 'Single':
+                val = 1
+            if val == 'Joint':
+                val = 2
+            param_vals.append(val)
+
+        # store values as dataframe
+        self.ivar = pd.DataFrame(param_vals).transpose()
         self.ivar = self.ivar.astype(int)
+        
         return self.ivar, self.mtr_options, self.reform_options
 
     def translate(self, ivar):
