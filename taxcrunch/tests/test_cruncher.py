@@ -7,14 +7,9 @@ import taxcalc as tc
 from taxcrunch import cruncher as cr
 
 CURR_PATH = os.path.abspath(os.path.dirname(__file__))
-
 input_path = os.path.join(CURR_PATH, "test_adjustment.json")
 reform_path = os.path.join(CURR_PATH, "test_reform.json")
 no_reform_path = os.path.join(CURR_PATH, "test_adjustment_noreform.json")
-
-def create_data():
-    c = cr.Cruncher(inputs=input_path)
-    return c
 
 
 def test_baseline_choice():
@@ -33,15 +28,13 @@ def test_reform_choice():
         )
 
 
-def test_basic_table():
-    c = create_data()
-    table = c.basic_table()
+def test_basic_table(cr_data):
+    table = cr_data.basic_table()
     assert isinstance(table, pd.DataFrame)
 
 
-def test_calc_table():
-    c = create_data()
-    table = c.calc_table()
+def test_calc_table(cr_data):
+    table = cr_data.calc_table()
     assert isinstance(table, pd.DataFrame)
     assert table.iloc[0]["Reform"] + 1 == table.iloc[0]["+ $1 (Taxpayer Earnings)"]
     table_path = os.path.join(CURR_PATH, "expected_calc_table.csv")
@@ -52,8 +45,7 @@ def test_calc_table():
         assert np.allclose(table[col], expected_table[col])
 
 
-def test_mtr_table():
-    c = create_data()
-    table = c.mtr_table()
+def test_mtr_table(cr_data):
+    table = cr_data.mtr_table()
     assert isinstance(table, pd.DataFrame)
     assert abs(table.all(axis=None)) < 1
