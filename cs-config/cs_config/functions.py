@@ -4,7 +4,6 @@ import traceback
 import paramtools
 import pandas as pd
 import inspect
-from .helpers import convert_defaults, convert_adj
 from .outputs import credit_plot, rate_plot, liability_plot
 from .constants import MetaParameters
 from bokeh.models import ColumnDataSource
@@ -20,11 +19,9 @@ TCDIR = os.path.dirname(TCPATH)
 with open(os.path.join(TCDIR, "policy_current_law.json"), "r") as f:
     pcl = json.loads(f.read())
 
-RES = convert_defaults(pcl)
-
 
 class TCParams(paramtools.Parameters):
-    defaults = RES
+    defaults = pcl
 
 
 def get_version():
@@ -73,6 +70,11 @@ def get_inputs(meta_params_dict):
         "otheritem",
         "childcare",
         "mortgage",
+        "pbusinc",
+        "sbusinc",
+        "sstb",
+        "w2paid",
+        "qualprop",
         "mtr_options",
         "schema"
     ]
@@ -110,7 +112,9 @@ def run_model(meta_params_dict, adjustment):
     meta_params = MetaParameters()
     meta_params.adjust(meta_params_dict)
 
-    policy_mods = convert_adj(adjustment["Policy"], meta_params.year.tolist())
+    policy_params = TCParams()
+    policy_params.adjust(adjustment["Policy"])
+    policy_mods = policy_params.specification(serializable=True)
 
     adjustment["Tax Information"]["year"] = meta_params.year
     params = CruncherParams()
@@ -120,7 +124,7 @@ def run_model(meta_params_dict, adjustment):
     crunch = Cruncher(inputs=newvals, custom_reform=policy_mods)
 
     # make dataset for bokeh plots
-    ivar = crunch.ivar
+    ivar = crunch.batch_ivar
     _, mtr_opt, _ = crunch.taxsim_inputs()
     df = pd.concat([ivar] * 5000, ignore_index=True)
     increments = pd.DataFrame(list(range(0, 500000, 100)))
@@ -156,6 +160,9 @@ def run_model(meta_params_dict, adjustment):
     elif mtr_opt == 'Mortgage':
         span = int(ivar[23])
         df[23] = increments
+    elif mtr_opt == 'Business Income':
+        span = int(ivar[24])
+        df[24] = increments
 
     b = Batch(df)
     df_base = b.create_table()

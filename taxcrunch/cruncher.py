@@ -59,6 +59,7 @@ class Cruncher:
         self.adjustment = self.adjust_inputs()
         self.params.adjust(self.adjustment)
         self.ivar, self.mtr_options, self.reform_options = self.taxsim_inputs()
+        self.batch_ivar = self.batch_inputs(self.ivar)
         self.data = self.translate(self.ivar)
         self.ivar2, self.mtr_wrt = self.choose_mtr()
         self.data_mtr = self.translate(self.ivar2)
@@ -110,17 +111,29 @@ class Cruncher:
         param_vals = []
         for param in param_list:
             val = self.params.to_array(param)
-            if val == 'Single':
-                val = 1
-            if val == 'Joint':
-                val = 2
             param_vals.append(val)
 
         # store values as dataframe
         self.ivar = pd.DataFrame(param_vals).transpose()
-        self.ivar = self.ivar.astype(int)
-        
+
         return self.ivar, self.mtr_options, self.reform_options
+
+    def batch_inputs(self, ivar):
+        """
+        Translates string parameters to integers for Batch processing.
+        """
+        self.batch_ivar = ivar
+        # convert mstat to int
+        mstat = ivar.loc[:, 2]
+        # Single -> 1; Joint -> 2
+        mstat_int = np.where(mstat == 'Single', 1, 2)
+        # convert sstb to int
+        sstb = ivar.loc[:, 26]
+        # True -> 1; False -> 0
+        sstb_int = np.where(sstb, 1, 0)
+        self.batch_ivar.loc[:, 2] = mstat_int
+        self.batch_ivar.loc[:, 26] = sstb_int
+        return self.batch_ivar
 
     def translate(self, ivar):
         """
@@ -137,7 +150,7 @@ class Cruncher:
         self.invar["age_head"] = ivar.loc[:, 3]
         self.invar["age_spouse"] = ivar.loc[:, 4]
         num_deps = ivar.loc[:, 5]
-        mars = np.where(mstat == 1, np.where(num_deps > 0, 4, 1), 2)
+        mars = np.where(mstat == 'Single', np.where(num_deps > 0, 4, 1), 2)
         assert np.all(np.logical_or(mars == 1,
                                     np.logical_or(mars == 2, mars == 4)))
         self.invar["MARS"] = mars
@@ -167,6 +180,14 @@ class Cruncher:
         self.invar["e18400"] = ivar.loc[:, 21]
         self.invar["e32800"] = ivar.loc[:, 22]
         self.invar["e19200"] = ivar.loc[:, 23]
+        self.invar["e00900p"] = ivar.loc[:, 24]
+        self.invar["e00900s"] = ivar.loc[:, 25]
+        self.invar["e00900"] = self.invar["e00900p"] + self.invar["e00900s"]
+        sstb_bool = ivar.loc[:, 26]
+        self.invar["PT_SSTB_income"] = np.where(sstb_bool, 1, 0)
+        self.invar["PT_binc_w2_wages"] = ivar.loc[:, 26]
+        self.invar["PT_ubia_property"] = ivar.loc[:, 27]
+
         return self.invar
 
     def choose_mtr(self):
@@ -210,6 +231,9 @@ class Cruncher:
         elif self.mtr_options == "Mortgage":
             self.ivar2.loc[:, 23] = self.ivar2.loc[:, 23] + 1
             return self.ivar2, "e19200"
+        elif self.mtr_options == "Business Income":
+            self.ivar2.loc[:, 24] = self.ivar2.loc[:, 24] + 1
+            return self.ivar2, "e00900p"
 
     def choose_baseline(self):
         """
@@ -311,8 +335,7 @@ class Cruncher:
             self.calc_mtr: Calculator object for + $1
         """
 
-        year = self.data.iloc[0][1]
-        year = year.item()
+        year = int(self.data.iloc[0][1])
         recs = tc.Records(data=self.data, start_year=year)
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
@@ -429,7 +452,8 @@ class Cruncher:
             "c62100",
             "c09600",
             "niit",
-            "c05800"
+            "c05800",
+            "qbided"
         ]
         labels = [
             "Adjusted Gross Income (AGI)",
@@ -444,7 +468,8 @@ class Cruncher:
             "Alternative Minimum Tax (AMT) Taxable Income",
             "AMT Liability",
             "Net Investment Income Tax",
-            "Income Tax Before Credits"
+            "Income Tax Before Credits",
+            "Qualified Business Income Deduction"
         ]
 
         df_calc1 = self.calc1.dataframe(calculation).transpose()

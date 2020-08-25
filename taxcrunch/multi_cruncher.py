@@ -66,7 +66,8 @@ class Batch:
             "c09600",
             "niit",
             "c05800",
-            "ptax_was"
+            "ptax_was",
+            "qbided"
         ]
         self.labels = [
             "ID",
@@ -87,6 +88,7 @@ class Batch:
             "Net Investment Income Tax",
             "Income Tax Before Credits",
             "FICA",
+            "Qualified Business Income Deducation",
             "Payroll Tax MTR",
             "Income Tax MTR",
             "Combined MTR"
@@ -106,8 +108,8 @@ class Batch:
         else:
             ivar = pd.read_csv(self.path, sep=',',
                                engine="python", header=None)
-        # check that input CSV has 24 columns
-        assert len(ivar.columns) == 24
+        # check that input CSV has 29 columns
+        assert len(ivar.columns) == 29
         # check that year is the same across all rows
         assert ivar[1].max() == ivar[1].min()
         rows = len(ivar)
@@ -260,7 +262,11 @@ class Batch:
         # try reform_file as dictionary
         elif isinstance(reform_file, dict):
             pol = tc.Policy()
-            pol.implement_reform(reform_file)
+            try:
+                pol.implement_reform(reform_file)
+            except:
+                # use adjust method for web app
+                pol.adjust(reform_file)
         # if file path does not exist, check Tax-Calculator reforms file
         else:
             try:
