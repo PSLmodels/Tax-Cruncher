@@ -3,7 +3,7 @@ Adjusted Gross Income (AGI),100000.0,100000.0,100001.0
 Unemployment Insurance in AGI,0.0,0.0,0.0
 Social Security in AGI,0.0,0.0,0.0
 Itemized Deductions,0.0,0.0,0.0
-Taxable Income,87800.0,89118.24,89119.24
+Taxable Income,75600.0,78236.49,78237.49
 Child Tax Credit (CTC),0.0,0.0,0.0
 CTC Refundable,0.0,0.0,0.0
 Child Care Credit,0.0,0.0,0.0
@@ -11,4 +11,5 @@ Earned Income Tax Credit (EITC),0.0,0.0,0.0
 Alternative Minimum Tax (AMT) Taxable Income,100000.0,100000.0,100001.0
 AMT Liability,0.0,0.0,0.0
 Net Investment Income Tax,0.0,0.0,0.0
-Income Tax Before Credits,15246.5,17820.92,17821.17
+Income Tax Before Credits,8684.0,10759.78,10759.93
+Qualified Business Income Deduction,0.0,0.0,0.0

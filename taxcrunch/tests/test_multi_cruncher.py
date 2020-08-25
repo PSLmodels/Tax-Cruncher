@@ -48,10 +48,9 @@ def test_calc_table(crunch=b):
     
     table = b.create_table()
     assert isinstance(table, pd.DataFrame)
-    # table.to_csv("expected_multi_table.csv")
-    expected_table = pd.read_csv(
-        os.path.join(CURR_PATH, "expected_multi_table.csv"), index_col=0
-    )
+    table_path = os.path.join(CURR_PATH, "expected_multi_table.csv")
+    # table.to_csv(table_path)
+    expected_table = pd.read_csv(table_path, index_col=0)
     for col in table.columns:
         assert np.allclose(table[col], expected_table[col])
 
