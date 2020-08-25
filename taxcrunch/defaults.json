@@ -280,7 +280,7 @@
     },
     "otherprop": {
         "title": "Other property income subject to Net Investment Income Tax",
-        "description": "Includes unearned partnership and S-corp income, rent, non-qualified dividends, capital gains distributions on form 1040, other income or loss not otherwise enumerated here.",
+        "description": "Includes unearned partnership and passive S-corp income, rent not eligible for QBI deduction, non-qualified dividends, capital gains distributions on form 1040, other income or loss not otherwise enumerated here.",
         "section_1": "Income",
         "notes": "",
         "type": "float",
@@ -440,6 +440,96 @@
             }
         }
     },
+    "pbusinc": {
+        "title": "Business income of primary filer",
+        "description": "Income from partnerships, limited-liability companies, and S corporations.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "sbusinc": {
+        "title": "Business income of spouse",
+        "description": "Income from partnerships, limited-liability companies, and S corporations.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "sstb": {
+        "title": "Business income from professional services business",
+        "description": "Service businesses may be in the fields of law, health, consulting, and financial services.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "bool",
+        "value": [
+            {
+                "value": false
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": false,
+                "max": true
+            }
+        }
+    },
+    "w2paid": {
+        "title": "W-2 wages paid by business",
+        "description": "Used to calculate QBI deduction limitation.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "qualprop": {
+        "title": "Share of qualified property",
+        "description": "Used to calculate QBI deduction limitation.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
     "mtr_options": {
         "title": "Options for skyline chart analysis",
         "description": "Skyline charts will be created by incrementing this measure.",
@@ -463,7 +553,8 @@
                     "Pensions",
                     "Gross Social Security Benefits",
                     "Real Estate Taxes Paid",
-                    "Mortgage"
+                    "Mortgage",
+                    "Business Income"
                 ]
             }
         }
