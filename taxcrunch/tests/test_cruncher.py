@@ -44,8 +44,8 @@ def test_calc_table():
     table = c.calc_table()
     assert isinstance(table, pd.DataFrame)
     assert table.iloc[0]["Reform"] + 1 == table.iloc[0]["+ $1 (Taxpayer Earnings)"]
-    # table_path = os.path.join(CURR_PATH, "expected_calc_table.csv")
-    table.to_csv(table_path)
+    table_path = os.path.join(CURR_PATH, "expected_calc_table.csv")
+    # table.to_csv(table_path)
     expected_table = pd.read_csv(table_path, index_col=0)
     diffs = False
     for col in table.columns:
