@@ -88,7 +88,7 @@ class Batch:
             "Net Investment Income Tax",
             "Income Tax Before Credits",
             "FICA",
-            "Qualified Business Income Deducation",
+            "Qualified Business Income Deduction",
             "Payroll Tax MTR",
             "Income Tax MTR",
             "Combined MTR"
@@ -108,8 +108,8 @@ class Batch:
         else:
             ivar = pd.read_csv(self.path, sep=',',
                                engine="python", header=None)
-        # check that input CSV has 29 columns
-        assert len(ivar.columns) == 29
+        # check that input CSV has 28 columns
+        assert len(ivar.columns) == 28
         # check that year is the same across all rows
         assert ivar[1].max() == ivar[1].min()
         rows = len(ivar)
