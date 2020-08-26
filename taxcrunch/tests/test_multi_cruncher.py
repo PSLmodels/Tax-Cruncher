@@ -79,3 +79,17 @@ def test_diff_tables(crunch=b):
     # baseline must be current law if response
     with pytest.raises(AssertionError):
         b.create_diff_table(reform_file="Trump2016.json", baseline=reform_dict, be_sub=0.25)
+
+def test_qbid_params():
+    """
+    Adpots a test from Tax-Calculator that checks QBID calculations against
+    results from a TPC paper.
+    """
+    tpc_path = os.path.join(CURRENT_PATH, "tpc_qbid_input.csv")
+    b = mcr.Batch(tpc_path)
+    table = b.create_table()
+
+    # QBID from TPC paper
+    expect_qbid = [15000, 1612.5, 0, 15000, 10750, 10000]
+
+    assert np.allclose(table['Qualified Business Income Deduction'], expect_qbid)
