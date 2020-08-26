@@ -128,11 +128,11 @@ class Cruncher:
         # Single -> 1; Joint -> 2
         mstat_int = np.where(mstat == 'Single', 1, 2)
         # convert sstb to int
-        sstb = ivar.loc[:, 26]
+        sstb = ivar.loc[:, 25]
         # True -> 1; False -> 0
         sstb_int = np.where(sstb, 1, 0)
         self.batch_ivar.loc[:, 2] = mstat_int
-        self.batch_ivar.loc[:, 26] = sstb_int
+        self.batch_ivar.loc[:, 25] = sstb_int
         return self.batch_ivar
 
     def translate(self, ivar):
@@ -168,7 +168,7 @@ class Cruncher:
         self.invar["e00300"] = ivar.loc[:, 12]
         self.invar["p22250"] = ivar.loc[:, 13]
         self.invar["p23250"] = ivar.loc[:, 14]
-        self.invar["e02000"] = ivar.loc[:, 15]
+        e02000 = ivar.loc[:, 15]
         self.invar["e00800"] = ivar.loc[:, 16]
         self.invar["e01700"] = ivar.loc[:, 17]
         self.invar["e01500"] = self.invar["e01700"]
@@ -180,10 +180,13 @@ class Cruncher:
         self.invar["e18400"] = ivar.loc[:, 21]
         self.invar["e32800"] = ivar.loc[:, 22]
         self.invar["e19200"] = ivar.loc[:, 23]
-        self.invar["e00900p"] = ivar.loc[:, 24]
-        self.invar["e00900s"] = ivar.loc[:, 25]
-        self.invar["e00900"] = self.invar["e00900p"] + self.invar["e00900s"]
-        sstb_bool = ivar.loc[:, 26]
+        self.invar["e26270"] = ivar.loc[:, 24]
+        # e26270 is included in e02000
+        self.invar["e02000"] = self.invar["e26270"] + e02000
+        # self.invar["e00900p"] = ivar.loc[:, 24]
+        # self.invar["e00900s"] = ivar.loc[:, 25]
+        # self.invar["e00900"] = self.invar["e00900p"] + self.invar["e00900s"]
+        sstb_bool = ivar.loc[:, 25]
         self.invar["PT_SSTB_income"] = np.where(sstb_bool, 1, 0)
         self.invar["PT_binc_w2_wages"] = ivar.loc[:, 26]
         self.invar["PT_ubia_property"] = ivar.loc[:, 27]
@@ -306,14 +309,12 @@ class Cruncher:
                 print("Reform file path does not exist")
         # then as dictionary
         elif self.reform_options == "None" and isinstance(self.custom_reform, dict):
-            try:
-                reform = self.custom_reform
-                self.pol2 = tc.Policy()
+            reform = self.custom_reform
+            self.pol2 = tc.Policy()
+            try:                
                 self.pol2.implement_reform(reform)
-            except Exception as e:
-                import traceback
-                traceback.print_exc()
-                print("Reform dictionary does not exist")
+            except:
+                self.pol2.adjust(reform)
         # raise error if preset reform is chosen and custom reform is specified
         elif self.reform_options != "None" and self.custom_reform is not None:
             raise AttributeError(
@@ -336,7 +337,8 @@ class Cruncher:
         """
 
         year = int(self.data.iloc[0][1])
-        recs = tc.Records(data=self.data, start_year=year)
+        recs = tc.Records(data=self.data, start_year=year, gfactors=None,
+            weights=None)
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
         self.calc1.advance_to_year(year)
@@ -346,7 +348,8 @@ class Cruncher:
         self.calc_reform.advance_to_year(year)
         self.calc_reform.calc_all()
 
-        recs_mtr = tc.Records(data=self.data_mtr, start_year=year)
+        recs_mtr = tc.Records(data=self.data_mtr, start_year=year, gfactors=None,
+            weights=None)
         self.calc_mtr = tc.Calculator(policy=self.pol2, records=recs_mtr)
         self.calc_mtr.advance_to_year(year)
         self.calc_mtr.calc_all()
