@@ -27,14 +27,13 @@ To analyze multiple tax filers, the user must specify a csv file with the filers
 22. otheritem (other itemized deductions subject to SALT cap, e.g. state and local taxes)
 23. childcare (child care expenses)
 24. mortgage (itemized deductions not subject to SALT cap, e.g., charitable contributions and home mortgage interest)
-25. pbusinc (business income of primary filer)
-26. sbusinc (business income of spouse)
-27. sstb (1 - business income from professional services business; 0 - business income not from professional pervices business)
-28. w2paid (W-2 wages paid by business)
-29. qualprop (filer's share of qualified property)
+25. businc (business income)
+26. sstb (1 - business income from professional services business; 0 - business income not from professional pervices business)
+27. w2paid (W-2 wages paid by business)
+28. qualprop (filer's share of qualified property)
 
 For example, a 50-year old single filer with 3 dependents under 13 who makes $50,000 per year could be represented by the following:
 
 ```
-1,2019,1,50,0,3,3,3,3,50000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,2019,1,50,0,3,3,3,3,50000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ```
