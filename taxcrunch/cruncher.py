@@ -49,9 +49,7 @@ class Cruncher:
 
     INPUT_PATH = os.path.join(CURRENT_PATH, "adjustment_template.json")
 
-    def __init__(
-        self, inputs=INPUT_PATH, custom_reform=None, baseline=None
-    ):
+    def __init__(self, inputs=INPUT_PATH, custom_reform=None, baseline=None):
         self.inputs = inputs
         self.custom_reform = custom_reform
         self.baseline = baseline
@@ -91,21 +89,21 @@ class Cruncher:
 
         """
 
-        self.mtr_options = self.params.to_array('mtr_options')
+        self.mtr_options = self.params.to_array("mtr_options")
 
-        self.reform_options = self.params.to_array('reform_options')
+        self.reform_options = self.params.to_array("reform_options")
 
         # construct list of taxsim param names
         param_list = []
         for key in self.params.dump().keys():
-            if key == 'mtr_options':
+            if key == "mtr_options":
                 pass
             else:
                 if "section_1" in self.params.dump()[key]:
                     param_list.append(key)
 
-        param_list.insert(0, 'year')
-        param_list.insert(0, 'RECID')
+        param_list.insert(0, "year")
+        param_list.insert(0, "RECID")
 
         # construct list of values for params
         param_vals = []
@@ -126,7 +124,7 @@ class Cruncher:
         # convert mstat to int
         mstat = ivar.loc[:, 2]
         # Single -> 1; Joint -> 2
-        mstat_int = np.where(mstat == 'Single', 1, 2)
+        mstat_int = np.where(mstat == "Single", 1, 2)
         # convert sstb to int
         sstb = ivar.loc[:, 25]
         # True -> 1; False -> 0
@@ -150,9 +148,14 @@ class Cruncher:
         self.invar["age_head"] = ivar.loc[:, 3]
         self.invar["age_spouse"] = ivar.loc[:, 4]
         num_deps = ivar.loc[:, 5]
-        mars = np.where(mstat == 'Single', np.where(num_deps > 0, 4, 1), 2)
-        assert np.all(np.logical_or(mars == 1,
-                                    np.logical_or(mars == 2, mars == 4)))
+        # convert both Cruncher and Batch inputs (i.e. Single/Joint
+        # and 0/1)
+        mars = np.where(
+            np.logical_or(mstat == "Single", mstat == 1),
+            np.where(num_deps > 0, 4, 1),
+            2,
+        )
+        assert np.all(np.logical_or(mars == 1, np.logical_or(mars == 2, mars == 4)))
         self.invar["MARS"] = mars
         self.invar["f2441"] = ivar.loc[:, 6]
         self.invar["n24"] = ivar.loc[:, 7]
@@ -187,7 +190,10 @@ class Cruncher:
         # self.invar["e00900s"] = ivar.loc[:, 25]
         # self.invar["e00900"] = self.invar["e00900p"] + self.invar["e00900s"]
         sstb_bool = ivar.loc[:, 25]
-        self.invar["PT_SSTB_income"] = np.where(sstb_bool, 1, 0)
+        # convert both Cruncher and Batch inputs (i.e. True/False and 0/1
+        self.invar["PT_SSTB_income"] = np.where(
+            np.logical_or(sstb_bool, sstb_bool == 1), 1, 0
+        )
         self.invar["PT_binc_w2_wages"] = ivar.loc[:, 26]
         self.invar["PT_ubia_property"] = ivar.loc[:, 27]
 
@@ -262,8 +268,7 @@ class Cruncher:
             if exists:
                 baseline_file = self.baseline
                 self.pol = tc.Policy()
-                self.pol.implement_reform(
-                    tc.Policy.read_json_reform(baseline_file))
+                self.pol.implement_reform(tc.Policy.read_json_reform(baseline_file))
             # if the user did not create a json file, try the Tax-Calculator
             # reforms file
             else:
@@ -271,8 +276,7 @@ class Cruncher:
                     baseline_file = self.baseline
                     baseline_url = REFORMS_URL + baseline_file
                     self.pol = tc.Policy()
-                    self.pol.implement_reform(
-                        tc.Policy.read_json_reform(baseline_url))
+                    self.pol.implement_reform(tc.Policy.read_json_reform(baseline_url))
                 except:
                     print("Baseline file does not exist")
 
@@ -283,7 +287,7 @@ class Cruncher:
         Creates Tax-Calculator Policy object for reform analysis
 
         Returns:
-            self.pol2: Tax-Calculator Policy object for reform analysis 
+            self.pol2: Tax-Calculator Policy object for reform analysis
         """
         REFORMS_URL = (
             "https://raw.githubusercontent.com/"
@@ -303,15 +307,14 @@ class Cruncher:
             try:
                 reform_filename = self.custom_reform
                 self.pol2 = tc.Policy()
-                self.pol2.implement_reform(
-                    tc.Policy.read_json_reform(reform_filename))
+                self.pol2.implement_reform(tc.Policy.read_json_reform(reform_filename))
             except:
                 print("Reform file path does not exist")
         # then as dictionary
         elif self.reform_options == "None" and isinstance(self.custom_reform, dict):
             reform = self.custom_reform
             self.pol2 = tc.Policy()
-            try:                
+            try:
                 self.pol2.implement_reform(reform)
             except:
                 self.pol2.adjust(reform)
@@ -337,8 +340,7 @@ class Cruncher:
         """
 
         year = int(self.data.iloc[0][1])
-        recs = tc.Records(data=self.data, start_year=year, gfactors=None,
-            weights=None)
+        recs = tc.Records(data=self.data, start_year=year, gfactors=None, weights=None)
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
         self.calc1.advance_to_year(year)
@@ -348,8 +350,9 @@ class Cruncher:
         self.calc_reform.advance_to_year(year)
         self.calc_reform.calc_all()
 
-        recs_mtr = tc.Records(data=self.data_mtr, start_year=year, gfactors=None,
-            weights=None)
+        recs_mtr = tc.Records(
+            data=self.data_mtr, start_year=year, gfactors=None, weights=None
+        )
         self.calc_mtr = tc.Calculator(policy=self.pol2, records=recs_mtr)
         self.calc_mtr.advance_to_year(year)
         self.calc_mtr.calc_all()
@@ -374,10 +377,11 @@ class Cruncher:
         self.basic_vals = pd.concat([basic_vals1, basic_vals2], axis=1)
         self.basic_vals.columns = ["Base", "Reform"]
         self.basic_vals.index = [
-            "Individual Income Tax", "Employee + Employer Payroll Tax"]
+            "Individual Income Tax",
+            "Employee + Employer Payroll Tax",
+        ]
 
-        self.basic_vals["Change"] = self.basic_vals[
-            "Reform"] - self.basic_vals["Base"]
+        self.basic_vals["Change"] = self.basic_vals["Reform"] - self.basic_vals["Base"]
 
         self.basic_vals = self.basic_vals.round(2)
 
@@ -391,20 +395,16 @@ class Cruncher:
             self.df_mtr: a Pandas dataframe MTR results with respect to 'mtr_options'
         """
 
-        mtr_calc = self.calc1.mtr(calc_all_already_called=True
-                                  )
+        mtr_calc = self.calc1.mtr(calc_all_already_called=True)
         self.mtr_df = pd.DataFrame(
             data=[mtr_calc[1], mtr_calc[0]],
-            index=["Income Tax Marginal Rate",
-                   "Payroll Tax Marginal Rate"],
+            index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
         )
 
-        mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True
-                                               )
+        mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True)
         mtr_df_reform = pd.DataFrame(
             data=[mtr_calc_reform[1], mtr_calc_reform[0]],
-            index=["Income Tax Marginal Rate",
-                   "Payroll Tax Marginal Rate"],
+            index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
         )
 
         self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
@@ -456,7 +456,7 @@ class Cruncher:
             "c09600",
             "niit",
             "c05800",
-            "qbided"
+            "qbided",
         ]
         labels = [
             "Adjusted Gross Income (AGI)",
@@ -472,7 +472,7 @@ class Cruncher:
             "AMT Liability",
             "Net Investment Income Tax",
             "Income Tax Before Credits",
-            "Qualified Business Income Deduction"
+            "Qualified Business Income Deduction",
         ]
 
         df_calc1 = self.calc1.dataframe(calculation).transpose()
@@ -482,8 +482,7 @@ class Cruncher:
         df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
 
         self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
-        self.df_calc.columns = ["Base", "Reform",
-                                "+ $1 ({})".format(self.mtr_options)]
+        self.df_calc.columns = ["Base", "Reform", "+ $1 ({})".format(self.mtr_options)]
         self.df_calc.index = labels
 
         self.df_calc = self.df_calc.round(2)
@@ -502,7 +501,6 @@ class Cruncher:
         self.df_calc_diff = self.df_calc.copy()
         if len(self.df_calc_diff.columns) == 3:
             del self.df_calc_diff["+ $1"]
-        calc_diff_vals = self.df_calc_diff[
-            "Reform"] - self.df_calc_diff["Base"]
+        calc_diff_vals = self.df_calc_diff["Reform"] - self.df_calc_diff["Base"]
         self.df_calc_diff["Change"] = calc_diff_vals
         return self.df_calc_diff

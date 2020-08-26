@@ -67,7 +67,7 @@ class Batch:
             "niit",
             "c05800",
             "ptax_was",
-            "qbided"
+            "qbided",
         ]
         self.labels = [
             "ID",
@@ -91,7 +91,7 @@ class Batch:
             "Qualified Business Income Deduction",
             "Payroll Tax MTR",
             "Income Tax MTR",
-            "Combined MTR"
+            "Combined MTR",
         ]
 
     def read_input(self):
@@ -106,8 +106,7 @@ class Batch:
         if isinstance(self.path, pd.DataFrame):
             ivar = self.path
         else:
-            ivar = pd.read_csv(self.path, sep=',',
-                               engine="python", header=None)
+            ivar = pd.read_csv(self.path, sep=",", engine="python", header=None)
         # check that input CSV has 28 columns
         assert len(ivar.columns) == 28
         # check that year is the same across all rows
@@ -118,8 +117,7 @@ class Batch:
         params.adjust(ivar)
         array = np.empty((0, rows))
         for label in params._data:
-            array = np.append(array, [params._data[label][
-                              'value'][0]['value']], axis=0)
+            array = np.append(array, [params._data[label]["value"][0]["value"]], axis=0)
         params_df = pd.DataFrame(array).transpose()
 
         params_marg = params_df.copy()
@@ -134,33 +132,38 @@ class Batch:
 
     def create_table(self, reform_file=None, be_sub=0, be_inc=0, be_cg=0):
         """
-        Creates table of liabilities. Default is current law with no behavioral response 
-            (i.e. static analysis). User may specify a policy reform which is read and 
+        Creates table of liabilities. Default is current law with no behavioral response
+            (i.e. static analysis). User may specify a policy reform which is read and
             implemented below in get_pol() and/or or may specify elasticities for partial-
             equilibrium behavioral responses.
 
-        reform_file: name of a reform file in the Tax-Calculator reforms folder, 
+        reform_file: name of a reform file in the Tax-Calculator reforms folder,
             a file path to a custom JSON reform file, or a dictionary with a policy reform.
 
-        be_sub: Substitution elasticity of taxable income. Defined as proportional change 
-            in taxable income divided by proportional change in marginal net-of-tax rate 
+        be_sub: Substitution elasticity of taxable income. Defined as proportional change
+            in taxable income divided by proportional change in marginal net-of-tax rate
             (1-MTR) on taxpayer earnings caused by the reform.  Must be zero or positive.
 
-        be_inc: Income elasticity of taxable income. Defined as dollar change in taxable 
-            income divided by dollar change in after-tax income caused by the reform.  
+        be_inc: Income elasticity of taxable income. Defined as dollar change in taxable
+            income divided by dollar change in after-tax income caused by the reform.
             Must be zero or negative.
 
-        be_cg: Semi-elasticity of long-term capital gains. Defined as change in logarithm 
-            of long-term capital gains divided by change in marginal tax rate (MTR) on 
+        be_cg: Semi-elasticity of long-term capital gains. Defined as change in logarithm
+            of long-term capital gains divided by change in marginal tax rate (MTR) on
             long-term capital gains caused by the reform.  Must be zero or negative.
 
         Returns:
             df_res: a Pandas dataframe. Each observation is a separate tax filer
         """
-        year = self.invar['FLPDYR'][0]
+        year = self.invar["FLPDYR"][0]
         year = int(year.item())
-        recs = tc.Records(data=self.invar, start_year=year,
-                          gfactors=None, weights=None, adjust_ratios=None)
+        recs = tc.Records(
+            data=self.invar,
+            start_year=year,
+            gfactors=None,
+            weights=None,
+            adjust_ratios=None,
+        )
 
         if reform_file == None:
             pol = tc.Policy()
@@ -174,9 +177,8 @@ class Batch:
             calc = tc.Calculator(policy=pol, records=recs)
             pol_base = tc.Policy()
             calc_base = tc.Calculator(policy=pol_base, records=recs)
-            response_elasticities = {'sub': be_sub, 'inc': be_inc, 'cg': be_cg}
-            _, df2br = br.response(
-                calc_base, calc, response_elasticities, dump=True)
+            response_elasticities = {"sub": be_sub, "inc": be_inc, "cg": be_cg}
+            _, df2br = br.response(calc_base, calc, response_elasticities, dump=True)
             calcs = df2br[self.tc_vars]
 
         mtr = self.calc_mtr(reform_file)
@@ -186,7 +188,9 @@ class Batch:
         df_res.index = range(self.rows)
         return df_res
 
-    def create_diff_table(self, reform_file, baseline=None, be_sub=0, be_inc=0, be_cg=0):
+    def create_diff_table(
+        self, reform_file, baseline=None, be_sub=0, be_inc=0, be_cg=0
+    ):
         """
         Creates a table that displays differences between baseline and reform. See the above
             docstring for a discussion on the method's arguments.
@@ -203,23 +207,24 @@ class Batch:
             assert be_sub == be_inc == be_cg == 0
             t_base = self.create_table(baseline)
         t_reform = self.create_table(reform_file, be_sub, be_inc, be_cg)
-        df_all = pd.merge(t_reform, t_base, on='ID')
-        df_ids = df_all['ID']
+        df_all = pd.merge(t_reform, t_base, on="ID")
+        df_ids = df_all["ID"]
         cols = len(t_base.columns)
-        df_diff = df_all.diff(periods=-(cols - 1),
-                              axis=1).iloc[:, 1:cols]
+        df_diff = df_all.diff(periods=-(cols - 1), axis=1).iloc[:, 1:cols]
         df_diff_id = pd.concat([df_ids, df_diff], axis=1)
         # new column labels that have "Diff" at the end
-        diff_labels = ['ID']
+        diff_labels = ["ID"]
         for label in self.labels:
-            if label == 'ID':
+            if label == "ID":
                 pass
             else:
                 diff_labels.append(label + " Diff")
         df_diff_id.columns = diff_labels
         return df_diff_id
 
-    def write_output_file(self, output_filename=None, reform_file=None, be_sub=0, be_inc=0, be_cg=0):
+    def write_output_file(
+        self, output_filename=None, reform_file=None, be_sub=0, be_inc=0, be_cg=0
+    ):
         """
         Writes an output table as a csv. Like the create_table() method, default is current
             law and optional reform_file argument is a file path to json file or dictionary of a reform.
@@ -233,17 +238,24 @@ class Batch:
             output_filename = "cruncher-" + today_str + ".csv"
         df_res = self.create_table(reform_file, be_sub, be_inc, be_cg)
         assert isinstance(df_res, pd.DataFrame)
-        df_res.to_csv(output_filename, index=False, float_format='%.2f')
+        df_res.to_csv(output_filename, index=False, float_format="%.2f")
 
-    def write_diff_file(self, reform_file, baseline=None, output_filename=None, be_sub=0, be_inc=0, be_cg=0):
+    def write_diff_file(
+        self,
+        reform_file,
+        baseline=None,
+        output_filename=None,
+        be_sub=0,
+        be_inc=0,
+        be_cg=0,
+    ):
         if output_filename is None:
             today = date.today()
             today_str = today.strftime("%m-%d-%Y")
             output_filename = "cruncher-diff-" + today_str + ".csv"
-        df_res = self.create_diff_table(
-            reform_file, baseline, be_sub, be_inc, be_cg)
+        df_res = self.create_diff_table(reform_file, baseline, be_sub, be_inc, be_cg)
         assert isinstance(df_res, pd.DataFrame)
-        df_res.to_csv(output_filename, index=False, float_format='%.2f')
+        df_res.to_csv(output_filename, index=False, float_format="%.2f")
 
     def get_pol(self, reform_file):
         """
@@ -272,20 +284,24 @@ class Batch:
             try:
                 reform_url = REFORMS_URL + reform_file
                 pol = tc.Policy()
-                pol.implement_reform(
-                    tc.Policy.read_json_reform(reform_url))
+                pol.implement_reform(tc.Policy.read_json_reform(reform_url))
             except:
-                raise 'Reform file does not exist'
+                raise "Reform file does not exist"
         return pol
 
     def calc_mtr(self, reform_file):
         """
         Calculates income tax, payroll tax, and combined marginal rates
         """
-        year = self.invar['FLPDYR'][0]
+        year = self.invar["FLPDYR"][0]
         year = int(year.item())
-        recs_base = tc.Records(data=self.invar, start_year=year,
-                               gfactors=None, weights=None, adjust_ratios=None)
+        recs_base = tc.Records(
+            data=self.invar,
+            start_year=year,
+            gfactors=None,
+            weights=None,
+            adjust_ratios=None,
+        )
         if reform_file == None:
             pol = tc.Policy()
         else:
@@ -294,17 +310,22 @@ class Batch:
         calc_base = tc.Calculator(policy=pol, records=recs_base)
         calc_base.advance_to_year(year)
         calc_base.calc_all()
-        payrolltax_base = calc_base.array('payrolltax')
-        incometax_base = calc_base.array('iitax')
+        payrolltax_base = calc_base.array("payrolltax")
+        incometax_base = calc_base.array("iitax")
         combined_taxes_base = incometax_base + payrolltax_base
 
-        recs_marg = tc.Records(data=self.invar_marg, start_year=year,
-                               gfactors=None, weights=None, adjust_ratios=None)
+        recs_marg = tc.Records(
+            data=self.invar_marg,
+            start_year=year,
+            gfactors=None,
+            weights=None,
+            adjust_ratios=None,
+        )
         calc_marg = tc.Calculator(policy=pol, records=recs_marg)
         calc_marg.advance_to_year(year)
         calc_marg.calc_all()
-        payrolltax_marg = calc_marg.array('payrolltax')
-        incometax_marg = calc_marg.array('iitax')
+        payrolltax_marg = calc_marg.array("payrolltax")
+        incometax_marg = calc_marg.array("iitax")
         combined_taxes_marg = incometax_marg + payrolltax_marg
 
         payrolltax_diff = payrolltax_marg - payrolltax_base
