@@ -151,7 +151,7 @@ class Cruncher:
         # convert both Cruncher and Batch inputs (i.e. Single/Joint
         # and 0/1)
         mars = np.where(
-            np.logical_or(mstat == "Single", mstat == 1),
+            np.logical_or(mstat.astype(str) == "Single", mstat == 1),
             np.where(num_deps > 0, 4, 1),
             2,
         )
