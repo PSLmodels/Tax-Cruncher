@@ -1,2 +1,3 @@
 include taxcrunch/defaults.json
 include taxcrunch/defaults_batch.json
+include taxcrunch/adjustment_template.json
