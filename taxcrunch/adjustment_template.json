@@ -68,6 +68,18 @@
     "mortgage": [
         {"value": 0}
     ],
+    "businc": [
+        {"value": 0}
+    ],
+    "sstb": [
+        {"value": false}
+    ],
+    "w2paid": [
+        {"value": 0}
+    ],
+    "qualprop": [
+        {"value": 0}
+    ],
     "mtr_options": [
         {"value": "Taxpayer Earnings"}
     ],

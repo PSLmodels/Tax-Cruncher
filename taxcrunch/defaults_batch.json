@@ -365,6 +365,66 @@
                 "max": 9e+99
             }
         }
+    },
+    "businc": {
+        "title": "Business income",
+        "description": "Income from partnerships, limited-liability companies, and S corporations.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "sstb": {
+        "title": "Business income from professional services business",
+        "description": "Service businesses may be in the fields of law, health, consulting, and financial services.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "int",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 1
+            }
+        }
+    },
+    "w2paid": {
+        "title": "W-2 wages paid by business",
+        "description": "Used to calculate QBI deduction limitation.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "qualprop": {
+        "title": "Share of qualified property",
+        "description": "Used to calculate QBI deduction limitation.",
+        "section_1": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "number_dims": 1,
+        "value": [0],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
     }
 }
 
