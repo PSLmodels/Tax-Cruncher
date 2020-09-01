@@ -20,9 +20,20 @@ with open(os.path.join(TCDIR, "policy_current_law.json"), "r") as f:
     pcl = json.loads(f.read())
 
 
-class TCParams(paramtools.Parameters):
-    defaults = pcl
+def fix_checkbox(params):
+    """
+    Replace param_checkbox with param-indexed.
+    """
+    pol_params = {}
+    # drop checkbox parameters.
+    for param, data in params.items():
+        if param.endswith("checkbox"):
+            base_param = param.split("_checkbox")[0]
+            pol_params[f"{base_param}-indexed"] = data
+        else:
+            pol_params[param] = data
 
+    return pol_params
 
 def get_version():
     version = taxcrunch.__version__
@@ -37,12 +48,15 @@ def get_inputs(meta_params_dict):
     metaparams.adjust(meta_params_dict)
 
     params = CruncherParams()
-    policy_params = TCParams()
+    policy_params = Policy()
 
     policy_params.set_state(
         year=metaparams.year.tolist())
 
     filtered_pol_params = OrderedDict()
+    policy_params._schema["operators"].update(
+        {"label_to_extend": None, "uses_extend_func": False, "array_first": False}
+    )
     for k, v in policy_params.dump().items():
         if k =="schema" or v.get("section_1", False):
             filtered_pol_params[k] = v
@@ -94,14 +108,10 @@ def validate_inputs(meta_params_dict, adjustment, errors_warnings):
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     errors_warnings["Tax Information"]["errors"].update(params.errors)
 
-    pol_params = {}
-    # drop checkbox parameters.
-    for param, data in list(adjustment["Policy"].items()):
-        if not param.endswith("checkbox"):
-            pol_params[param] = data
+    policy_adj = fix_checkbox(adjustment["Policy"])
 
-    policy_params = TCParams()
-    policy_params.adjust(pol_params, raise_errors=False)
+    policy_params = Policy()
+    policy_params.adjust(policy_adj, raise_errors=False, ignore_warnings=True)
     errors_warnings["Policy"]["errors"].update(policy_params.errors)
 
     return {"errors_warnings": errors_warnings}
@@ -111,14 +121,12 @@ def run_model(meta_params_dict, adjustment):
     meta_params = MetaParameters()
     meta_params.adjust(meta_params_dict)
 
-    policy_params = TCParams()
-    policy_params.adjust(adjustment["Policy"])
-    policy_mods = policy_params.specification(serializable=True)
-
     adjustment["Tax Information"]["year"] = meta_params.year
     params = CruncherParams()
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     newvals = params.specification()
+
+    policy_mods = fix_checkbox(adjustment["Policy"])
 
     crunch = Cruncher(inputs=newvals, custom_reform=policy_mods)
 
