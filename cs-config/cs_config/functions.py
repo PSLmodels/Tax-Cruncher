@@ -6,6 +6,7 @@ import pandas as pd
 import inspect
 from .outputs import credit_plot, rate_plot, liability_plot
 from .constants import MetaParameters
+from . import inputs
 from bokeh.models import ColumnDataSource
 from taxcrunch.cruncher import Cruncher, CruncherParams
 from taxcrunch.multi_cruncher import Batch
@@ -53,13 +54,11 @@ def get_inputs(meta_params_dict):
     policy_params.set_state(
         year=metaparams.year.tolist())
 
-    filtered_pol_params = OrderedDict()
-    policy_params._schema["operators"].update(
-        {"label_to_extend": None, "uses_extend_func": False, "array_first": False}
-    )
-    for k, v in policy_params.dump().items():
-        if k =="schema" or v.get("section_1", False):
-            filtered_pol_params[k] = v
+    policy_params.array_first = False
+    # Hack to work smoothly with convert_policy_defaults since
+    # it expects a data_source attribute.
+    metaparams.data_source = "CPS"
+    filtered_pol_params = inputs.convert_policy_defaults(metaparams, policy_params)
 
     keep = [
         "mstat",
@@ -108,7 +107,7 @@ def validate_inputs(meta_params_dict, adjustment, errors_warnings):
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     errors_warnings["Tax Information"]["errors"].update(params.errors)
 
-    policy_adj = fix_checkbox(adjustment["Policy"])
+    policy_adj = inputs.convert_policy_adjustment(adjustment["Policy"])
 
     policy_params = Policy()
     policy_params.adjust(policy_adj, raise_errors=False, ignore_warnings=True)
@@ -126,7 +125,7 @@ def run_model(meta_params_dict, adjustment):
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     newvals = params.specification()
 
-    policy_mods = fix_checkbox(adjustment["Policy"])
+    policy_mods = inputs.convert_policy_adjustment(adjustment["Policy"])
 
     crunch = Cruncher(inputs=newvals, custom_reform=policy_mods)
 
