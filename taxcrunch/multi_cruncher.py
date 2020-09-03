@@ -48,7 +48,7 @@ class Batch:
         self.invar, self.invar_marg, self.rows = self.read_input()
         self.mtr = self.calc_mtr(reform_file=None)
 
-        self.tc_vars = [
+        self.TC_VARS = [
             "RECID",
             "iitax",
             "payrolltax",
@@ -69,7 +69,8 @@ class Batch:
             "ptax_was",
             "qbided",
         ]
-        self.labels = [
+
+        self.TC_LABELS = [
             "ID",
             "Individual Income Tax",
             "Payroll Tax",
@@ -89,10 +90,9 @@ class Batch:
             "Income Tax Before Credits",
             "FICA",
             "Qualified Business Income Deduction",
-            "Payroll Tax MTR",
-            "Income Tax MTR",
-            "Combined MTR",
         ]
+
+        self.MTR_LABELS = ["Payroll Tax MTR", "Income Tax MTR", "Combined MTR"]
 
     def read_input(self):
         """
@@ -130,7 +130,16 @@ class Batch:
         self.rows = len(self.invar.index)
         return self.invar, self.invar_marg, self.rows
 
-    def create_table(self, reform_file=None, be_sub=0, be_inc=0, be_cg=0):
+    def create_table(
+        self,
+        reform_file=None,
+        tc_vars=None,
+        tc_labels=None,
+        include_mtr=True,
+        be_sub=0,
+        be_inc=0,
+        be_cg=0,
+    ):
         """
         Creates table of liabilities. Default is current law with no behavioral response
             (i.e. static analysis). User may specify a policy reform which is read and
@@ -139,6 +148,12 @@ class Batch:
 
         reform_file: name of a reform file in the Tax-Calculator reforms folder,
             a file path to a custom JSON reform file, or a dictionary with a policy reform.
+
+        tc_vars: list of Tax-Calculator output variables.
+
+        tc_labels: list of labels for output table
+
+        include_mtr: include MTR calculations in output table
 
         be_sub: Substitution elasticity of taxable income. Defined as proportional change
             in taxable income divided by proportional change in marginal net-of-tax rate
@@ -165,13 +180,21 @@ class Batch:
             adjust_ratios=None,
         )
 
-        if reform_file == None:
+        if tc_vars is None:
+            tc_vars = self.TC_VARS
+        if tc_labels is None:
+            tc_labels = self.TC_LABELS
+
+        assert len(tc_vars) > 0
+        assert len(tc_vars) == len(tc_labels)
+
+        if reform_file is None:
             pol = tc.Policy()
             assert be_sub == be_inc == be_cg == 0
             calc = tc.Calculator(policy=pol, records=recs)
             calc.advance_to_year(year)
             calc.calc_all()
-            calcs = calc.dataframe(self.tc_vars)
+            calcs = calc.dataframe(tc_vars)
         else:
             pol = self.get_pol(reform_file)
             calc = tc.Calculator(policy=pol, records=recs)
@@ -179,17 +202,32 @@ class Batch:
             calc_base = tc.Calculator(policy=pol_base, records=recs)
             response_elasticities = {"sub": be_sub, "inc": be_inc, "cg": be_cg}
             _, df2br = br.response(calc_base, calc, response_elasticities, dump=True)
-            calcs = df2br[self.tc_vars]
+            calcs = df2br[tc_vars]
 
-        mtr = self.calc_mtr(reform_file)
-        mtr_df = pd.DataFrame(data=mtr).transpose()
-        df_res = pd.concat([calcs, mtr_df], axis=1)
-        df_res.columns = self.labels
-        df_res.index = range(self.rows)
+        if include_mtr:
+            mtr = self.calc_mtr(reform_file)
+            mtr_df = pd.DataFrame(data=mtr).transpose()
+            df_res = pd.concat([calcs, mtr_df], axis=1)
+            col_labels = tc_labels + self.MTR_LABELS
+            df_res.columns = col_labels
+            df_res.index = range(self.rows)
+        else:
+            df_res = calcs
+            df_res.columns = tc_labels
+            df_res.index = range(self.rows)
+
         return df_res
 
     def create_diff_table(
-        self, reform_file, baseline=None, be_sub=0, be_inc=0, be_cg=0
+        self,
+        reform_file,
+        tc_vars=None,
+        tc_labels=None,
+        include_mtr=True,
+        baseline=None,
+        be_sub=0,
+        be_inc=0,
+        be_cg=0,
     ):
         """
         Creates a table that displays differences between baseline and reform. See the above
@@ -199,14 +237,24 @@ class Batch:
             responses must remain 0.
 
         """
+        if tc_vars is None:
+            tc_vars = self.TC_VARS
+
+        if tc_labels is None:
+            tc_labels = self.TC_LABELS
+
         if baseline is None:
-            t_base = self.create_table()
+            t_base = self.create_table(
+                tc_vars=tc_vars, tc_labels=tc_labels, include_mtr=include_mtr
+            )
         else:
             # a behavioral response can only be simulated if the baseline is
             # current law
             assert be_sub == be_inc == be_cg == 0
-            t_base = self.create_table(baseline)
-        t_reform = self.create_table(reform_file, be_sub, be_inc, be_cg)
+            t_base = self.create_table(baseline, tc_vars, tc_labels, include_mtr)
+        t_reform = self.create_table(
+            reform_file, tc_vars, tc_labels, include_mtr, be_sub, be_inc, be_cg
+        )
         df_all = pd.merge(t_reform, t_base, on="ID")
         df_ids = df_all["ID"]
         cols = len(t_base.columns)
@@ -214,48 +262,19 @@ class Batch:
         df_diff_id = pd.concat([df_ids, df_diff], axis=1)
         # new column labels that have "Diff" at the end
         diff_labels = ["ID"]
-        for label in self.labels:
+
+        if include_mtr:
+            col_labels = tc_labels + self.MTR_LABELS
+        else:
+            col_labels = tc_labels
+
+        for label in col_labels:
             if label == "ID":
                 pass
             else:
                 diff_labels.append(label + " Diff")
         df_diff_id.columns = diff_labels
         return df_diff_id
-
-    def write_output_file(
-        self, output_filename=None, reform_file=None, be_sub=0, be_inc=0, be_cg=0
-    ):
-        """
-        Writes an output table as a csv. Like the create_table() method, default is current
-            law and optional reform_file argument is a file path to json file or dictionary of a reform.
-
-        Default output filename is "cruncher-mm-dd-YYYY.csv" but user can change output filename
-            with output_filename argument.
-        """
-        if output_filename is None:
-            today = date.today()
-            today_str = today.strftime("%m-%d-%Y")
-            output_filename = "cruncher-" + today_str + ".csv"
-        df_res = self.create_table(reform_file, be_sub, be_inc, be_cg)
-        assert isinstance(df_res, pd.DataFrame)
-        df_res.to_csv(output_filename, index=False, float_format="%.2f")
-
-    def write_diff_file(
-        self,
-        reform_file,
-        baseline=None,
-        output_filename=None,
-        be_sub=0,
-        be_inc=0,
-        be_cg=0,
-    ):
-        if output_filename is None:
-            today = date.today()
-            today_str = today.strftime("%m-%d-%Y")
-            output_filename = "cruncher-diff-" + today_str + ".csv"
-        df_res = self.create_diff_table(reform_file, baseline, be_sub, be_inc, be_cg)
-        assert isinstance(df_res, pd.DataFrame)
-        df_res.to_csv(output_filename, index=False, float_format="%.2f")
 
     def get_pol(self, reform_file):
         """
@@ -302,7 +321,7 @@ class Batch:
             weights=None,
             adjust_ratios=None,
         )
-        if reform_file == None:
+        if reform_file is None:
             pol = tc.Policy()
         else:
             pol = self.get_pol(reform_file)
