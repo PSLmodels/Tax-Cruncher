@@ -2,4 +2,4 @@ from taxcrunch.cruncher import *
 from taxcrunch.multi_cruncher import *
 
 name = "taxcrunch"
-__version__ = "0.4.1"
+__version__ = "0.4.2"
