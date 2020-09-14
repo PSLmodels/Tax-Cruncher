@@ -9,11 +9,9 @@ dependencies:
 - pandas>=0.23
 - numpy>=1.13
 - paramtools>=0.10.1
-- ipython
 - pytest
-- dask
 - bokeh<2.0.0
-- markdown
+- coverage
 - pip
 - pip:
   - cs-kit

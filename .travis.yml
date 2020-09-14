@@ -22,4 +22,7 @@ install:
 
 # command to run tests
 script:
-  - pytest -v
+  - coverage run pytest -v
+
+after_success:
+  - codecov
