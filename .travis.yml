@@ -19,7 +19,12 @@ install:
   - conda update -n base -c defaults conda
   - conda env create --name taxcrunch-env --file=environment.yml python=$TRAVIS_PYTHON_VERSION
   - source activate taxcrunch-env
+  - conda env update -f environment.yml
+  - pip install codecov
 
 # command to run tests
 script:
-  - pytest -v
+  - coverage run -m pytest -v
+
+after_success:
+  - codecov
