@@ -46,7 +46,6 @@ class Batch:
     def __init__(self, path):
         self.path = path
         self.invar, self.invar_marg, self.rows = self.read_input()
-        self.mtr = self.calc_mtr(reform_file=None)
 
         self.TC_VARS = [
             "RECID",
@@ -180,6 +179,7 @@ class Batch:
             adjust_ratios=None,
         )
 
+        # if tc_vars and tc_labels are not specified, defaults are used
         if tc_vars is None:
             tc_vars = self.TC_VARS
         if tc_labels is None:
@@ -188,6 +188,7 @@ class Batch:
         assert len(tc_vars) > 0
         assert len(tc_vars) == len(tc_labels)
 
+        # if no reform file is passed, table will show current law values
         if reform_file is None:
             pol = tc.Policy()
             assert be_sub == be_inc == be_cg == 0
@@ -195,6 +196,7 @@ class Batch:
             calc.advance_to_year(year)
             calc.calc_all()
             calcs = calc.dataframe(tc_vars)
+        # if a reform file is passed, table will show reform values
         else:
             pol = self.get_pol(reform_file)
             calc = tc.Calculator(policy=pol, records=recs)
@@ -204,6 +206,7 @@ class Batch:
             _, df2br = br.response(calc_base, calc, response_elasticities, dump=True)
             calcs = df2br[tc_vars]
 
+        # if include_mtr is True, the tables includes three columns with MTRs
         if include_mtr:
             mtr = self.calc_mtr(reform_file)
             mtr_df = pd.DataFrame(data=mtr).transpose()
