@@ -104,6 +104,16 @@ def test_custom_output_cols(crunch=b):
         b.create_table(tc_vars=["fake_var1", "fake_var2"], tc_labels=custom_labels)
 
 
+def test_mtr_cols(crunch=b):
+
+    mtr_cols = ["Payroll Tax MTR", "Income Tax MTR", "Combined MTR"]
+    table = b.create_table()
+    assert set(mtr_cols).issubset(table.columns)
+
+    table_no_mtr = b.create_table(include_mtr=False)
+    assert set(mtr_cols).issubset(table_no_mtr.columns) is False
+
+
 def test_qbid_params():
     """
     Adpots a test from Tax-Calculator that checks QBID calculations against
