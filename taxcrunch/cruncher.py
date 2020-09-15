@@ -20,31 +20,18 @@ class Cruncher:
 
     Parameters
     ----------
-    file: file path to input adjustment file
+    inputs: file path to input adjustment file
         The default is cruncher/adjustment_template.json.
 
-    custom_reform: file path to optional json policy reform file
+    custom_reform: file path to json policy reform file
         If you choose to specify a custom reform (as opposed to the
         preset reforms in the Tax-Calculator repo), change the adjustment
-        file 'reform_options' field to 'Custom' and specify the file path
-        in this argument
+        file 'reform_options' field to 'Custom'.
 
     Returns
     -------
     class instance: Cruncher
-
-    Notes
-    -----
-    The most efficient way to use the Cruncher class is to select a preset policy reform
-    from the 'reform_options' field in 'defaults.json', then fill out 'adjustment_template.json'
-    with your individual data and chosen reform. Create a class instance with c = Cruncher() and
-    test out the following methods:
-
-        c.basic_table()
-        c.mtr_table()
-        c.calc_table()
-        c.calc_diff_table()
-
+    
     """
 
     INPUT_PATH = os.path.join(CURRENT_PATH, "adjustment_template.json")
@@ -186,9 +173,6 @@ class Cruncher:
         self.invar["e26270"] = ivar.loc[:, 24]
         # e26270 is included in e02000
         self.invar["e02000"] = self.invar["e26270"] + e02000
-        # self.invar["e00900p"] = ivar.loc[:, 24]
-        # self.invar["e00900s"] = ivar.loc[:, 25]
-        # self.invar["e00900"] = self.invar["e00900p"] + self.invar["e00900s"]
         sstb_bool = ivar.loc[:, 25]
         # convert both Cruncher and Batch inputs (i.e. True/False and 0/1
         self.invar["PT_SSTB_income"] = np.where(
