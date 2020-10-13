@@ -379,13 +379,17 @@ class Cruncher:
             self.df_mtr: a Pandas dataframe MTR results with respect to 'mtr_options'
         """
 
-        mtr_calc = self.calc1.mtr(calc_all_already_called=True)
+        mtr_calc = self.calc1.mtr(
+            calc_all_already_called=True, wrt_full_compensation=False
+        )
         self.mtr_df = pd.DataFrame(
             data=[mtr_calc[1], mtr_calc[0]],
             index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
         )
 
-        mtr_calc_reform = self.calc_reform.mtr(calc_all_already_called=True)
+        mtr_calc_reform = self.calc_reform.mtr(
+            calc_all_already_called=True, wrt_full_compensation=False
+        )
         mtr_df_reform = pd.DataFrame(
             data=[mtr_calc_reform[1], mtr_calc_reform[0]],
             index=["Income Tax Marginal Rate", "Payroll Tax Marginal Rate"],
