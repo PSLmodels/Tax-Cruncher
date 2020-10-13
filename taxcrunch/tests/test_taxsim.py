@@ -15,5 +15,8 @@ def test_a18_validation():
     taxsim_out = os.path.join(CURRENT_PATH, "taxsim_validation/taxsim_out_a18.csv")
     taxsim_df = pd.read_csv(taxsim_out)
 
-    assert np.allclose(table_a18["Individual Income Tax"], taxsim_df["fiitax"], atol=1)
-    assert np.allclose(table_a18["Payroll Tax"], taxsim_df["fica"], atol=1)
+    taxcrunch_frate = table_a18["Income Tax MTR"]*100
+
+    assert np.allclose(table_a18["Individual Income Tax"], taxsim_df["fiitax"], atol=0.01)
+    assert np.allclose(table_a18["Payroll Tax"], taxsim_df["fica"], atol=0.01)
+    assert np.allclose(taxcrunch_frate, taxsim_df["frate"], atol=0.01)
