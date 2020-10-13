@@ -393,10 +393,10 @@ class Cruncher:
 
         self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
         self.df_mtr.columns = ["Base", "Reform"]
+        # convert decimals to percents
+        self.df_mtr = self.df_mtr * 100
 
         self.df_mtr["Change"] = self.df_mtr["Reform"] - self.df_mtr["Base"]
-
-        self.df_mtr = self.df_mtr.round(3)
 
         return self.df_mtr
 
