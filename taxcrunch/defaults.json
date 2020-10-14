@@ -5,6 +5,10 @@
             "section_1": {
                 "type": "str",
                 "number_dims": 0
+            },
+            "section_2": {
+                "type": "str",
+                "number_dims": 0
             }
         }
     },
@@ -174,6 +178,7 @@
         "title": "Wage and salary income of primary taxpayer",
         "description": "Include self-employment",
         "section_1": "Income",
+        "section_2": "Wage Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -192,6 +197,7 @@
         "title": "Wage and salary income of spouse",
         "description": "Include self-employment",
         "section_1": "Income",
+        "section_2": "Wage Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -210,6 +216,7 @@
         "title": "Dividend income",
         "description": "Qualified dividends",
         "section_1": "Income",
+        "section_2": "Investment Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -228,6 +235,7 @@
         "title": "Interest received (+/-)",
         "description": "For example interest from US bank accounts, US savings bonds, Treasury notes/bills/bonds, etc",
         "section_1": "Income",
+        "section_2": "Investment Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -246,6 +254,7 @@
         "title": "Short term capital gains or losses (+/-)",
         "description": "Income received from investments held for less than a year",
         "section_1": "Income",
+        "section_2": "Investment Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -264,6 +273,7 @@
         "title": "Long term capital gains or losses (+/-)",
         "description": "Income received from investments held for more than a year",
         "section_1": "Income",
+        "section_2": "Investment Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -278,10 +288,87 @@
             }
         }
     },
+        "businc": {
+        "title": "Business income",
+        "description": "Income from partnerships, limited-liability companies, and S corporations.",
+        "section_1": "Income",
+        "section_2": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "sstb": {
+        "title": "Business income from professional services business",
+        "description": "Service businesses may be in the fields of law, health, consulting, and financial services.",
+        "section_1": "Income",
+        "section_2": "Pass-Through Income",
+        "notes": "",
+        "type": "bool",
+        "value": [
+            {
+                "value": false
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": false,
+                "max": true
+            }
+        }
+    },
+    "w2paid": {
+        "title": "W-2 wages paid by business",
+        "description": "Used to calculate QBI deduction limitation.",
+        "section_1": "Income",
+        "section_2": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
+    "qualprop": {
+        "title": "Share of qualified property",
+        "description": "Used to calculate QBI deduction limitation.",
+        "section_1": "Income",
+        "section_2": "Pass-Through Income",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 9e+99
+            }
+        }
+    },
     "otherprop": {
         "title": "Other property income subject to Net Investment Income Tax",
         "description": "Includes unearned partnership and passive S-corp income, rent not eligible for QBI deduction, non-qualified dividends, capital gains distributions on form 1040, other income or loss not otherwise enumerated here.",
         "section_1": "Income",
+        "section_2": "Other Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -300,6 +387,7 @@
         "title": "Other non-property income not subject to Medicare Net Investment Income Tax (+/-)",
         "description": "Includes alimony, fellowships, state income tax refunds (itemizers only). Adjustment and items such as alimony paid, Koegh and IRA contributions, foreign income exclusion, NOLs.",
         "section_1": "Income",
+        "section_2": "Other Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -318,6 +406,7 @@
         "title": "Taxable pensions and IRA distributions",
         "description": "",
         "section_1": "Income",
+        "section_2": "Other Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -336,6 +425,7 @@
         "title": "Gross social security benefits",
         "description": "",
         "section_1": "Income",
+        "section_2": "Other Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -354,6 +444,7 @@
         "title": "Unemployment compensation received",
         "description": "",
         "section_1": "Income",
+        "section_2": "Other Income",
         "notes": "",
         "type": "float",
         "value": [
@@ -426,78 +517,6 @@
         "title": "Other itemizable expenses",
         "description": "Include itemizable interest paid, charitable contributions, and casualty or theft losses",
         "section_1": "Taxes and Expenses",
-        "notes": "",
-        "type": "float",
-        "value": [
-            {
-                "value": 0
-            }
-        ],
-        "validators": {
-            "range": {
-                "min": 0,
-                "max": 9e+99
-            }
-        }
-    },
-    "businc": {
-        "title": "Business income",
-        "description": "Income from partnerships, limited-liability companies, and S corporations.",
-        "section_1": "Pass-Through Income",
-        "notes": "",
-        "type": "float",
-        "value": [
-            {
-                "value": 0
-            }
-        ],
-        "validators": {
-            "range": {
-                "min": 0,
-                "max": 9e+99
-            }
-        }
-    },
-    "sstb": {
-        "title": "Business income from professional services business",
-        "description": "Service businesses may be in the fields of law, health, consulting, and financial services.",
-        "section_1": "Pass-Through Income",
-        "notes": "",
-        "type": "bool",
-        "value": [
-            {
-                "value": false
-            }
-        ],
-        "validators": {
-            "range": {
-                "min": false,
-                "max": true
-            }
-        }
-    },
-    "w2paid": {
-        "title": "W-2 wages paid by business",
-        "description": "Used to calculate QBI deduction limitation.",
-        "section_1": "Pass-Through Income",
-        "notes": "",
-        "type": "float",
-        "value": [
-            {
-                "value": 0
-            }
-        ],
-        "validators": {
-            "range": {
-                "min": 0,
-                "max": 9e+99
-            }
-        }
-    },
-    "qualprop": {
-        "title": "Share of qualified property",
-        "description": "Used to calculate QBI deduction limitation.",
-        "section_1": "Pass-Through Income",
         "notes": "",
         "type": "float",
         "value": [
