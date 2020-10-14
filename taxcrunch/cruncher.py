@@ -434,8 +434,11 @@ class Cruncher:
             "c00100",
             "e02300",
             "c02500",
+            "standard",
             "c04470",
+            "qbided",
             "c04800",
+            "taxbc",
             "c07220",
             "c11070",
             "c07180",
@@ -444,23 +447,26 @@ class Cruncher:
             "c09600",
             "niit",
             "c05800",
-            "qbided",
+            "payrolltax"
         ]
         labels = [
             "Adjusted Gross Income (AGI)",
             "Unemployment Insurance in AGI",
             "Social Security in AGI",
+            "Standard Deduction (Zero for Itemizers)",
             "Itemized Deductions",
+            "Qualified Business Income Deduction",
             "Taxable Income",
+            "Regular Tax Before Credits",
             "Child Tax Credit (CTC)",
             "CTC Refundable",
             "Child Care Credit",
-            "Earned Income Tax Credit (EITC)",
+            "Earned Income Tax Credit",
             "Alternative Minimum Tax (AMT) Taxable Income",
             "AMT Liability",
             "Net Investment Income Tax",
-            "Income Tax Before Credits",
-            "Qualified Business Income Deduction",
+            "Income Tax Before Credits (Regular + AMT)",
+            "Payroll Tax (Employee + Employer)"
         ]
 
         df_calc1 = self.calc1.dataframe(calculation).transpose()
