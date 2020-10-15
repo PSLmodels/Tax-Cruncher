@@ -288,7 +288,7 @@
             }
         }
     },
-        "businc": {
+    "businc": {
         "title": "Business income",
         "description": "Income from partnerships, limited-liability companies, and S corporations.",
         "section_1": "Income",
