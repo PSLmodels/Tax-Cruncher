@@ -113,11 +113,11 @@ class Cruncher:
         # Single -> 1; Joint -> 2
         mstat_int = np.where(mstat == "Single", 1, 2)
         # convert sstb to int
-        sstb = ivar.loc[:, 25]
+        sstb = ivar.loc[:, 16]
         # True -> 1; False -> 0
         sstb_int = np.where(sstb, 1, 0)
         self.batch_ivar.loc[:, 2] = mstat_int
-        self.batch_ivar.loc[:, 25] = sstb_int
+        self.batch_ivar.loc[:, 16] = sstb_int
         return self.batch_ivar
 
     def translate(self, ivar):
@@ -158,29 +158,31 @@ class Cruncher:
         self.invar["e00300"] = ivar.loc[:, 12]
         self.invar["p22250"] = ivar.loc[:, 13]
         self.invar["p23250"] = ivar.loc[:, 14]
-        e02000 = ivar.loc[:, 15]
-        self.invar["e00800"] = ivar.loc[:, 16]
-        self.invar["e01700"] = ivar.loc[:, 17]
-        self.invar["e01500"] = self.invar["e01700"]
-        self.invar["e02400"] = ivar.loc[:, 18]
-        self.invar["e02300"] = ivar.loc[:, 19]
-        # no Tax-Calculator use of TAXSIM variable 22, non-taxable transfers
-        # no Tax-Calculator use of TAXSIM variable 23, rent paid
-        self.invar["e18500"] = ivar.loc[:, 20]
-        self.invar["e18400"] = ivar.loc[:, 21]
-        self.invar["e32800"] = ivar.loc[:, 22]
-        self.invar["e19200"] = ivar.loc[:, 23]
-        self.invar["e26270"] = ivar.loc[:, 24]
-        # e26270 is included in e02000
-        self.invar["e02000"] = self.invar["e26270"] + e02000
-        sstb_bool = ivar.loc[:, 25]
+        self.invar["e26270"] = ivar.loc[:, 15]
+        sstb_bool = ivar.loc[:, 16]
         # convert both Cruncher and Batch inputs (i.e. True/False and 0/1
         self.invar["PT_SSTB_income"] = np.where(
             np.logical_or(sstb_bool, sstb_bool == 1), 1, 0
         )
-        self.invar["PT_binc_w2_wages"] = ivar.loc[:, 26]
-        self.invar["PT_ubia_property"] = ivar.loc[:, 27]
+        self.invar["PT_binc_w2_wages"] = ivar.loc[:, 17]
+        self.invar["PT_ubia_property"] = ivar.loc[:, 18]
 
+        e02000 = ivar.loc[:, 19]
+        self.invar["e00800"] = ivar.loc[:, 20]
+        self.invar["e01700"] = ivar.loc[:, 21]
+        self.invar["e01500"] = self.invar["e01700"]
+        self.invar["e02400"] = ivar.loc[:, 22]
+        self.invar["e02300"] = ivar.loc[:, 23]
+        # no Tax-Calculator use of TAXSIM variable 22, non-taxable transfers
+        # no Tax-Calculator use of TAXSIM variable 23, rent paid
+        self.invar["e18500"] = ivar.loc[:, 24]
+        self.invar["e18400"] = ivar.loc[:, 25]
+        self.invar["e32800"] = ivar.loc[:, 26]
+        self.invar["e19200"] = ivar.loc[:, 27]
+        
+        # e26270 is included in e02000
+        self.invar["e02000"] = self.invar["e26270"] + e02000
+        
         return self.invar
 
     def choose_mtr(self):
@@ -200,33 +202,34 @@ class Cruncher:
         elif self.mtr_options == "Spouse Earnings":
             self.ivar2.loc[:, 10] = self.ivar2.loc[:, 10] + 1
             return self.ivar2, "e00200s"
-        elif self.mtr_options == "Short Term Gains":
-            self.ivar2.loc[:, 13] = self.ivar2.loc[:, 13] + 1
-            return self.ivar2, "p22250"
-        elif self.mtr_options == "Long Term Gains":
-            self.ivar2.loc[:, 14] = self.ivar2.loc[:, 14] + 1
-            return self.ivar2, "p23250"
         elif self.mtr_options == "Qualified Dividends":
             self.ivar2.loc[:, 11] = self.ivar2.loc[:, 11] + 1
             return self.ivar2, "e00650"
         elif self.mtr_options == "Interest Received":
             self.ivar2.loc[:, 12] = self.ivar2.loc[:, 12] + 1
             return self.ivar2, "e00300"
+        elif self.mtr_options == "Short Term Gains":
+            self.ivar2.loc[:, 13] = self.ivar2.loc[:, 13] + 1
+            return self.ivar2, "p22250"
+        elif self.mtr_options == "Long Term Gains":
+            self.ivar2.loc[:, 14] = self.ivar2.loc[:, 14] + 1
+            return self.ivar2, "p23250"
+        elif self.mtr_options == "Business Income":
+            self.ivar2.loc[:, 15] = self.ivar2.loc[:, 15] + 1
+            return self.ivar2, "e26270"
         elif self.mtr_options == "Pensions":
-            self.ivar2.loc[:, 17] = self.ivar2.loc[:, 17] + 1
+            self.ivar2.loc[:, 21] = self.ivar2.loc[:, 21] + 1
             return self.ivar2, "e01700"
         elif self.mtr_options == "Gross Social Security Benefits":
-            self.ivar2.loc[:, 18] = self.ivar2.loc[:, 18] + 1
+            self.ivar2.loc[:, 22] = self.ivar2.loc[:, 22] + 1
             return self.ivar2, "e02400"
         elif self.mtr_options == "Real Estate Taxes Paid":
-            self.ivar2.loc[:, 20] = self.ivar2.loc[:, 20] + 1
+            self.ivar2.loc[:, 24] = self.ivar2.loc[:, 24] + 1
             return self.ivar2, "e18500"
         elif self.mtr_options == "Mortgage":
-            self.ivar2.loc[:, 23] = self.ivar2.loc[:, 23] + 1
+            self.ivar2.loc[:, 27] = self.ivar2.loc[:, 27] + 1
             return self.ivar2, "e19200"
-        elif self.mtr_options == "Business Income":
-            self.ivar2.loc[:, 24] = self.ivar2.loc[:, 24] + 1
-            return self.ivar2, "e00900p"
+
 
     def choose_baseline(self):
         """
