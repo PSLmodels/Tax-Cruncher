@@ -419,12 +419,18 @@ class Cruncher:
                 self.df_mtr.iloc[1:],
             ]
         )
-        self.df_basic = self.df_basic.round(2)
 
+        # format each row
         self.df_basic.iloc[0, :] = self.df_basic.iloc[0, :].apply(
             lambda x: "{:,.2f}".format(x)
         )
+        self.df_basic.iloc[1, :] = self.df_basic.iloc[1, :].apply(
+            lambda x: "{:,.2f}".format(x)
+        )
         self.df_basic.iloc[2, :] = self.df_basic.iloc[2, :].apply(
+            lambda x: "{:,.2f}".format(x)
+        )
+        self.df_basic.iloc[3, :] = self.df_basic.iloc[3, :].apply(
             lambda x: "{:,.2f}".format(x)
         )
 
