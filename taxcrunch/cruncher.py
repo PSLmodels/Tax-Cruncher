@@ -420,6 +420,10 @@ class Cruncher:
             ]
         )
         self.df_basic = self.df_basic.round(2)
+
+        self.df_basic.iloc[0,:] = self.df_basic.iloc[0,:].apply(lambda x: "{:,.2f}".format(x))
+        self.df_basic.iloc[2,:] = self.df_basic.iloc[2,:].apply(lambda x: "{:,.2f}".format(x))
+        
         return self.df_basic
 
     def calc_table(self):
@@ -470,10 +474,15 @@ class Cruncher:
         df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
 
         self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
-        self.df_calc.columns = ["Base", "Reform", "+ $1 ({})".format(self.mtr_options)]
+
+        mtr_label = "+ $1 ({})".format(self.mtr_options)
+
+        self.df_calc.columns = ["Base", "Reform", mtr_label]
         self.df_calc.index = labels
 
-        self.df_calc = self.df_calc.round(2)
+        self.df_calc.Base = self.df_calc.Base.apply(lambda x: "{:,.2f}".format(x))
+        self.df_calc.Reform = self.df_calc.Reform.apply(lambda x: "{:,.2f}".format(x))
+        self.df_calc.iloc[:,2] = self.df_calc.iloc[:,2].apply(lambda x: "{:,.2f}".format(x))
 
         return self.df_calc
 

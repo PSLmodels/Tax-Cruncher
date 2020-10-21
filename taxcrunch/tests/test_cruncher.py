@@ -35,8 +35,11 @@ def test_basic_table(cr_data):
 
 def test_calc_table(cr_data):
     table = cr_data.calc_table()
+    # remove commas and convert to numeric
+    table = table.replace(',','',regex=True)
+    for col in table.columns:
+        table[col] = table[col].apply(pd.to_numeric)
     assert isinstance(table, pd.DataFrame)
-    assert table.iloc[0]["Reform"] + 1 == table.iloc[0]["+ $1 (Taxpayer Earnings)"]
     table_path = os.path.join(CURR_PATH, "expected_calc_table.csv")
     # table.to_csv(table_path)
     expected_table = pd.read_csv(table_path, index_col=0)
