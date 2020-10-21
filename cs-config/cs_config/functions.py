@@ -195,10 +195,10 @@ def comp_output(crunch, df_base, df_reform, span, mtr_opt):
     detail = crunch.calc_table()
 
     table_basic = basic.to_html(
-        classes="table table-striped table-hover"
+        classes="table table-striped table-hover text-right"
     )
     table_detail = detail.to_html(
-        classes="table table-striped table-hover"
+        classes="table table-striped table-hover text-right"
     )
 
     comp_dict = {
