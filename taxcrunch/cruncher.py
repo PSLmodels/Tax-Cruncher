@@ -421,9 +421,13 @@ class Cruncher:
         )
         self.df_basic = self.df_basic.round(2)
 
-        self.df_basic.iloc[0,:] = self.df_basic.iloc[0,:].apply(lambda x: "{:,.2f}".format(x))
-        self.df_basic.iloc[2,:] = self.df_basic.iloc[2,:].apply(lambda x: "{:,.2f}".format(x))
-        
+        self.df_basic.iloc[0, :] = self.df_basic.iloc[0, :].apply(
+            lambda x: "{:,.2f}".format(x)
+        )
+        self.df_basic.iloc[2, :] = self.df_basic.iloc[2, :].apply(
+            lambda x: "{:,.2f}".format(x)
+        )
+
         return self.df_basic
 
     def calc_table(self):
@@ -482,7 +486,9 @@ class Cruncher:
 
         self.df_calc.Base = self.df_calc.Base.apply(lambda x: "{:,.2f}".format(x))
         self.df_calc.Reform = self.df_calc.Reform.apply(lambda x: "{:,.2f}".format(x))
-        self.df_calc.iloc[:,2] = self.df_calc.iloc[:,2].apply(lambda x: "{:,.2f}".format(x))
+        self.df_calc.iloc[:, 2] = self.df_calc.iloc[:, 2].apply(
+            lambda x: "{:,.2f}".format(x)
+        )
 
         return self.df_calc
 
