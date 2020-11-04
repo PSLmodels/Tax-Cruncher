@@ -134,7 +134,17 @@ class Cruncher:
         mstat = ivar.loc[:, 2]
         self.invar["age_head"] = ivar.loc[:, 3]
         self.invar["age_spouse"] = ivar.loc[:, 4]
-        num_deps = ivar.loc[:, 5]
+
+        nu13 = ivar.loc[:, 5]
+        self.invar["f2441"] = nu13
+        n1316 = ivar.loc[:, 6]
+        self.invar["n24"] = nu13 + n1316
+        n1719 = ivar.loc[:, 7]         
+        num_eitc_qualified_kids = nu13 + n1316 + n1719
+
+        self.invar["EIC"] = np.minimum(num_eitc_qualified_kids, 3)
+        other_dep = ivar.loc[:, 8]
+        num_deps = num_eitc_qualified_kids + other_dep
         # convert both Cruncher and Batch inputs (i.e. Single/Joint
         # and 0/1)
         mars = np.where(
@@ -142,12 +152,8 @@ class Cruncher:
             np.where(num_deps > 0, 4, 1),
             2,
         )
-        assert np.all(np.logical_or(mars == 1, np.logical_or(mars == 2, mars == 4)))
         self.invar["MARS"] = mars
-        self.invar["f2441"] = ivar.loc[:, 6]
-        self.invar["n24"] = ivar.loc[:, 7]
-        num_eitc_qualified_kids = ivar.loc[:, 8]
-        self.invar["EIC"] = np.minimum(num_eitc_qualified_kids, 3)
+        assert np.all(np.logical_or(mars == 1, np.logical_or(mars == 2, mars == 4)))
         num_taxpayers = np.where(mars == 2, 2, 1)
         self.invar["XTOT"] = num_taxpayers + num_deps
         self.invar["e00200p"] = ivar.loc[:, 9]
