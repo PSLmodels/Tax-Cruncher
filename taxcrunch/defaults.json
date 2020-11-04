@@ -102,27 +102,9 @@
             }
         }
     },
-    "depx": {
-        "title": "Number of dependents",
-        "description": "Part of personal exemption calculation",
-        "section_1": "Dependents",
-        "notes": "",
-        "type": "int",
-        "value": [
-            {
-                "value": 0
-            }
-        ],
-        "validators": {
-            "range": {
-                "min": 0,
-                "max": 15
-            }
-        }
-    },
     "dep13": {
-        "title": "Number of children under 13 with eligible child care expenses",
-        "description": "Dependent Care Credit",
+        "title": "Number of children under 13",
+        "description": "",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -134,13 +116,13 @@
         "validators": {
             "range": {
                 "min": 0,
-                "max": "dep17"
+                "max": 10
             }
         }
     },
     "dep17": {
-        "title": "Number of children under 17 for the entire tax year",
-        "description": "Child Tax Credit (include children under 13)",
+        "title": "Number of children from 13 to 16",
+        "description": "",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -151,14 +133,14 @@
         ],
         "validators": {
             "range": {
-                "min": "dep13",
-                "max": "dep18"
+                "min": 0,
+                "max": 10
             }
         }
     },
     "dep18": {
-        "title": "Number of qualifying children for EITC",
-        "description": "Typically younger than 19 or 24 and a full-time student (include children under 17)",
+        "title": "Number of children from 17 to 18 AND from 19 to 24 and a full-time student",
+        "description": "",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -169,8 +151,26 @@
         ],
         "validators": {
             "range": {
-                "min": "dep17",
-                "max": "depx"
+                "min": 0,
+                "max": 10
+            }
+        }
+    },
+    "otherdep": {
+        "title": "Other dependents",
+        "description": "Include qualifying relatives",
+        "section_1": "Dependents",
+        "notes": "",
+        "type": "int",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 10
             }
         }
     },
