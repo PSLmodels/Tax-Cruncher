@@ -1,17 +1,17 @@
 How to specify CSV input file
 ------
 
-To analyze multiple tax filers, the user must specify a csv file with the filers' data. Each row of the csv file represents a filer and each column represents a variable. Please note that the file should not have column headings and year must be the same for all observations. The input file should have 24 columns in the following order:
+To analyze multiple tax filers, the user creates a csv file with the filers' data. Each row of the csv file represents a filer and each column represents a variable. Please note that the file should not have column headings and the year must be the same for all observations. The input file should have 28 columns in the following order:
 
 1. RECID (ID for tax filer)
 2. year
 3. mstat (1 - single; 2 - married)
 4. page (age of primary taxpayer)
 5. sage (age of spouse)
-6. depx (number of dependents)
 7. dep13 (number of children under 13)
-8. dep17 (number of children under 17)
-9. dep18 (number of qualifying children for EITC)
+8. dep17 (number of children from 13 to 16)
+9. dep18 (number of children from 17 to 18 AND from 19 to 24 and a full-time student)
+9. otherdep (other dependents)
 10. pwages (wage of primary taxpayer)
 11. swages (wage of spouse)
 12. dividends (dividend income)
@@ -30,11 +30,11 @@ To analyze multiple tax filers, the user must specify a csv file with the filers
 25. proptax (real estate taxes paid)
 26. otheritem (other itemized deductions subject to SALT cap, e.g. state and local taxes)
 27. childcare (child care expenses)
-28. mortgage (itemized deductions not subject to SALT cap, e.g., charitable contributions and home mortgage interest)
+28. mortgage (itemized deductions not subject to SALT cap, e.g. charitable contributions and home mortgage interest)
 
 
 For example, a 50-year old single filer with 3 dependents under 13 who makes $50,000 per year could be represented by the following:
 
 ```
-1,2019,1,50,0,3,3,3,3,50000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,2019,1,50,0,3,0,0,0,50000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ```
