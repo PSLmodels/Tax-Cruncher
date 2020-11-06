@@ -11,9 +11,6 @@
     "sage": [
         {"value": 0}
     ],
-    "depx": [
-        {"value": 0}
-    ],
     "dep13": [
         {"value": 0}
     ],
@@ -21,6 +18,9 @@
         {"value": 0}
     ],
     "dep18": [
+        {"value": 0}
+    ],
+    "otherdep": [
         {"value": 0}
     ],
     "pwages": [
