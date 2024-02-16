@@ -1,15 +1,14 @@
 from bokeh.embed import json_item
-from bokeh.layouts import column, row, WidgetBox, layout
-from bokeh.palettes import Spectral4
+from bokeh.layouts import column, row
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, CustomJS, Toggle, NumeralTickFormatter, LinearAxis, Range1d, Span, Label
+from bokeh.models import ColumnDataSource, CustomJS, Toggle, NumeralTickFormatter, Span, Label
 
 
 def liability_plot(df_base, df_reform, span, mtr_opt):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
-    fig = figure(plot_width=600, plot_height=500,
+    fig = figure(width=600, height=500,
                  x_range=(-10000, 300000), y_range=(-20000, 100000), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Liabilities"
     fig.yaxis.formatter = NumeralTickFormatter(format="$0,000")
@@ -81,7 +80,7 @@ def rate_plot(df_base, df_reform, span, mtr_opt):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
-    fig = figure(plot_width=600, plot_height=500,
+    fig = figure(width=600, height=500,
                  x_range=(-10000, 300000), y_range=(-0.3, 0.5), tools=tools, active_drag="pan")
     fig.yaxis.axis_label = "Tax Rate"
     fig.yaxis.formatter = NumeralTickFormatter(format="0%")
@@ -169,7 +168,7 @@ def credit_plot(df_base, df_reform, span, mtr_opt):
     df_base = ColumnDataSource(df_base)
     df_reform = ColumnDataSource(df_reform)
     tools = "pan, zoom_in, zoom_out, reset"
-    fig = figure(plot_width=600, plot_height=500, x_range=(
+    fig = figure(width=600, height=500, x_range=(
         -2500, 70000), tools=tools, active_drag="pan")
 
     filer_income = Span(location=span, dimension='height',
