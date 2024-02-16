@@ -105,7 +105,9 @@ class Batch:
         if isinstance(self.path, pd.DataFrame):
             ivar = self.path
         else:
-            ivar = pd.read_csv(self.path, sep=",", engine="python", header=None)
+            ivar = pd.read_csv(
+                self.path, sep=",", engine="python", header=None
+            )
         # check that input CSV has 28 columns
         assert len(ivar.columns) == 28
         # check that year is the same across all rows
@@ -116,7 +118,9 @@ class Batch:
         params.adjust(ivar)
         array = np.empty((0, rows))
         for label in params._data:
-            array = np.append(array, [params._data[label]["value"][0]["value"]], axis=0)
+            array = np.append(
+                array, [params._data[label]["value"][0]["value"]], axis=0
+            )
         params_df = pd.DataFrame(array).transpose()
 
         params_marg = params_df.copy()
@@ -203,7 +207,9 @@ class Batch:
             pol_base = tc.Policy()
             calc_base = tc.Calculator(policy=pol_base, records=recs)
             response_elasticities = {"sub": be_sub, "inc": be_inc, "cg": be_cg}
-            _, df2br = br.response(calc_base, calc, response_elasticities, dump=True)
+            _, df2br = br.response(
+                calc_base, calc, response_elasticities, dump=True
+            )
             calcs = df2br[tc_vars]
 
         # if include_mtr is True, the tables includes three columns with MTRs
@@ -254,7 +260,9 @@ class Batch:
             # a behavioral response can only be simulated if the baseline is
             # current law
             assert be_sub == be_inc == be_cg == 0
-            t_base = self.create_table(baseline, tc_vars, tc_labels, include_mtr)
+            t_base = self.create_table(
+                baseline, tc_vars, tc_labels, include_mtr
+            )
         t_reform = self.create_table(
             reform_file, tc_vars, tc_labels, include_mtr, be_sub, be_inc, be_cg
         )

@@ -101,7 +101,9 @@ def test_custom_output_cols(crunch=b):
         b.create_table(tc_vars=custom_vars, include_mtr=False)
 
     with pytest.raises(AttributeError):
-        b.create_table(tc_vars=["fake_var1", "fake_var2"], tc_labels=custom_labels)
+        b.create_table(
+            tc_vars=["fake_var1", "fake_var2"], tc_labels=custom_labels
+        )
 
 
 def test_mtr_cols(crunch=b):
@@ -126,4 +128,6 @@ def test_qbid_params():
     # QBID from TPC paper
     expect_qbid = [15000, 1612.5, 0, 15000, 10750, 10000]
 
-    assert np.allclose(table["Qualified Business Income Deduction"], expect_qbid)
+    assert np.allclose(
+        table["Qualified Business Income Deduction"], expect_qbid
+    )

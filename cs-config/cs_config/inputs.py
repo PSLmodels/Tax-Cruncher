@@ -3,7 +3,9 @@ from typing import Union
 from paramtools import Parameters
 
 
-def convert_policy_defaults(meta_params: Parameters, policy_params: Parameters):
+def convert_policy_defaults(
+    meta_params: Parameters, policy_params: Parameters
+):
     """
     Convert defaults for taxcalc's Policy class to work with C/S.
     """
@@ -82,7 +84,7 @@ def convert_indexed_to_checkbox(defaults: dict):
             new_defaults["schema"] = data
 
         elif data["indexable"] and data.get("indexed", None) is True:
-            new_defaults[param] = dict(data, checkbox= True)
+            new_defaults[param] = dict(data, checkbox=True)
 
         elif data["indexable"] and not data.get("indexed", None) is False:
             new_defaults[param] = dict(data, checkbox=False)

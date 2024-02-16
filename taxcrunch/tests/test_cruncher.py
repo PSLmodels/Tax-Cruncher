@@ -18,14 +18,10 @@ def test_baseline_choice():
 
 
 def test_reform_choice():
-    c = cr.Cruncher(
-        inputs=no_reform_path, custom_reform=reform_path
-    )
+    c = cr.Cruncher(inputs=no_reform_path, custom_reform=reform_path)
     assert isinstance(c, cr.Cruncher)
     with pytest.raises(AttributeError):
-        cr.Cruncher(
-            inputs=input_path, custom_reform=reform_path
-        )
+        cr.Cruncher(inputs=input_path, custom_reform=reform_path)
 
 
 def test_basic_table(cr_data):
@@ -36,7 +32,7 @@ def test_basic_table(cr_data):
 def test_calc_table(cr_data):
     table = cr_data.calc_table()
     # remove commas and convert to numeric
-    table = table.replace(',','',regex=True)
+    table = table.replace(",", "", regex=True)
     for col in table.columns:
         table[col] = table[col].apply(pd.to_numeric)
     assert isinstance(table, pd.DataFrame)

@@ -31,7 +31,7 @@ class Cruncher:
     Returns
     -------
     class instance: Cruncher
-    
+
     """
 
     INPUT_PATH = os.path.join(CURRENT_PATH, "adjustment_template.json")
@@ -139,7 +139,7 @@ class Cruncher:
         self.invar["f2441"] = nu13
         n1316 = ivar.loc[:, 6]
         self.invar["n24"] = nu13 + n1316
-        n1719 = ivar.loc[:, 7]         
+        n1719 = ivar.loc[:, 7]
         num_eitc_qualified_kids = nu13 + n1316 + n1719
 
         self.invar["EIC"] = np.minimum(num_eitc_qualified_kids, 3)
@@ -153,7 +153,9 @@ class Cruncher:
             2,
         )
         self.invar["MARS"] = mars
-        assert np.all(np.logical_or(mars == 1, np.logical_or(mars == 2, mars == 4)))
+        assert np.all(
+            np.logical_or(mars == 1, np.logical_or(mars == 2, mars == 4))
+        )
         num_taxpayers = np.where(mars == 2, 2, 1)
         self.invar["XTOT"] = num_taxpayers + num_deps
         self.invar["e00200p"] = ivar.loc[:, 9]
@@ -185,10 +187,10 @@ class Cruncher:
         self.invar["e18400"] = ivar.loc[:, 25]
         self.invar["e32800"] = ivar.loc[:, 26]
         self.invar["e19200"] = ivar.loc[:, 27]
-        
+
         # e26270 is included in e02000
         self.invar["e02000"] = self.invar["e26270"] + e02000
-        
+
         return self.invar
 
     def choose_mtr(self):
@@ -236,7 +238,6 @@ class Cruncher:
             self.ivar2.loc[:, 27] = self.ivar2.loc[:, 27] + 1
             return self.ivar2, "e19200"
 
-
     def choose_baseline(self):
         """
         Creates Tax-Calculator Policy object for baseline policy
@@ -261,7 +262,9 @@ class Cruncher:
             if exists:
                 baseline_file = self.baseline
                 self.pol = tc.Policy()
-                self.pol.implement_reform(tc.Policy.read_json_reform(baseline_file))
+                self.pol.implement_reform(
+                    tc.Policy.read_json_reform(baseline_file)
+                )
             # if the user did not create a json file, try the Tax-Calculator
             # reforms file
             else:
@@ -269,7 +272,9 @@ class Cruncher:
                     baseline_file = self.baseline
                     baseline_url = REFORMS_URL + baseline_file
                     self.pol = tc.Policy()
-                    self.pol.implement_reform(tc.Policy.read_json_reform(baseline_url))
+                    self.pol.implement_reform(
+                        tc.Policy.read_json_reform(baseline_url)
+                    )
                 except:
                     print("Baseline file does not exist")
 
@@ -296,15 +301,21 @@ class Cruncher:
             self.pol2.implement_reform(tc.Policy.read_json_reform(reform_url))
         # otherwise, look for user-provided json reform file
         # first as file path
-        elif self.reform_options == "None" and isinstance(self.custom_reform, str):
+        elif self.reform_options == "None" and isinstance(
+            self.custom_reform, str
+        ):
             try:
                 reform_filename = self.custom_reform
                 self.pol2 = tc.Policy()
-                self.pol2.implement_reform(tc.Policy.read_json_reform(reform_filename))
+                self.pol2.implement_reform(
+                    tc.Policy.read_json_reform(reform_filename)
+                )
             except:
                 print("Reform file path does not exist")
         # then as dictionary
-        elif self.reform_options == "None" and isinstance(self.custom_reform, dict):
+        elif self.reform_options == "None" and isinstance(
+            self.custom_reform, dict
+        ):
             reform = self.custom_reform
             self.pol2 = tc.Policy()
             try:
@@ -331,9 +342,10 @@ class Cruncher:
             self.calc_reform: Calculator object for reform
             self.calc_mtr: Calculator object for + $1
         """
-
-        year = int(self.data.iloc[0][1])
-        recs = tc.Records(data=self.data, start_year=year, gfactors=None, weights=None)
+        year = int(self.data.loc[0, "FLPDYR"])
+        recs = tc.Records(
+            data=self.data, start_year=year, gfactors=None, weights=None
+        )
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
         self.calc1.advance_to_year(year)
@@ -374,7 +386,9 @@ class Cruncher:
             "Employee + Employer Payroll Tax",
         ]
 
-        self.basic_vals["Change"] = self.basic_vals["Reform"] - self.basic_vals["Base"]
+        self.basic_vals["Change"] = (
+            self.basic_vals["Reform"] - self.basic_vals["Base"]
+        )
 
         self.basic_vals = self.basic_vals.round(2)
 
@@ -429,19 +443,11 @@ class Cruncher:
             ]
         )
 
-        # format each row
-        self.df_basic.iloc[0, :] = self.df_basic.iloc[0, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
-        self.df_basic.iloc[1, :] = self.df_basic.iloc[1, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
-        self.df_basic.iloc[2, :] = self.df_basic.iloc[2, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
-        self.df_basic.iloc[3, :] = self.df_basic.iloc[3, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
+        # format dataframe
+        for col in self.df_basic.columns:
+            self.df_basic[col] = self.df_basic[col].apply(
+                lambda x: "{:,.2f}".format(x)
+            )
 
         return self.df_basic
 
@@ -470,7 +476,7 @@ class Cruncher:
             "c09600",
             "niit",
             "c05800",
-            "payrolltax"
+            "payrolltax",
         ]
         labels = [
             "Adjusted Gross Income (AGI)",
@@ -489,7 +495,7 @@ class Cruncher:
             "AMT Liability",
             "Net Investment Income Tax",
             "Income Tax Before Credits (Regular + AMT)",
-            "Payroll Tax (Employee + Employer)"
+            "Payroll Tax (Employee + Employer)",
         ]
 
         df_calc1 = self.calc1.dataframe(calculation).transpose()
@@ -505,9 +511,13 @@ class Cruncher:
         self.df_calc.columns = ["Base", "Reform", mtr_label]
         self.df_calc.index = labels
 
-        self.df_calc.Base = self.df_calc.Base.apply(lambda x: "{:,.2f}".format(x))
-        self.df_calc.Reform = self.df_calc.Reform.apply(lambda x: "{:,.2f}".format(x))
-        self.df_calc.iloc[:, 2] = self.df_calc.iloc[:, 2].apply(
+        self.df_calc.Base = self.df_calc.Base.apply(
+            lambda x: "{:,.2f}".format(x)
+        )
+        self.df_calc.Reform = self.df_calc.Reform.apply(
+            lambda x: "{:,.2f}".format(x)
+        )
+        self.df_calc[mtr_label] = self.df_calc[mtr_label].apply(
             lambda x: "{:,.2f}".format(x)
         )
 
@@ -525,6 +535,8 @@ class Cruncher:
         self.df_calc_diff = self.df_calc.copy()
         if len(self.df_calc_diff.columns) == 3:
             del self.df_calc_diff["+ $1"]
-        calc_diff_vals = self.df_calc_diff["Reform"] - self.df_calc_diff["Base"]
+        calc_diff_vals = (
+            self.df_calc_diff["Reform"] - self.df_calc_diff["Base"]
+        )
         self.df_calc_diff["Change"] = calc_diff_vals
         return self.df_calc_diff
