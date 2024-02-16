@@ -31,7 +31,7 @@ class Cruncher:
     Returns
     -------
     class instance: Cruncher
-    
+
     """
 
     INPUT_PATH = os.path.join(CURRENT_PATH, "adjustment_template.json")
@@ -139,7 +139,7 @@ class Cruncher:
         self.invar["f2441"] = nu13
         n1316 = ivar.loc[:, 6]
         self.invar["n24"] = nu13 + n1316
-        n1719 = ivar.loc[:, 7]         
+        n1719 = ivar.loc[:, 7]
         num_eitc_qualified_kids = nu13 + n1316 + n1719
 
         self.invar["EIC"] = np.minimum(num_eitc_qualified_kids, 3)
@@ -185,10 +185,10 @@ class Cruncher:
         self.invar["e18400"] = ivar.loc[:, 25]
         self.invar["e32800"] = ivar.loc[:, 26]
         self.invar["e19200"] = ivar.loc[:, 27]
-        
+
         # e26270 is included in e02000
         self.invar["e02000"] = self.invar["e26270"] + e02000
-        
+
         return self.invar
 
     def choose_mtr(self):
@@ -331,8 +331,7 @@ class Cruncher:
             self.calc_reform: Calculator object for reform
             self.calc_mtr: Calculator object for + $1
         """
-
-        year = int(self.data.iloc[0][1])
+        year = int(self.data.loc[0, "FLPDYR"])
         recs = tc.Records(data=self.data, start_year=year, gfactors=None, weights=None)
 
         self.calc1 = tc.Calculator(policy=self.pol, records=recs)
@@ -429,19 +428,9 @@ class Cruncher:
             ]
         )
 
-        # format each row
-        self.df_basic.iloc[0, :] = self.df_basic.iloc[0, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
-        self.df_basic.iloc[1, :] = self.df_basic.iloc[1, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
-        self.df_basic.iloc[2, :] = self.df_basic.iloc[2, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
-        self.df_basic.iloc[3, :] = self.df_basic.iloc[3, :].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
+        # format dataframe
+        for col in self.df_basic.columns:
+            self.df_basic[col] = self.df_basic[col].apply(lambda x: "{:,.2f}".format(x))
 
         return self.df_basic
 
@@ -507,9 +496,7 @@ class Cruncher:
 
         self.df_calc.Base = self.df_calc.Base.apply(lambda x: "{:,.2f}".format(x))
         self.df_calc.Reform = self.df_calc.Reform.apply(lambda x: "{:,.2f}".format(x))
-        self.df_calc.iloc[:, 2] = self.df_calc.iloc[:, 2].apply(
-            lambda x: "{:,.2f}".format(x)
-        )
+        self.df_calc[mtr_label] = self.df_calc[mtr_label].apply(lambda x: "{:,.2f}".format(x))
 
         return self.df_calc
 

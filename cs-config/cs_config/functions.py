@@ -137,39 +137,38 @@ def run_model(meta_params_dict, adjustment):
 
     # use Calculation Option to determine what var to increment
     if mtr_opt == 'Taxpayer Earnings':
-        span = int(ivar[9])
+        span = int(ivar[9].values[0])
         df[9] = increments
     elif mtr_opt == 'Spouse Earnings':
-        span = int(ivar[10])
+        span = int(ivar[10].values[0])
         df[10] = increments
     elif mtr_opt == 'Qualified Dividends':
-        span = int(ivar[11])
+        span = int(ivar[11].values[0])
         df[11] = increments
     elif mtr_opt == 'Interest Received':
-        span = int(ivar[12])
+        span = int(ivar[12].values[0])
         df[12] = increments
     elif mtr_opt == 'Short Term Gains':
-        span = int(ivar[13])
+        span = int(ivar[13].values[0])
         df[13] = increments
     elif mtr_opt == 'Long Term Gains':
-        span = int(ivar[14])
+        span = int(ivar[14].values[0])
         df[14] = increments
     elif mtr_opt == 'Business Income':
-        span = int(ivar[15])
+        span = int(ivar[15].values[0])
         df[15] = increments
     elif mtr_opt == 'Pensions':
-        span = int(ivar[21])
+        span = int(ivar[21].values[0])
         df[21] = increments
     elif mtr_opt == 'Gross Social Security Benefits':
-        span = int(ivar[22])
+        span = int(ivar[22].values[0])
         df[22] = increments
     elif mtr_opt == 'Real Estate Taxes Paid':
-        span = int(ivar[24])
+        span = int(ivar[24].values[0])
         df[24] = increments
     elif mtr_opt == 'Mortgage':
-        span = int(ivar[27])
+        span = int(ivar[27].values[0])
         df[27] = increments
-
 
     b = Batch(df)
     df_base = b.create_table()
