@@ -13,5 +13,6 @@ dependencies:
 - bokeh
 - coverage
 - pip
+- black
 - pip:
   - cs-kit

@@ -36,6 +36,7 @@ def fix_checkbox(params):
 
     return pol_params
 
+
 def get_version():
     version = taxcrunch.__version__
     return f"Tax-Cruncher v{version}"
@@ -51,14 +52,15 @@ def get_inputs(meta_params_dict):
     params = CruncherParams()
     policy_params = Policy()
 
-    policy_params.set_state(
-        year=metaparams.year.tolist())
+    policy_params.set_state(year=metaparams.year.tolist())
 
     policy_params.array_first = False
     # Hack to work smoothly with convert_policy_defaults since
     # it expects a data_source attribute.
     metaparams.data_source = "CPS"
-    filtered_pol_params = inputs.convert_policy_defaults(metaparams, policy_params)
+    filtered_pol_params = inputs.convert_policy_defaults(
+        metaparams, policy_params
+    )
 
     keep = [
         "mstat",
@@ -88,13 +90,15 @@ def get_inputs(meta_params_dict):
         "w2paid",
         "qualprop",
         "mtr_options",
-        "schema"
+        "schema",
     ]
     cruncher_dict = params.dump()
 
     default_params = {
-        "Tax Information": {k: v for k, v in cruncher_dict.items() if k in keep},
-        "Policy": filtered_pol_params
+        "Tax Information": {
+            k: v for k, v in cruncher_dict.items() if k in keep
+        },
+        "Policy": filtered_pol_params,
     }
 
     meta = metaparams.dump()
@@ -136,37 +140,37 @@ def run_model(meta_params_dict, adjustment):
     increments = pd.DataFrame(list(range(0, 2000000, 200)))
 
     # use Calculation Option to determine what var to increment
-    if mtr_opt == 'Taxpayer Earnings':
+    if mtr_opt == "Taxpayer Earnings":
         span = int(ivar[9].values[0])
         df[9] = increments
-    elif mtr_opt == 'Spouse Earnings':
+    elif mtr_opt == "Spouse Earnings":
         span = int(ivar[10].values[0])
         df[10] = increments
-    elif mtr_opt == 'Qualified Dividends':
+    elif mtr_opt == "Qualified Dividends":
         span = int(ivar[11].values[0])
         df[11] = increments
-    elif mtr_opt == 'Interest Received':
+    elif mtr_opt == "Interest Received":
         span = int(ivar[12].values[0])
         df[12] = increments
-    elif mtr_opt == 'Short Term Gains':
+    elif mtr_opt == "Short Term Gains":
         span = int(ivar[13].values[0])
         df[13] = increments
-    elif mtr_opt == 'Long Term Gains':
+    elif mtr_opt == "Long Term Gains":
         span = int(ivar[14].values[0])
         df[14] = increments
-    elif mtr_opt == 'Business Income':
+    elif mtr_opt == "Business Income":
         span = int(ivar[15].values[0])
         df[15] = increments
-    elif mtr_opt == 'Pensions':
+    elif mtr_opt == "Pensions":
         span = int(ivar[21].values[0])
         df[21] = increments
-    elif mtr_opt == 'Gross Social Security Benefits':
+    elif mtr_opt == "Gross Social Security Benefits":
         span = int(ivar[22].values[0])
         df[22] = increments
-    elif mtr_opt == 'Real Estate Taxes Paid':
+    elif mtr_opt == "Real Estate Taxes Paid":
         span = int(ivar[24].values[0])
         df[24] = increments
-    elif mtr_opt == 'Mortgage':
+    elif mtr_opt == "Mortgage":
         span = int(ivar[27].values[0])
         df[27] = increments
 
@@ -175,12 +179,12 @@ def run_model(meta_params_dict, adjustment):
     df_reform = b.create_table(policy_mods)
 
     # compute average tax rates
-    df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']
-    df_base['PATR'] = df_base['Payroll Tax'] / df_base['AGI']
-    df_reform['IATR'] = df_reform['Individual Income Tax'] / df_reform['AGI']
-    df_reform['PATR'] = df_reform['Payroll Tax'] / df_reform['AGI']
-    df_base['Axis'] = increments
-    df_reform['Axis'] = increments
+    df_base["IATR"] = df_base["Individual Income Tax"] / df_base["AGI"]
+    df_base["PATR"] = df_base["Payroll Tax"] / df_base["AGI"]
+    df_reform["IATR"] = df_reform["Individual Income Tax"] / df_reform["AGI"]
+    df_reform["PATR"] = df_reform["Payroll Tax"] / df_reform["AGI"]
+    df_base["Axis"] = increments
+    df_reform["Axis"] = increments
 
     return comp_output(crunch, df_base, df_reform, span, mtr_opt)
 
@@ -203,8 +207,14 @@ def comp_output(crunch, df_base, df_reform, span, mtr_opt):
 
     comp_dict = {
         "renderable": [
-            {"media_type": "table", "title": "Basic Liabilities", "data": table_basic},
-            liabilities, rates, credits,
+            {
+                "media_type": "table",
+                "title": "Basic Liabilities",
+                "data": table_basic,
+            },
+            liabilities,
+            rates,
+            credits,
             {
                 "media_type": "table",
                 "title": "Calculation of Liabilities",
