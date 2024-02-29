@@ -16,3 +16,4 @@ dependencies:
 - black
 - pip:
   - cs-kit
+  - "-e ."
