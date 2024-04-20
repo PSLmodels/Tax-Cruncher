@@ -66,7 +66,7 @@ class MetaParameters(paramtools.Parameters):
             "title": "Year",
             "description": "Year for parameters.",
             "type": "int",
-            "value": 2019,
+            "value": 2024,
             "validators": {
                 "choice": {"choices": [yr for yr in range(2013, 2030 + 1)]}
             },
