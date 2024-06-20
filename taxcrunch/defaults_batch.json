@@ -75,9 +75,21 @@
         "number_dims": 1,
         "value": [0],
         "validators": {
-            "range": {
-                "min": 0,
-                "max": 114
+            "when": {
+                "param": "mstat",
+                "is": 2,
+                "then": {
+                    "range": {
+                        "min": 0,
+                        "max": 114
+                    }
+                },
+                "otherwise": {
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    }
+                }
             }
         }
     },
@@ -165,9 +177,21 @@
         "number_dims": 1,
         "value": [0],
         "validators": {
-            "range": {
-                "min": 0,
-                "max": 9e+99
+            "when": {
+                "param": "mstat",
+                "is": 2,
+                "then": {
+                    "range": {
+                        "min": 0,
+                        "max": 9e+99
+                    }
+                },
+                "otherwise": {
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    }
+                }
             }
         }
     },

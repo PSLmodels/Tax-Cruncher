@@ -96,9 +96,21 @@
             }
         ],
         "validators": {
-            "range": {
-                "min": 0,
-                "max": 114
+            "when": {
+                "param": "mstat",
+                "is": "Joint",
+                "then": {
+                    "range": {
+                        "min": 0,
+                        "max": 114
+                    }
+                },
+                "otherwise": {
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    }
+                }
             }
         }
     },
@@ -206,9 +218,21 @@
             }
         ],
         "validators": {
-            "range": {
-                "min": 0,
-                "max": 9e+99
+            "when": {
+                "param": "mstat",
+                "is": "Joint",
+                "then": {
+                    "range": {
+                        "min": 0,
+                        "max": 9e+99
+                    }
+                },
+                "otherwise": {
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    }
+                }
             }
         }
     },
